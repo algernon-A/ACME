@@ -1,0 +1,22 @@
+﻿CODE,en
+NAME,English
+CAM_NAM,ACME, the camera mod
+CAM_DESC,UNDER DEVELOPMENT: a camera mod.
+CAM_XPOS,Camera target X-position
+CAM_ZPOS,Camera target Z-position
+CAM_ROT,Rotation around target
+CAM_SIZE,Distance from target
+CAM_TILT,Tilt
+CAM_FOV,Field of view
+CAM_COL_BLD,Building collision
+CAM_COL_NET,Network collision
+CAM_COL_PRO,Prop collision
+CAM_COL_TRE,Tree collision
+CAM_COL_WAT,Water bobbing
+CAM_COL_GND,Minimum ground clearance
+CAM_CLP_NEA,Near clip distance
+CAM_OPT_DIS,Automatically go to disasters
+KEY_KEY,Panel hotkey
+KEY_PRS,Press any key
+TRN_CHOICE,Set language
+TRN_SYS,Use game language
