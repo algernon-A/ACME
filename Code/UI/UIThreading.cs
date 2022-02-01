@@ -109,7 +109,7 @@ namespace ACME
                 }
 
                 // Check for Movit zoom (Alt + middle mouse button.
-                if (altPressed && Input.GetMouseButtonDown(2))
+                if (altPressed && Input.GetMouseButtonDown(2) && (ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool")))
                 {
                     // Set camera to Move It selection position.
                     MoveItUtils.SetPosition();
