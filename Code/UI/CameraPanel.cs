@@ -36,16 +36,17 @@ namespace ACME
 		private const float MinFOV = 24f;
 		private const float MaxFOV = 84f;
 
+		// Camera references.
+		private readonly Camera mainCamera;
+		private readonly CameraController controller;
 
-		// Camera components.
+		// Panel components.
 		private readonly CameraSlider xPosSlider, zPosSlider, rotSlider, zoomSlider, tiltSlider, fovSlider;
-
 
 		// Instance references.
 		private static GameObject uiGameObject;
 		private static CameraPanel panel;
 		internal static CameraPanel Panel => panel;
-		private static CameraController controller;
 
 
 
@@ -90,16 +91,7 @@ namespace ACME
 			rotSlider.value = controller.m_targetAngle.x;
 			zoomSlider.value = controller.m_targetSize;
 			tiltSlider.value = controller.m_targetAngle.y;
-
-			/*Camera mainCam = Camera.main;
-
-			if (mainCam == null)
-            {
-				Logging.Error("unable to get main camera reference");
-				Close();
-				return;
-			}
-			fovSlider.value = Camera.main.fieldOfView;*/
+			fovSlider.value = mainCamera.fieldOfView;
 		}
 
 
@@ -216,12 +208,9 @@ namespace ACME
 			closeButton.pressedBgSprite = "buttonclosepressed";
 			closeButton.eventClick += (component, clickEvent) => Close();
 
-			Logging.Message("getting camera controller");
-
-			// Get camera controller reference.
-			controller = CameraUtils.Controller;
-
-			Logging.Message("setting up sliders");
+			// Set camera references.
+			controller = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+			mainCamera = controller.GetComponent<Camera>();
 
 			// X-position slider.
 			xPosSlider = AddCameraSlider(this, Margin, XSliderY, PanelWidth - (Margin * 2f), "CAM_XPOS", -8500f, 8500f, 0.01f, controller.m_targetPosition.x, "N1", "xPos");
@@ -239,9 +228,7 @@ namespace ACME
 			tiltSlider = AddCameraSlider(this, Margin, TiltSliderY, PanelWidth - (Margin * 2f), "CAM_TILT", -90f, 90f, 0.01f, controller.m_targetAngle.y, "N2", "tilt");
 
 			// FOV slider.
-			fovSlider = AddCameraSlider(this, Margin, FovSliderY, PanelWidth - (Margin * 2f), "CAM_FOV", MinFOV, MaxFOV, 0.01f, CameraUtils.MainCamera.fieldOfView, "N1", "fov");
-
-			Logging.Message("setting up checkboxes");
+			fovSlider = AddCameraSlider(this, Margin, FovSliderY, PanelWidth - (Margin * 2f), "CAM_FOV", MinFOV, MaxFOV, 0.01f, mainCamera.fieldOfView, "N1", "fov");
 
 			// Building collision checkbox.
 			UICheckBox buildingCollisionCheck = UIControls.LabelledCheckBox(this, Check1X, Check1Y, Translations.Translate("CAM_COL_BLD"));
@@ -295,8 +282,7 @@ namespace ACME
 						controller.m_maxTiltDistance = 90f;
 						break;
 					case "fov":
-						Logging.Message("fov slider changed");
-						Camera.main.fieldOfView = Mathf.Clamp(MinFOV, slider.value, MaxFOV);
+						mainCamera.fieldOfView = Mathf.Clamp(MinFOV, slider.value, MaxFOV);
 						break;
 				}
 			}
