@@ -40,11 +40,10 @@ namespace ACME
 				// Get camera controller if we haven't already, and main camera has been instantiated.
 				if (cameraController == null && Camera.main != null)
                 {
-					//cameraController = Camera.main.GetComponent<CameraController>();
 					cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
 				}
 				return cameraController;
-            }
+			}
         }
 
 
@@ -59,13 +58,6 @@ namespace ACME
 				if (mainCamera == null)
 				{
 					mainCamera = Controller.GetComponent<Camera>();
-					/*
-					mainCamera = Camera.main;
-
-					if (mainCamera == null)
-                    {
-						mainCamera = Camera.current;
-                    }*/
 				}
 				return mainCamera;
 			}
