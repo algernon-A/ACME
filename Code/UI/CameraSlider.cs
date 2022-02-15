@@ -61,18 +61,8 @@ namespace ACME
 		/// </summary>
 		protected override void OnValueChanged()
 		{
-			// Don't do anything special if events are suppressed.
-			if (!suppressEvents)
-			{
-				// Suppress events while we change things, to avoid infinite recursive update loops.
-				suppressEvents = true;
-
-				// Forcibly set text.
-				ValueField.text = value.ToString(StringFormat);
-
-				// Restore event handling.
-				suppressEvents = false;
-			}
+			// Update field text.
+			ValueField.text = value.ToString(StringFormat);
 
 			// Complete normal slider value change processing (update thumb position, invoke events, etc.).
 			base.OnValueChanged();
