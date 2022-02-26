@@ -29,6 +29,9 @@ namespace ACME
 		// Main camera reference.
 		private static Camera mainCamera;
 
+		// Initial camera position.
+		internal static SavedPosition initialPosition = default;
+
 
 		/// <summary>
 		/// CameraController reference.
@@ -105,6 +108,25 @@ namespace ACME
 
 			// Apply near clip plane.
 			NearClipPlane = nearClipPlane;
+
+			// Set initial camera position, if we have one.
+			if (initialPosition.isValid)
+            {
+				controller.m_targetPosition = initialPosition.position;
+				controller.m_targetAngle = initialPosition.angle;
+				controller.m_targetSize = initialPosition.size;
+				controller.m_targetHeight = initialPosition.height;
+				controller.m_targetSize = initialPosition.size;
+
+				if (MainCamera != null)
+				{
+					MainCamera.fieldOfView = initialPosition.fov;
+				}
+				else
+                {
+					Logging.Error("unable to locate main camera");
+                }
+            }
 		}
 	}
 }

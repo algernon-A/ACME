@@ -38,19 +38,8 @@ namespace ACME
         /// <param name="positionIndex">Camera position index to save to</param>
         internal static void SavePosition(int positionIndex)
         {
-            // Local reference.
-            CameraController controller = CameraUtils.Controller;
-
             // Save current camera attributes.
-            savedPositions[positionIndex] = new SavedPosition
-            {
-                isValid = true,
-                position = controller.m_targetPosition,
-                angle = controller.m_targetAngle,
-                height = controller.m_targetHeight,
-                size = controller.m_currentSize,
-                fov = Camera.main.fieldOfView
-            };
+            savedPositions[positionIndex] = CurrentPosition();
         }
 
 
@@ -83,22 +72,17 @@ namespace ACME
             Logging.Message("serializing camera positions");
 
             // Write version.
-            writer.Write((int)0);
+            writer.Write(1);
 
             // Serialise each position.
             for (int i = 0; i < NumSaves; ++i)
             {
-                // Serialize key and simple fields.
-                writer.Write(savedPositions[i].isValid);
-                writer.Write(savedPositions[i].position.x);
-                writer.Write(savedPositions[i].position.y);
-                writer.Write(savedPositions[i].position.z);
-                writer.Write(savedPositions[i].angle.x);
-                writer.Write(savedPositions[i].angle.y);
-                writer.Write(savedPositions[i].height);
-                writer.Write(savedPositions[i].size);
-                writer.Write(savedPositions[i].fov);
+                // Serialize position.
+                WritePosition(savedPositions[i], writer);
             }
+
+            // Serialize current position.
+            WritePosition(CurrentPosition(), writer);
         }
 
 
@@ -111,22 +95,90 @@ namespace ACME
             Logging.Message("deserializing savegame data");
 
             // Read version.
-            reader.ReadInt32();
+            int version = reader.ReadInt32();
 
             // Serialise each position.
             for (int i = 0; i < NumSaves; ++i)
             {
-                // Serialize key and simple fields.
-                savedPositions[i].isValid = reader.ReadBoolean();
-                savedPositions[i].position.x = reader.ReadSingle();
-                savedPositions[i].position.y = reader.ReadSingle();
-                savedPositions[i].position.z = reader.ReadSingle();
-                savedPositions[i].angle.x = reader.ReadSingle();
-                savedPositions[i].angle.y = reader.ReadSingle();
-                savedPositions[i].height = reader.ReadSingle();
-                savedPositions[i].size = reader.ReadSingle();
-                savedPositions[i].fov = reader.ReadSingle();
+                // Deserialize position.
+                savedPositions[i] = ReadPosition(reader);
             }
+
+            // If version 1, read current camera position.
+            if (version == 1)
+            {
+                CameraUtils.initialPosition = ReadPosition(reader);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets current camera position as a SavedPosition struct.
+        /// </summary>
+        /// <returns>New SavedPosition struct reflecting current camera position</returns>
+        private static SavedPosition CurrentPosition()
+        {
+            // Local reference.
+            CameraController controller = CameraUtils.Controller;
+
+            // Save current camera attributes.
+            return new SavedPosition
+            {
+                isValid = true,
+                position = controller.m_targetPosition,
+                angle = controller.m_targetAngle,
+                height = controller.m_targetHeight,
+                size = controller.m_currentSize,
+                fov = Camera.main.fieldOfView
+            };
+        }
+
+
+        /// <summary>
+        /// Serializes a camera position to the given BinaryWriter.
+        /// </summary>
+        /// <param name="position">Position to serialize</param>
+        /// <param name="writer">Target BinaryWriter</param>
+        private static void WritePosition(SavedPosition position, BinaryWriter writer)
+        {
+            writer.Write(position.isValid);
+            writer.Write(position.position.x);
+            writer.Write(position.position.y);
+            writer.Write(position.position.z);
+            writer.Write(position.angle.x);
+            writer.Write(position.angle.y);
+            writer.Write(position.height);
+            writer.Write(position.size);
+            writer.Write(position.fov);
+        }
+
+
+        /// <summary>
+        /// Deserializes a camera position from the given BinaryReader.
+        /// </summary>
+        /// <param name="reader">BinaryReader to use</param>
+        /// <returns>New saved camera position</returns>
+        private static SavedPosition ReadPosition(BinaryReader reader)
+        {
+            return new SavedPosition
+            {
+                // Serialize key and simple fields.
+                isValid = reader.ReadBoolean(),
+                position = new Vector3
+                {
+                    x = reader.ReadSingle(),
+                    y = reader.ReadSingle(),
+                    z = reader.ReadSingle()
+                },
+                angle = new Vector2
+                {
+                    x = reader.ReadSingle(),
+                    y = reader.ReadSingle()
+                },
+                height = reader.ReadSingle(),
+                size = reader.ReadSingle(),
+                fov = reader.ReadSingle()
+            };
         }
     }
 }
