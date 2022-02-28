@@ -316,6 +316,61 @@ namespace ACME
 
 
         /// <summary>
+        /// Creates a vertical scrollbar
+        /// </summary>
+        /// <param name="parent">Parent component</param>
+        /// <param name="scrollPanel">Panel to scroll</param>
+        /// <returns>New vertical scrollbar linked to the specified scrollable panel, immediately to the right</returns>
+        public static UIScrollbar AddScrollbar(UIComponent parent, UIScrollablePanel scrollPanel)
+        {
+            // Basic setup.
+            UIScrollbar newScrollbar = parent.AddUIComponent<UIScrollbar>();
+            newScrollbar.orientation = UIOrientation.Vertical;
+            newScrollbar.pivot = UIPivotPoint.TopLeft;
+            newScrollbar.minValue = 0;
+            newScrollbar.value = 0;
+            newScrollbar.incrementAmount = 50f;
+            newScrollbar.autoHide = true;
+
+            // Location and size.
+            newScrollbar.width = 10f;
+            newScrollbar.relativePosition = new Vector2(scrollPanel.relativePosition.x + scrollPanel.width, scrollPanel.relativePosition.y);
+            newScrollbar.height = scrollPanel.height;
+
+            // Tracking sprite.
+            UISlicedSprite trackSprite = newScrollbar.AddUIComponent<UISlicedSprite>();
+            trackSprite.relativePosition = Vector2.zero;
+            trackSprite.autoSize = true;
+            trackSprite.anchor = UIAnchorStyle.All;
+            trackSprite.size = trackSprite.parent.size;
+            trackSprite.fillDirection = UIFillDirection.Vertical;
+            trackSprite.spriteName = "ScrollbarTrack";
+            newScrollbar.trackObject = trackSprite;
+
+            // Thumb sprite.
+            UISlicedSprite thumbSprite = trackSprite.AddUIComponent<UISlicedSprite>();
+            thumbSprite.relativePosition = Vector2.zero;
+            thumbSprite.fillDirection = UIFillDirection.Vertical;
+            thumbSprite.autoSize = true;
+            thumbSprite.width = thumbSprite.parent.width;
+            thumbSprite.spriteName = "ScrollbarThumb";
+            newScrollbar.thumbObject = thumbSprite;
+
+            // Event handler to handle resize of scroll panel.
+            scrollPanel.eventSizeChanged += (component, newSize) =>
+            {
+                newScrollbar.relativePosition = new Vector2(scrollPanel.relativePosition.x + scrollPanel.width, scrollPanel.relativePosition.y);
+                newScrollbar.height = scrollPanel.height;
+            };
+
+            // Attach to scroll panel.
+            scrollPanel.verticalScrollbar = newScrollbar;
+
+            return newScrollbar;
+        }
+
+
+        /// <summary>
         /// Returns a relative position to the right of a specified UI component, suitable for placing an adjacent component.
         /// </summary>
         /// <param name="uIComponent">Original (anchor) UI component</param>

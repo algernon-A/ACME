@@ -20,3 +20,15 @@ KEY_KEY,Panel hotkey
 KEY_PRS,Press any key
 TRN_CHOICE,Set language
 TRN_SYS,Use game language
+MES_CLS,Close
+MES_PAGE,Please refer to the mod's Steam Workshop page for further information.
+CAM_ERR_FAT,This means that the mod is not able to operate, and has shut down.
+CAM_ERR_HAR,ACME was unable to complete its required Harmony patches.
+ERR_HAR0,Harmony patching error
+ERR_HAR1,Possible causes of this problem include:
+ERR_HAR2,The required Harmony 2 mod dependency was not installed
+ERR_HAR3,An old and/or broken mod is preventing Harmony 2 from operating properly
+ERR_CON0,Mod conflict detected!
+ERR_CON1,The conflicting mods are:
+CAM_ERR_CON0,ACME detected a conflict with at least one other mod.
+CAM_ERR_CON1,These mods must be removed before ACME can operate.

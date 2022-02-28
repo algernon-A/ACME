@@ -15,7 +15,7 @@ namespace ACME
     {
         // Settings file name.
         [XmlIgnore]
-        private static readonly string SettingsFileName = ColossalFramework.IO.DataLocation.localApplicationData + Path.DirectorySeparatorChar + "ACME.xml";
+        private static readonly string SettingsFileName = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "ACME.xml");
 
         /// <summary>
         /// Toggle hotkey as ColossalFramework SavedInputKey.
@@ -161,7 +161,7 @@ namespace ACME
         {
             try
             {
-                // Pretty straightforward.  Serialisation is within GBRSettingsFile class.
+                // Save into user local settings.
                 using (StreamWriter writer = new StreamWriter(SettingsFileName))
                 {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(ModSettings));

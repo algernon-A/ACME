@@ -14,8 +14,76 @@ namespace ACME
     /// </summary>
     internal static class ModUtils
     {
+        // List of conflcting mod names.
+        internal static List<string> conflictingModNames;
+
         // Move It ActionQueue current action getter.
         internal static MethodInfo miGetTotalBounds;
+
+
+        /// <summary>
+        /// Checks for any known fatal mod conflicts.
+        /// </summary>
+        /// <returns>True if a mod conflict was detected, false otherwise</returns>
+        internal static bool IsModConflict()
+        {
+            // Initialise flag and list of conflicting mods.
+            bool conflictDetected = false;
+            conflictingModNames = new List<string>();
+
+            // Iterate through the full list of plugins.
+            foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
+            {
+                foreach (Assembly assembly in plugin.GetAssemblies())
+                {
+                    switch (assembly.GetName().Name)
+                    {
+                        case "CameraPositions":
+                            // Camera Positions Utility, but only if enabled.
+                            if (plugin.isEnabled)
+                            {
+                                conflictDetected = true;
+                                conflictingModNames.Add("Camera Positions Utility");
+                            }
+                            break;
+                        case "ZoomIt":
+                            // Zoom It, but only if enabled.
+                            if (plugin.isEnabled)
+                            {
+                                conflictDetected = true;
+                                conflictingModNames.Add("Zoom It!");
+                            }
+                            break;
+                        case "VanillaGarbageBinBlocker":
+                            // Garbage Bin Controller
+                            conflictDetected = true;
+                            conflictingModNames.Add("Garbage Bin Controller");
+                            break;
+                        case "Painter":
+                            // Painter - this one is trickier because both Painter and Repaint use Painter.dll (thanks to CO savegame serialization...)
+                            if (plugin.userModInstance.GetType().ToString().Equals("Painter.UserMod"))
+                            {
+                                conflictDetected = true;
+                                conflictingModNames.Add("Painter");
+                            }
+                            break;
+                    }
+                }
+            }
+
+            // Was a conflict detected?
+            if (conflictDetected)
+            {
+                // Yes - log each conflict.
+                foreach (string conflictingMod in conflictingModNames)
+                {
+                    Logging.Error("Conflicting mod found: ", conflictingMod);
+                }
+                Logging.Error("exiting due to mod conflict");
+            }
+
+            return conflictDetected;
+        }
 
 
         /// <summary>
