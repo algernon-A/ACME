@@ -114,7 +114,6 @@ namespace ACME
 				else
 				{
 					// Default multiplier.
-					Logging.Message("no modifier pressed");
 					return 10f;
 				}
 			}

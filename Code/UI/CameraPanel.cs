@@ -186,8 +186,6 @@ namespace ACME
 			// Default position - centre in screen.
 			relativePosition = new Vector2(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
 
-			Logging.Message("adding basic components");
-
 			// Drag bar.
 			UIDragHandle dragHandle = AddUIComponent<UIDragHandle>();
 			dragHandle.width = this.width - 50f;
