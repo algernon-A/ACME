@@ -94,7 +94,10 @@
     <Content Include="License.txt" />
     <Content Include="Resources\ACME-UUI.png" />
     <None Include="packages.config" />
+    <None Include="Translations\de-DE.csv" />
     <None Include="Translations\en.csv" />
+    <None Include="Translations\es-ES.csv" />
+    <None Include="Translations\ja-JP.csv" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
