@@ -91,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\PreviewImage.png" />
     <Content Include="License.txt" />
     <Content Include="Resources\ACME-UUI.png" />
     <None Include="packages.config" />
@@ -99,9 +100,7 @@
     <None Include="Translations\es-ES.csv" />
     <None Include="Translations\ja-JP.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
