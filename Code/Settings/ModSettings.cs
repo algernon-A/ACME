@@ -98,6 +98,14 @@ namespace ACME
         [XmlElement("NearClip")]
         public float XMLNearClip { get => CameraUtils.NearClipPlane; set => CameraUtils.NearClipPlane = value; }
 
+
+        /// <summary>
+        /// Speed multiplier.
+        /// </summary>
+        [XmlElement("SpeedMultiplier")]
+        public int XMLSpeedMultiplier { get => (int)UpdateTargetPosition.CameraSpeed; set => UpdateTargetPosition.CameraSpeed = value; }
+
+
         // Hotkey element.
         [XmlElement("ToggleKey")]
         public KeyBinding ToggleKey

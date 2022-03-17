@@ -79,6 +79,10 @@ namespace ACME
             UISlider nearClipSlider = AddDistanceSlider(ref currentY, "CAM_CLP_NEA", CameraUtils.MinNearClip, CameraUtils.MaxNearClip, CameraUtils.NearClipPlane);
             nearClipSlider.eventValueChanged += (control, value) => { CameraUtils.NearClipPlane = value; };
 
+            // Speed multiplier.
+            UISlider speedSlider = AddSlider(ref currentY, "CAM_SPD_MIN", UpdateTargetPosition.MinCameraSpeed, UpdateTargetPosition.MaxCameraSpeed, UpdateTargetPosition.CameraSpeed);
+            speedSlider.eventValueChanged += (control, value) => { UpdateTargetPosition.CameraSpeed = value; };
+
             // Follow disasters checkbox.
             currentY += Margin;
             UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
@@ -103,7 +107,7 @@ namespace ACME
             newSlider.parent.relativePosition = new Vector2(Margin, yPos);
 
             // Game-distanceLabel label.
-            UILabel distanceLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - Margin, string.Empty);
+            UILabel distanceLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
             newSlider.objectUserData = distanceLabel;
 
             // Force set slider value to populate initial time label and add event handler.
@@ -118,17 +122,61 @@ namespace ACME
 
 
         /// <summary>
+        /// Adds a generic value slider.
+        /// </summary>
+        /// <param name="yPos">Relative y-position indicator (will be incremented with slider height)</param>
+        /// <param name="labelKey">Translation key for slider label</param>
+        /// <param name="minValue">Slider minimum value</param>
+        /// <param name="maxValue">Slider maximum value</param>
+        /// <param name="initialValue">Initial slider value</param>
+        /// <returns>New delay slider with attached game-time label</returns>
+        private UISlider AddSlider(ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
+        {
+            // Create new slider.
+            UISlider newSlider = UIControls.AddSlider(this, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
+            newSlider.parent.relativePosition = new Vector2(Margin, yPos);
+
+            // Value label.
+            UILabel valueLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
+            newSlider.objectUserData = valueLabel;
+
+            // Force set slider value to populate initial time label and add event handler.
+            SetSliderLabel(newSlider, initialValue);
+            newSlider.eventValueChanged += SetSliderLabel;
+
+            // Increment y position indicator.
+            yPos += newSlider.parent.height + valueLabel.height + Margin;
+
+            return newSlider;
+        }
+
+
+        /// <summary>
         /// Sets the distance value label text for a distance slider.
         /// </summary>
         /// <param name="control">Calling component</param>
         /// <param name="value">New value</param>
         private void SetDistanceLabel(UIComponent control, float value)
         {
-
             // Ensure that there's a valid label attached to the slider.
             if (control.objectUserData is UILabel label)
             {
                 label.text = value.RoundToNearest(0.1f).ToString("N1") + "m";
+            }
+        }
+
+
+        /// <summary>
+        /// Sets the value label text for a generic slider.
+        /// </summary>
+        /// <param name="control">Calling component</param>
+        /// <param name="value">New value</param>
+        private void SetSliderLabel(UIComponent control, float value)
+        {
+            // Ensure that there's a valid label attached to the slider.
+            if (control.objectUserData is UILabel label)
+            {
+                label.text = value.RoundToNearest(1f).ToString("N0");
             }
         }
     }

@@ -15,6 +15,7 @@ CAM_COL_TRE,Tree collision
 CAM_COL_WAT,Water bobbing
 CAM_COL_GND,Minimum ground clearance
 CAM_CLP_NEA,Near clip distance
+CAM_SPD_MIN,Minimum camera movement speed
 CAM_OPT_DIS,Automatically go to disasters
 KEY_KEY,Panel hotkey
 KEY_PRS,Press any key

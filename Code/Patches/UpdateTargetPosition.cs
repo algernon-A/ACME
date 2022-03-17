@@ -9,14 +9,28 @@ using HarmonyLib;
 namespace ACME
 {
     /// <summary>
-    /// Harmony transpiler to allow camera angles above horizontal.
+    /// Harmony transpiler to allow camera angles above horizontal and implement variable movement speed multipliers.
     /// </summary>
     [HarmonyPatch(typeof(CameraController), "UpdateTargetPosition")]
     public static class UpdateTargetPosition
     {
+        // Minumum and maximum speed multiplier.
+        internal const float MinCameraSpeed = 1f;
+        internal const float MaxCameraSpeed = 70f;
+
+        // Camera speed multiplier.
+        private static float cameraSpeed = 15f;
+
+
         /// <summary>
-        /// Harmony transpiler to replace hardcoded camera angle limits.
-        /// Finds a bound check for 'if < 0 then =0' and replaces 0 with -90.
+        /// Camera speed multiplier.
+        /// </summary>
+        internal static float CameraSpeed { get => cameraSpeed; set => cameraSpeed = Mathf.Clamp(value, MinCameraSpeed, MaxCameraSpeed); }
+
+
+        /// <summary>
+        /// Harmony transpiler to replace hardcoded camera angle limits and implement variable movement speed multipliers.
+        /// Finds a bound check for 'if < 0 then =0' and replaces 0 with -90 (for camera angle) and inserts calls to custom movement multiplier methods.
         /// </summary>
         /// <param name="instructions">Original ILCode</param>
         /// <returns>Patched ILCode</returns>
@@ -37,6 +51,15 @@ namespace ACME
             bool completedBounds = false;
             bool completedTerrain = false;
 
+
+            // Method calls for flagging insertion of custom multiplier code.
+            MethodInfo handleKeyEvents = typeof(CameraController).GetMethod("HandleKeyEvents", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo handleScrollEvents = typeof(CameraController).GetMethod("HandleScrollWheelEvent", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            // Custom multiplier methods to insert.
+            MethodInfo keyMultiplier = typeof(UpdateTargetPosition).GetMethod(nameof(UpdateTargetPosition.KeyMultiplier), BindingFlags.Public | BindingFlags.Static);
+            MethodInfo scrollMultiplier = typeof(UpdateTargetPosition).GetMethod(nameof(UpdateTargetPosition.ScrollMultiplier), BindingFlags.Public | BindingFlags.Static);
+
             // Iterate through all instructions in original method.
             while (instructionsEnumerator.MoveNext())
             {
@@ -46,13 +69,39 @@ namespace ACME
                 // Don't need to do anything if we've already completed.
                 if (!completedBounds)
                 {
+                    // Check for call instruction.
+                    if (instruction.opcode == OpCodes.Call)
+                    {
+                        // Found call - check for method operands matching our targets.
+                        if (instruction.operand is MethodInfo method)
+                        {
+                            if (method == handleKeyEvents)
+                            {
+                                // Found call to HandleKeyEvents - insert call to our custom method immediately before the game call.
+                                Logging.Message("adding pre-HandleKeyEvents multiplier call");
+
+                                // Base multiplier is already on stack; just need to add instance reference.  Custom method will replace base multiplier on stack with updated one.
+                                yield return new CodeInstruction(OpCodes.Ldarg_0);
+                                yield return new CodeInstruction(OpCodes.Call, keyMultiplier);
+                            }
+                            else if (method == handleScrollEvents)
+                            {
+                                // Found call to HandleScrollWheelEvent - insert call to our custom method immediately before the game call.
+                                Logging.Message("adding pre-HandleScrollWheelEvent multiplier call");
+
+                                // Base multiplier is already on stack; just need to add instance reference.  Custom method will replace base multiplier on stack with updated one.
+                                yield return new CodeInstruction(OpCodes.Ldarg_0);
+                                yield return new CodeInstruction(OpCodes.Call, scrollMultiplier);
+                            }
+                        }
+                    }
                     // Is this ldfld float32 [UnityEngine]UnityEngine.Vector2::y?
-                    if (instruction.opcode == OpCodes.Ldfld && instruction.LoadsField(vector2y))
+                    else if (instruction.opcode == OpCodes.Ldfld && instruction.LoadsField(vector2y))
                     {
                         // Yes - add it to output.
                         yield return instruction;
 
-                        // Check if next instructio is ldc.r4 0.0.
+                        // Check if next instruction is ldc.r4 0.0.
                         if (instructionsEnumerator.MoveNext())
                         {
                             instruction = instructionsEnumerator.Current;
@@ -101,6 +150,23 @@ namespace ACME
                 Logging.Error("transpiler patching failed for CameraController.UpdateTargetPosition");
             }
         }
+
+
+        /// <summary>
+        /// Calculates the multiplier of key-based camera movement where appropriate.
+        /// </summary>
+        /// <param name="baseMult">Base speed multiplier (calculated by game)</param>
+        /// <param name="instance">CameraController instance reference</param>
+        /// <returns>Speed multiplier for calculating target position update</returns>
+        public static float KeyMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 43f) ? baseMult : (baseMult * cameraSpeed / instance.m_currentSize);
+
+
+        /// Calculates the multiplier of scroll whell-based camera movement where appropriate.
+        /// </summary>
+        /// <param name="baseMult">Base speed multiplier (calculated by game)</param>
+        /// <param name="instance">CameraController instance reference</param>
+        /// <returns>Speed multiplier for calculating target position update</returns>
+        public static float ScrollMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 5f) ? baseMult : (baseMult * cameraSpeed / 2 / instance.m_currentSize);
 
 
         /// <summary>
