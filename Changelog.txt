@@ -1,0 +1,2 @@
+﻿- Add configuable minimum camera movement speed
+- Make 'zoom to MoveIt selection' hotkey configurable
