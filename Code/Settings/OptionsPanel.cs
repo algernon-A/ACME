@@ -39,7 +39,12 @@ namespace ACME
             // Hotkey control.
             OptionsKeymapping keyMapping = languageDropDown.parent.parent.gameObject.AddComponent<OptionsKeymapping>();
             keyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += keyMapping.uIPanel.height + GroupMargin;
+            currentY += keyMapping.uIPanel.height + Margin;
+
+            // MoveIt key control.
+            OptionsKeymapping miKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<MoveItKeymapping>();
+            miKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += miKeyMapping.uIPanel.height + GroupMargin;
 
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
@@ -88,6 +93,7 @@ namespace ACME
             UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
             disableDisasterGoto.isChecked = FollowDisasterPatch.followDisasters;
             disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.followDisasters = value; };
+
         }
 
 

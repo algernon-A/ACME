@@ -43,6 +43,13 @@ namespace ACME
         };
 
 
+        // MoveIt zoom key settings.
+        internal static KeyCode moveItKey = KeyCode.Mouse2;
+        internal static bool moveItCtrl = false;
+        internal static bool moveItAlt = true;
+        internal static bool moveItShift = false;
+
+
         /// <summary>
         /// Constructor - sets instance reference.
         /// </summary>
@@ -108,8 +115,14 @@ namespace ACME
                     }
                 }
 
-                // Check for Movit zoom (Alt + middle mouse button.
-                if (altPressed && Input.GetMouseButtonDown(2) && (ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool")))
+                // Check for Movit zoom.
+                // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
+                bool altOkay = altPressed == moveItAlt;
+                bool ctrlOkay = ctrlPressed == moveItCtrl;
+                bool shiftOkay = shiftPressed == moveItShift;
+                bool modifiersOkay = altOkay & ctrlOkay & shiftOkay;
+                bool keyPressed = modifiersOkay & Input.GetKey(moveItKey);
+                if (keyPressed &&  ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
                     // Set camera to Move It selection position.
                     MoveItUtils.SetPosition();

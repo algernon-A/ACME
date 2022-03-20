@@ -72,6 +72,7 @@
     <Compile Include="Code\Patches\UpdateTargetPosition.cs" />
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
+    <Compile Include="Code\Settings\MoveItKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelManager.cs" />

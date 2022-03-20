@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using UnityEngine;
 using ColossalFramework;
 
 
@@ -126,6 +127,34 @@ namespace ACME
                 UUI.uuiSavedKey.Control = value.control;
                 UUI.uuiSavedKey.Shift = value.shift;
                 UUI.uuiSavedKey.Alt = value.alt;
+            }
+        }
+
+
+        // MoveIt zoom hotkey.
+        [XmlElement("MoveItZoomKey")]
+        public KeyBinding MoveItZoomKey
+        {
+            get
+            {
+                return new KeyBinding
+                {
+                    keyCode = (int)UIThreading.moveItKey,
+                    control = UIThreading.moveItCtrl,
+                    shift = UIThreading.moveItShift,
+                    alt = UIThreading.moveItAlt
+                };
+            }
+            set
+            {
+                // Backwads compatibility - this won't exist in older-format configuration files.
+                if (value != null)
+                {
+                    UIThreading.moveItKey = (KeyCode)value.keyCode;
+                    UIThreading.moveItCtrl = value.control;
+                    UIThreading.moveItShift = value.shift;
+                    UIThreading.moveItAlt = value.alt;
+                }
             }
         }
 
