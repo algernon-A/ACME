@@ -8,6 +8,9 @@ CAM_ROT,Rotation around target
 CAM_SIZE,Distance from target
 CAM_TILT,Tilt
 CAM_FOV,Field of view
+CAM_SLI_TIP,"Shift to multiply slider movement by 10 (more speed)
+Alt to reduce slider movement by 10 (more precision)
+Ctrl to reduce slider movement by 100 (greatest precision)"
 CAM_COL_BLD,Building collision
 CAM_COL_NET,Network collision
 CAM_COL_PRO,Prop collision
