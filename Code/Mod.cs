@@ -11,7 +11,7 @@ namespace ACME
     public class ACMEMod : IUserMod
     {
         public static string ModName => "ACME";
-        public static string Version => "0.1";
+        public static string Version => "0.2";
 
         public string Name => ModName + " " + Version;
         public string Description => Translations.Translate("CAM_DESC");

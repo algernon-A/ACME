@@ -1,3 +1,5 @@
-﻿- Add configuable minimum camera movement speed
+﻿Version 0.2 -
+
+- Add configuable minimum camera movement speed
 - Make 'zoom to MoveIt selection' hotkey configurable
 - Add tooltops to camera panel sliders explaining shift/alt/ctrl speed/precision key modifiers
