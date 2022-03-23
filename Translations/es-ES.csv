@@ -8,6 +8,9 @@
 "CAM_SIZE","Distancia del objetivo"
 "CAM_TILT","Inclinación"
 "CAM_FOV","Campo de visión"
+"CAM_SLI_TIP","Usa Shift para multiplicar el movimiento de la barra por 10 (más velocidad)
+Usa Alt para reducir el movimiento de la barra en 10 (más precisión)
+Usa Ctrl para reducir el movimiento de la barra en 100 (máxima precisión)"
 "CAM_COL_BLD","Colisión de edificios"
 "CAM_COL_NET","Colisión de red"
 "CAM_COL_PRO","Colisión de decoraciones"
@@ -15,8 +18,10 @@
 "CAM_COL_WAT","Seguir el movimiento del Agua"
 "CAM_COL_GND","Despegue mínimo del suelo"
 "CAM_CLP_NEA","Distancia cercana al clipping"
+"CAM_SPD_MIN","Velocidad mínima de la cámara"
 "CAM_OPT_DIS","Ir automáticamente a desastres"
 "KEY_KEY","Atajo al panel"
+"KEY_GMI","Ir a la tecla de selección de Move It"
 "KEY_PRS","Presiona cualquier tecla"
 "TRN_CHOICE","Elegir idioma"
 "TRN_SYS","Utilizar idioma del juego"

@@ -8,6 +8,9 @@
 "CAM_SIZE","目标距离"
 "CAM_TILT","倾转"
 "CAM_FOV","视角（FOV）"
+"CAM_SLI_TIP","Shift 使滑块速度乘10（更快）
+Alt 使滑块速度除以10（更精确）
+Ctrl 使滑块速度除以100（更加精确）"
 "CAM_COL_BLD","建筑碰撞"
 "CAM_COL_NET","道路碰撞"
 "CAM_COL_PRO","摆件碰撞"
@@ -15,8 +18,10 @@
 "CAM_COL_WAT","水面起伏"
 "CAM_COL_GND","最低离地间距"
 "CAM_CLP_NEA","相机裁剪距离"
+"CAM_SPD_MIN","最低相机移动速度"
 "CAM_OPT_DIS","自动前往灾难位置"
 "KEY_KEY","面板快捷键"
+"KEY_GMI","转到 MoveIt 选择键"
 "KEY_PRS","按任意键"
 "TRN_CHOICE","选择语言"
 "TRN_SYS","使用游戏语言"
