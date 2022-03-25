@@ -1,4 +1,7 @@
-﻿Version 0.2 -
+﻿- Refactor camera controller references
+
+
+Version 0.2 -
 
 - Add configuable minimum camera movement speed
 - Make 'zoom to MoveIt selection' hotkey configurable

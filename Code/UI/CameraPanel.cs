@@ -207,8 +207,8 @@ namespace ACME
 			closeButton.eventClick += (component, clickEvent) => Close();
 
 			// Set camera references.
-			controller = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-			mainCamera = controller.GetComponent<Camera>();
+			controller = CameraUtils.Controller;
+			mainCamera = CameraUtils.MainCamera;
 
 			// X-position slider.
 			xPosSlider = AddCameraSlider(this, Margin, XSliderY, PanelWidth - (Margin * 2f), "CAM_XPOS", -8500f, 8500f, 0.01f, controller.m_targetPosition.x, "N1", "xPos");

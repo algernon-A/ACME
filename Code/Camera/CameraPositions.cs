@@ -129,7 +129,7 @@ namespace ACME
                 angle = controller.m_targetAngle,
                 height = controller.m_targetHeight,
                 size = controller.m_currentSize,
-                fov = Camera.main.fieldOfView
+                fov = CameraUtils.MainCamera.fieldOfView
             };
         }
 
