@@ -22,6 +22,7 @@ CAM_SPD_MIN,Minimum camera movement speed
 CAM_OPT_DIS,Automatically go to disasters
 KEY_KEY,Panel hotkey
 KEY_GMI,Go to MoveIt selection key
+KEY_FPS,Toggle free FPS mode
 KEY_PRS,Press any key
 TRN_CHOICE,Set language
 TRN_SYS,Use game language

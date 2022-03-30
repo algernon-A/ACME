@@ -14,6 +14,8 @@ namespace ACME
 
         // Flags.
         private bool operating = false;
+        private bool moveItProcessed = false;
+        private bool fpsProcessed = false;
 
         // Saved position hotkeys.
         private readonly KeyCode[] positionKeys = new KeyCode[CameraPositions.NumSaves]
@@ -48,6 +50,12 @@ namespace ACME
         internal static bool moveItCtrl = false;
         internal static bool moveItAlt = true;
         internal static bool moveItShift = false;
+
+        // FPS mode key settings.
+        internal static KeyCode fpsKey = KeyCode.Tab;
+        internal static bool fpsCtrl = true;
+        internal static bool fpsAlt = false;
+        internal static bool fpsShift = false;
 
 
         /// <summary>
@@ -103,13 +111,11 @@ namespace ACME
                             {
                                 // Shift is pressed - saving.
                                 CameraPositions.SavePosition(i);
-                                return;
                             }
                             else
                             {
                                 // Shift is not pressed - loading.
                                 CameraPositions.LoadPosition(i);
-                                return;
                             }
                         }
                     }
@@ -122,11 +128,46 @@ namespace ACME
                 bool shiftOkay = shiftPressed == moveItShift;
                 bool modifiersOkay = altOkay & ctrlOkay & shiftOkay;
                 bool keyPressed = modifiersOkay & Input.GetKey(moveItKey);
-                if (keyPressed &&  ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
+                if (keyPressed && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
-                    // Set camera to Move It selection position.
-                    MoveItUtils.SetPosition();
-                    return;
+                    // Only process if we're not already doing so.
+                    if (!moveItProcessed)
+                    {
+                        // Set processed flag.
+                        moveItProcessed = true;
+
+                        // Set camera to Move It selection position.
+                        MoveItUtils.SetPosition();
+                    }
+                }
+                else
+                {
+                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                    moveItProcessed = false;
+                }
+
+                // Check for FPS hotkey.
+                // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
+                altOkay = altPressed == fpsAlt;
+                ctrlOkay = ctrlPressed == fpsCtrl;
+                shiftOkay = shiftPressed == fpsShift;
+                modifiersOkay = altOkay & ctrlOkay & shiftOkay;
+                if (modifiersOkay & Input.GetKey(fpsKey))
+                {
+                    // Only process if we're not already doing so.
+                    if (!fpsProcessed)
+                    {
+                        // Set processed flag.
+                        fpsProcessed = true;
+
+                        // Toggle FPS mode.
+                        FPSMode.ToggleMode();
+                    }
+                }
+                else
+                {
+                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                    fpsProcessed = false;
                 }
             }
         }

@@ -154,6 +154,38 @@ namespace ACME
                     UIThreading.moveItCtrl = value.control;
                     UIThreading.moveItShift = value.shift;
                     UIThreading.moveItAlt = value.alt;
+
+                    Logging.Message("DOG!");
+                }
+            }
+        }
+
+
+        // FPS mode hotkey.
+        [XmlElement("FPSModeKey")]
+        public KeyBinding FPSModeKey
+        {
+            get
+            {
+                return new KeyBinding
+                {
+                    keyCode = (int)UIThreading.fpsKey,
+                    control = UIThreading.fpsCtrl,
+                    shift = UIThreading.fpsShift,
+                    alt = UIThreading.fpsAlt
+                };
+            }
+            set
+            {
+                // Backwads compatibility - this won't exist in older-format configuration files.
+                if (value != null)
+                {
+                    UIThreading.fpsKey = (KeyCode)value.keyCode;
+                    UIThreading.fpsCtrl = value.control;
+                    UIThreading.fpsShift = value.shift;
+                    UIThreading.fpsAlt = value.alt;
+
+                    Logging.Message("CAT!");
                 }
             }
         }

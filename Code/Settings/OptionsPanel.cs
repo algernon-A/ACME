@@ -44,7 +44,12 @@ namespace ACME
             // MoveIt key control.
             OptionsKeymapping miKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<MoveItKeymapping>();
             miKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += miKeyMapping.uIPanel.height + GroupMargin;
+            currentY += miKeyMapping.uIPanel.height + Margin;
+
+            // FPS mode key control.
+            OptionsKeymapping fpsKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<FPSKeymapping>();
+            fpsKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += fpsKeyMapping.uIPanel.height + GroupMargin;
 
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_BLD"));

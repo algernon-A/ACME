@@ -104,7 +104,6 @@ namespace ACME
             // Load mod if it's enabled.
             if (isModEnabled)
             {
-
                 // Apply camera settings.
                 CameraUtils.ApplySettings();
 

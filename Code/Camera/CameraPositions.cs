@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -60,7 +59,7 @@ namespace ACME
                 controller.m_targetAngle = savedPositions[positionIndex].angle;
                 controller.m_targetHeight = savedPositions[positionIndex].height;
                 controller.m_targetSize = savedPositions[positionIndex].size;
-                Camera.main.fieldOfView = savedPositions[positionIndex].fov;
+                CameraUtils.MainCamera.fieldOfView = savedPositions[positionIndex].fov;
             }
         }
         /// <summary>

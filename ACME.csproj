@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Camera\FPSMode.cs" />
     <Compile Include="Code\Loading.cs" />
     <Compile Include="Code\MessageBox\ListMessageBox.cs" />
     <Compile Include="Code\MessageBox\MessageBoxBase.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Code\Patches\UpdateCurrentPosition.cs" />
     <Compile Include="Code\Patches\UpdateTargetPosition.cs" />
     <Compile Include="Code\Serialization.cs" />
+    <Compile Include="Code\Settings\FPSKeymappingcs.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
     <Compile Include="Code\Settings\MoveItKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
