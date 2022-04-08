@@ -1,4 +1,7 @@
-﻿- Refactor camera controller references
+﻿Version 0.3 -
+
+- Initial FPS mode implementation
+- Refactor camera controller references
 
 
 Version 0.2 -
