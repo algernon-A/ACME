@@ -5,9 +5,9 @@ using ColossalFramework.UI;
 namespace ACME
 {
     /// <summary>
-    /// ACME options panel.
+    /// Options panel for setting basic mod options.
     /// </summary>
-    public class ACMEOptionsPanel : UIPanel
+    internal class GeneralOptions
     {
         // Layout constants.
         private const float Margin = 5f;
@@ -16,25 +16,29 @@ namespace ACME
 
 
         /// <summary>
-        /// Performs initial setup for the panel; we don't use Start() as that's not sufficiently reliable (race conditions), and is not needed with the dynamic create/destroy process.
+        /// Adds mod options tab to tabstrip.
         /// </summary>
-        internal void Setup()
+        /// <param name="tabStrip">Tab strip to add to</param>
+        /// <param name="tabIndex">Index number of tab</param>
+        internal GeneralOptions(UITabstrip tabStrip, int tabIndex)
         {
+            // Add tab and helper.
+            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("CAM_OPT_GEN"), tabIndex, false);
+
             // Add controls.
-            this.autoLayout = false;
 
             // Y position indicator.
             float currentY = Margin;
 
             // Language choice.
-            UIDropDown languageDropDown = UIControls.AddPlainDropDown(this, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
+            UIDropDown languageDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
             languageDropDown.eventSelectedIndexChanged += (control, index) =>
             {
                 Translations.Index = index;
-                OptionsPanelManager.LocaleChanged();
+                OptionsPanel.LocaleChanged();
             };
             languageDropDown.parent.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += languageDropDown.parent.height + GroupMargin;
+            currentY += languageDropDown.parent.height + Margin;
 
             // Hotkey control.
             OptionsKeymapping keyMapping = languageDropDown.parent.parent.gameObject.AddComponent<OptionsKeymapping>();
@@ -42,79 +46,74 @@ namespace ACME
             currentY += keyMapping.uIPanel.height + Margin;
 
             // MoveIt key control.
-            OptionsKeymapping miKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<MoveItKeymapping>();
+            OptionsKeymapping miKeyMapping = panel.gameObject.AddComponent<MoveItKeymapping>();
             miKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += miKeyMapping.uIPanel.height + Margin;
 
-            // FPS mode key control.
-            OptionsKeymapping fpsKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<FPSKeymapping>();
-            fpsKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += fpsKeyMapping.uIPanel.height + GroupMargin;
-
             // Building collision checkbox.
-            UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
+            UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
             buildingCollisionCheck.isChecked = HeightOffset.buildingCollision;
             buildingCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.buildingCollision = value; };
             currentY += buildingCollisionCheck.height + Margin;
 
             // Network collision checkbox.
-            UICheckBox netCollisionCHeck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_NET"));
+            UICheckBox netCollisionCHeck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_NET"));
             netCollisionCHeck.isChecked = HeightOffset.networkCollision;
             netCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.networkCollision = value; };
             currentY += netCollisionCHeck.height + Margin;
 
             // Prop collision checkbox.
-            UICheckBox propCollisionCHeck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_PRO"));
+            UICheckBox propCollisionCHeck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_PRO"));
             propCollisionCHeck.isChecked = HeightOffset.propCollision;
             propCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.propCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Tree collision checkbox.
-            UICheckBox treeCollisionCheck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_TRE"));
+            UICheckBox treeCollisionCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_TRE"));
             treeCollisionCheck.isChecked = HeightOffset.treeCollision;
             treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.treeCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Water bobbing checkbox.
-            UICheckBox waterBobbingCheck = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_COL_WAT"));
+            UICheckBox waterBobbingCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_WAT"));
             waterBobbingCheck.isChecked = HeightOffset.waterBobbing;
             waterBobbingCheck.eventCheckChanged += (control, value) => { HeightOffset.waterBobbing = value; };
             currentY += propCollisionCHeck.height + GroupMargin;
 
             // Ground proximity slider .
-            UISlider groundProximitySlider = AddDistanceSlider(ref currentY, "CAM_COL_GND", HeightOffset.MinTerrainClearance, HeightOffset.MaxTerrainClearance, HeightOffset.TerrainClearance);
+            UISlider groundProximitySlider = AddDistanceSlider(panel, ref currentY, "CAM_COL_GND", HeightOffset.MinTerrainClearance, HeightOffset.MaxTerrainClearance, HeightOffset.TerrainClearance);
             groundProximitySlider.eventValueChanged += (control, value) => { HeightOffset.TerrainClearance = value; };
 
             // Near clipping slider.
-            UISlider nearClipSlider = AddDistanceSlider(ref currentY, "CAM_CLP_NEA", CameraUtils.MinNearClip, CameraUtils.MaxNearClip, CameraUtils.NearClipPlane);
+            UISlider nearClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_NEA", CameraUtils.MinNearClip, CameraUtils.MaxNearClip, CameraUtils.NearClipPlane);
             nearClipSlider.eventValueChanged += (control, value) => { CameraUtils.NearClipPlane = value; };
 
             // Speed multiplier.
-            UISlider speedSlider = AddSlider(ref currentY, "CAM_SPD_MIN", UpdateTargetPosition.MinCameraSpeed, UpdateTargetPosition.MaxCameraSpeed, UpdateTargetPosition.CameraSpeed);
+            UISlider speedSlider = AddSlider(panel, ref currentY, "CAM_SPD_MIN", UpdateTargetPosition.MinCameraSpeed, UpdateTargetPosition.MaxCameraSpeed, UpdateTargetPosition.CameraSpeed);
             speedSlider.eventValueChanged += (control, value) => { UpdateTargetPosition.CameraSpeed = value; };
 
             // Follow disasters checkbox.
             currentY += Margin;
-            UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(this, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
+            UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
             disableDisasterGoto.isChecked = FollowDisasterPatch.followDisasters;
             disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.followDisasters = value; };
-
         }
 
 
         /// <summary>
         /// Adds a distance slider.
         /// </summary>
+        /// <param name="parent">Parent component</param>
         /// <param name="yPos">Relative y-position indicator (will be incremented with slider height)</param>
         /// <param name="labelKey">Translation key for slider label</param>
         /// <param name="minValue">Slider minimum value</param>
         /// <param name="maxValue">Slider maximum value</param>
         /// <param name="initialValue">Initial slider value</param>
         /// <returns>New delay slider with attached game-time label</returns>
-        private UISlider AddDistanceSlider(ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
+        private UISlider AddDistanceSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
-            UISlider newSlider = UIControls.AddSlider(this, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
+            UISlider newSlider = UIControls.AddSlider(parent, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
             newSlider.parent.relativePosition = new Vector2(Margin, yPos);
 
             // Game-distanceLabel label.
@@ -135,16 +134,17 @@ namespace ACME
         /// <summary>
         /// Adds a generic value slider.
         /// </summary>
+        /// <param name="parent">Parent component</param>
         /// <param name="yPos">Relative y-position indicator (will be incremented with slider height)</param>
         /// <param name="labelKey">Translation key for slider label</param>
         /// <param name="minValue">Slider minimum value</param>
         /// <param name="maxValue">Slider maximum value</param>
         /// <param name="initialValue">Initial slider value</param>
         /// <returns>New delay slider with attached game-time label</returns>
-        private UISlider AddSlider(ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
+        private UISlider AddSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
-            UISlider newSlider = UIControls.AddSlider(this, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
+            UISlider newSlider = UIControls.AddSlider(parent, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
             newSlider.parent.relativePosition = new Vector2(Margin, yPos);
 
             // Value label.

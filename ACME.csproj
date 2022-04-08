@@ -76,8 +76,10 @@
     <Compile Include="Code\Settings\ModSettings.cs" />
     <Compile Include="Code\Settings\MoveItKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
-    <Compile Include="Code\Settings\OptionsPanel.cs" />
     <Compile Include="Code\Settings\OptionsPanelManager.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\FPSOptions.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\GeneralOptions.cs" />
+    <Compile Include="Code\Settings\PanelUtils.cs" />
     <Compile Include="Code\TranslationFramework\TranslationFramework.cs" />
     <Compile Include="Code\TranslationFramework\Language.cs" />
     <Compile Include="Code\UI\CameraSlider.cs" />

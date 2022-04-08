@@ -10,7 +10,7 @@ namespace ACME
     /// <summary>
     /// Class to handle the mod's options panel.
     /// </summary>
-    internal static class OptionsPanelManager
+    internal static class OptionsPanel
     {
         // Parent UI panel reference.
         internal static UIScrollablePanel optionsPanel;
@@ -18,10 +18,6 @@ namespace ACME
 
         // Instance references.
         private static GameObject optionsGameObject;
-        private static ACMEOptionsPanel panel;
-
-        // Accessors.
-        internal static ACMEOptionsPanel Panel => panel;
 
 
         /// <summary>
@@ -97,17 +93,38 @@ namespace ACME
                 {
                     // Give it a unique name for easy finding with ModTools.
                     optionsGameObject = new GameObject("ACMEOptionsPanel");
+                    
+                    // Attach to game options panel.
                     optionsGameObject.transform.parent = optionsPanel.transform;
-                    panel = optionsGameObject.AddComponent<ACMEOptionsPanel>();
-                    panel.width = optionsPanel.width - 10f;
-                    panel.height = 725f;
-                    panel.clipChildren = false;
+
+
+                    // Create a base panel attached to our game object, perfectly overlaying the game options panel.
+                    UIPanel basePanel = optionsGameObject.AddComponent<UIPanel>();
+                    basePanel.width = optionsPanel.width - 10f;
+                    basePanel.height = 725f;
+                    basePanel.clipChildren = false;
 
                     // Needed to ensure position is consistent if we regenerate after initial opening (e.g. on language change).
-                    panel.relativePosition = new Vector2(10f, 10f);
+                    basePanel.relativePosition = new Vector2(10f, 10f);
 
-                    // Set up and show panel.
-                    Panel.Setup();
+                    // Add tabstrip.
+                    UITabstrip tabStrip = basePanel.AddUIComponent<UITabstrip>();
+                    tabStrip.relativePosition = new Vector3(0, 0);
+                    tabStrip.width = basePanel.width;
+                    tabStrip.height = basePanel.height;
+                    tabStrip.clipChildren = false;
+
+                    // Tab container (the panels underneath each tab).
+                    UITabContainer tabContainer = basePanel.AddUIComponent<UITabContainer>();
+                    tabContainer.relativePosition = new Vector3(0, 30f);
+                    tabContainer.width = tabStrip.width;
+                    tabContainer.height = tabStrip.height;
+                    tabContainer.clipChildren = false;
+                    tabStrip.tabPages = tabContainer;
+
+                    // Add tabs and panels.
+                    new GeneralOptions(tabStrip, 0);
+                    new FPSOptions(tabStrip, 1);
                 }
             }
             catch (Exception e)

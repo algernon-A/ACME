@@ -44,6 +44,7 @@ namespace ACME
                 FPSPatch.cameraMoveBackward = m_cameraMoveBackward.GetValue(controller) as SavedInputKey;
 
                 // Adjust target position to match current position.
+                controller.ClearTarget();
                 controller.m_targetPosition = controller.transform.position;
                 controller.m_currentPosition = controller.transform.position;
             }
@@ -79,6 +80,9 @@ namespace ACME
 
             // Apply/remove FPS patch.
             Patcher.PatchFPS(modeActive);
+
+            // Log message.
+            Logging.Message("FPS mode ", modeActive ? "enabled" : "disabled");
         }
     }
 }
