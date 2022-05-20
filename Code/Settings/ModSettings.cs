@@ -154,8 +154,6 @@ namespace ACME
                     UIThreading.moveItCtrl = value.control;
                     UIThreading.moveItShift = value.shift;
                     UIThreading.moveItAlt = value.alt;
-
-                    Logging.Message("DOG!");
                 }
             }
         }
@@ -184,8 +182,6 @@ namespace ACME
                     UIThreading.fpsCtrl = value.control;
                     UIThreading.fpsShift = value.shift;
                     UIThreading.fpsAlt = value.alt;
-
-                    Logging.Message("CAT!");
                 }
             }
         }
