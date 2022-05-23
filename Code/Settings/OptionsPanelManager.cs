@@ -97,7 +97,6 @@ namespace ACME
                     // Attach to game options panel.
                     optionsGameObject.transform.parent = optionsPanel.transform;
 
-
                     // Create a base panel attached to our game object, perfectly overlaying the game options panel.
                     UIPanel basePanel = optionsGameObject.AddComponent<UIPanel>();
                     basePanel.width = optionsPanel.width - 10f;
