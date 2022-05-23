@@ -13,13 +13,13 @@ namespace ACME
 		// UUI Button.
 		private static UUICustomButton uuiButton;
 
-		// SavedInputKey reference for communicating with UUI.
-		internal static readonly SavedInputKey uuiSavedKey = new SavedInputKey("ACME hotkey", "ACME hotkey", key: KeyCode.C, control: false, shift: false, alt: true, false);
+		// UnsavedInputKey reference for communicating with UUI.
+		internal static readonly UnsavedInputKey uuiKey = new UnsavedInputKey("ACME hotkey", keyCode: KeyCode.C, control: false, shift: false, alt: true);
 
 
 		/// <summary>
 		/// UUI button accessor.
-		/// </summary>S
+		/// </summary>
 		internal static UUICustomButton UUIButton => uuiButton;
 
 
@@ -37,7 +37,7 @@ namespace ACME
 					tooltip: Translations.Translate("CAM_NAM"),
 					icon: UUIHelpers.LoadTexture(UUIHelpers.GetFullPath<ACMEMod>("Resources", "ACME-UUI.png")),
 					onToggle: (value) => CameraPanel.SetState(value),
-					hotkeys: new UUIHotKeys { ActivationKey = ModSettings.ToggleSavedKey }
+					hotkeys: new UUIHotKeys { ActivationKey = uuiKey }
 					);
 
 				// Set initial state.

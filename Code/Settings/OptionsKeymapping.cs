@@ -24,9 +24,9 @@ namespace ACME
         /// </summary>
         protected virtual InputKey KeySetting
         {
-            get => ModSettings.CurrentHotkey;
+            get => UUI.uuiKey.value;
 
-            set => ModSettings.CurrentHotkey = value;
+            set => UUI.uuiKey.value = value;
         }
 
 
@@ -108,7 +108,7 @@ namespace ACME
                 if (mouseEvent.buttons == UIMouseButton.Left || mouseEvent.buttons == UIMouseButton.Right)
                 {
                     // Not a bindable mouse button - set the button text and cancel priming.
-                    button.text = SavedInputKey.ToLocalizedString("KEYNAME", ModSettings.CurrentHotkey);
+                    button.text = SavedInputKey.ToLocalizedString("KEYNAME", UUI.uuiKey.value);
                     UIView.PopModal();
                     isPrimed = false;
                 }
