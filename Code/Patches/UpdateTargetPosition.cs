@@ -85,8 +85,8 @@ namespace ACME
                             if (method == handleMouseEvents)
                             {
                                 Logging.Message("inserting custom HandleMouseEvents call");
-                                //yield return instruction;
-                                instruction = new CodeInstruction(OpCodes.Call, mouseDrag);
+                                yield return new CodeInstruction(OpCodes.Ldarg_0);
+                                yield return new CodeInstruction(OpCodes.Call, mouseDrag);
                             }
                             else if (method == handleKeyEvents)
                             {
@@ -197,8 +197,7 @@ namespace ACME
         /// Implements 
         /// </summary>
         /// <param name="controller"></param>
-        /// <param name="multiplier"></param>
-        public static void MouseDrag(CameraController controller, float multiplier)
+        public static void MouseDrag(CameraController controller)
         {
             // Is the rotate button pressed?
             if (ModSettings.mouseDragKey.IsPressed())
