@@ -24,6 +24,7 @@ CAM_OPT_FPS,FPS options
 CAM_OPT_DIS,Automatically go to disasters
 KEY_KEY,Panel hotkey
 KEY_GMI,Go to MoveIt selection key
+KEY_MDG,Map drag key
 KEY_FPS,Toggle free FPS mode
 KEY_PRS,Press any key
 TRN_CHOICE,Set language

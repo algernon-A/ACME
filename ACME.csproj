@@ -74,6 +74,7 @@
     <Compile Include="Code\Serialization.cs" />
     <Compile Include="Code\Settings\FPSKeymappingcs.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
+    <Compile Include="Code\Settings\MouseDragKeymapping.cs" />
     <Compile Include="Code\Settings\MoveItKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsPanelManager.cs" />

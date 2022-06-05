@@ -153,6 +153,9 @@ namespace ACME
             }
         }
 
+        [XmlIgnore]
+        internal static SavedInputKey mouseDragKey = new SavedInputKey("ACME drag key", "ACME drag key", key: KeyCode.Mouse1, control: false, shift: true, alt: false, false);
+
 
         /// <summary>
         /// Load settings from XML file.

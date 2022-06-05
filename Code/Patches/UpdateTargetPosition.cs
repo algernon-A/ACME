@@ -5,6 +5,8 @@ using System.Reflection.Emit;
 using UnityEngine;
 using HarmonyLib;
 
+using ColossalFramework;
+
 
 namespace ACME
 {
@@ -20,6 +22,9 @@ namespace ACME
 
         // Camera speed multiplier.
         private static float cameraSpeed = 15f;
+
+        // Camera dragging status.
+        private static bool isDragging = false;
 
 
         /// <summary>
@@ -40,7 +45,7 @@ namespace ACME
             FieldInfo vector2y = typeof(Vector2).GetField(nameof(Vector2.y));
 
             // TerrainManager.SampleRawHeightSmoothWithWater info.
-            MethodInfo waterInfo = typeof(TerrainManager).GetMethod(nameof(TerrainManager.SampleRawHeightSmoothWithWater), new Type[] { typeof(Vector3), typeof(bool), typeof(float) } );
+            MethodInfo waterInfo = typeof(TerrainManager).GetMethod(nameof(TerrainManager.SampleRawHeightSmoothWithWater), new Type[] { typeof(Vector3), typeof(bool), typeof(float) });
 
 
             // Instruction parsing.
@@ -55,10 +60,12 @@ namespace ACME
             // Method calls for flagging insertion of custom multiplier code.
             MethodInfo handleKeyEvents = typeof(CameraController).GetMethod("HandleKeyEvents", BindingFlags.NonPublic | BindingFlags.Instance);
             MethodInfo handleScrollEvents = typeof(CameraController).GetMethod("HandleScrollWheelEvent", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo handleMouseEvents = typeof(CameraController).GetMethod("HandleMouseEvents", BindingFlags.NonPublic | BindingFlags.Instance);
 
             // Custom multiplier methods to insert.
             MethodInfo keyMultiplier = typeof(UpdateTargetPosition).GetMethod(nameof(UpdateTargetPosition.KeyMultiplier), BindingFlags.Public | BindingFlags.Static);
             MethodInfo scrollMultiplier = typeof(UpdateTargetPosition).GetMethod(nameof(UpdateTargetPosition.ScrollMultiplier), BindingFlags.Public | BindingFlags.Static);
+            MethodInfo mouseDrag = typeof(UpdateTargetPosition).GetMethod(nameof(UpdateTargetPosition.MouseDrag), BindingFlags.Public | BindingFlags.Static);
 
             // Iterate through all instructions in original method.
             while (instructionsEnumerator.MoveNext())
@@ -75,7 +82,13 @@ namespace ACME
                         // Found call - check for method operands matching our targets.
                         if (instruction.operand is MethodInfo method)
                         {
-                            if (method == handleKeyEvents)
+                            if (method == handleMouseEvents)
+                            {
+                                Logging.Message("inserting custom HandleMouseEvents call");
+                                //yield return instruction;
+                                instruction = new CodeInstruction(OpCodes.Call, mouseDrag);
+                            }
+                            else if (method == handleKeyEvents)
                             {
                                 // Found call to HandleKeyEvents - insert call to our custom method immediately before the game call.
                                 Logging.Message("adding pre-HandleKeyEvents multiplier call");
@@ -129,7 +142,7 @@ namespace ACME
                         }
                     }
                 }
-                else if(!completedTerrain)
+                else if (!completedTerrain)
                 {
                     // Only start looking for call to TerrainManager.SampleRawHeightSmoothWithWater once we've finished bounds checks.
                     if (instruction.Calls(waterInfo))
@@ -178,5 +191,43 @@ namespace ACME
         /// <param name="waterOffset">Water offset distance (ignored)</param>
         /// <returns>Applicable terrain height</returns>
         public static float SampleHeight(TerrainManager terrainManager, Vector3 worldPos, bool timeLerp, float waterOffset) => HeightOffset.waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleRawHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
+
+
+        /// <summary>
+        /// Implements 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="multiplier"></param>
+        public static void MouseDrag(CameraController controller, float multiplier)
+        {
+            // Is the rotate button pressed?
+            if (ModSettings.mouseDragKey.IsPressed())
+            {
+                // Get screen mouse movement direction.
+                Vector3 direction = new Vector3(Input.GetAxis("Mouse X"), 0f, Input.GetAxis("Mouse Y"));
+
+                // Speed multiplier based on height.
+                float heightSpeedFactor = controller.m_currentPosition.y - 100f;
+                if (heightSpeedFactor < 5f)
+                {
+                    heightSpeedFactor = 5f;
+                }
+                direction *= heightSpeedFactor * 0.3f;
+
+                // Convert screen movement to relative to camera rotation.
+                Quaternion quaternion = Quaternion.FromToRotation(Vector3.right, controller.transform.right);
+                controller.m_targetPosition += quaternion * direction;
+
+                // Lock cursor while dragging and set active flag height.
+                Cursor.lockState = CursorLockMode.Locked;
+                isDragging = true;
+            }
+            else if (isDragging)
+            {
+                // We're dragging but the button is now released - unlock cursor and clear status.
+                Cursor.lockState = CursorLockMode.None;
+                isDragging = false;
+            }
+        }
     }
 }
