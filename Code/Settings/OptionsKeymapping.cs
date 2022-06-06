@@ -105,10 +105,10 @@ namespace ACME
             if (isPrimed)
             {
                 // We were already primed; is this a bindable mouse button?
-                if (mouseEvent.buttons == UIMouseButton.Left || mouseEvent.buttons == UIMouseButton.Right)
+                if (mouseEvent.buttons == UIMouseButton.Left)
                 {
                     // Not a bindable mouse button - set the button text and cancel priming.
-                    button.text = SavedInputKey.ToLocalizedString("KEYNAME", UUI.uuiKey.value);
+                    button.text = SavedInputKey.ToLocalizedString("KEYNAME", KeySetting);
                     UIView.PopModal();
                     isPrimed = false;
                 }
@@ -119,7 +119,10 @@ namespace ACME
 
                     switch (mouseEvent.buttons)
                     {
-                        // Convert buttons to keycodes (we don't bother with left and right buttons as they're non-bindable).
+                        // Convert buttons to keycodes (we don't bother with left button as it's non-bindable).
+                        case UIMouseButton.Right:
+                            mouseCode = KeyCode.Mouse1;
+                            break;
                         case UIMouseButton.Middle:
                             mouseCode = KeyCode.Mouse2;
                             break;

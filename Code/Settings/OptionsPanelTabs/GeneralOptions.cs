@@ -51,7 +51,7 @@ namespace ACME
             currentY += miKeyMapping.uIPanel.height + Margin;
 
             // Mouse drag movement key control.
-            OptionsKeymapping mdKeyMapping = panel.gameObject.AddComponent<MouseDragKeymapping>();
+            OptionsKeymapping mdKeyMapping = panel.gameObject.AddComponent<MapDragKeymapping>();
             mdKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += mdKeyMapping.uIPanel.height + Margin;
 

@@ -200,7 +200,7 @@ namespace ACME
         public static void MouseDrag(CameraController controller)
         {
             // Is the rotate button pressed?
-            if (ModSettings.mouseDragKey.IsPressed())
+            if (ModSettings.mapDragKey.IsPressed())
             {
                 // Get screen mouse movement direction.
                 Vector3 direction = new Vector3(Input.GetAxis("Mouse X"), 0f, Input.GetAxis("Mouse Y"));

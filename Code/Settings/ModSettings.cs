@@ -153,8 +153,25 @@ namespace ACME
             }
         }
 
+
+        // Mouse drag hotkey.
+        [XmlElement("MapDragKey")]
+        public KeyBinding MapDragKey
+        {
+            get => mapDragKey;
+
+            set => mapDragKey = value;
+        }
+
+
         [XmlIgnore]
-        internal static SavedInputKey mouseDragKey = new SavedInputKey("ACME drag key", "ACME drag key", key: KeyCode.Mouse1, control: false, shift: true, alt: false, false);
+        internal static KeyBinding mapDragKey = new KeyBinding
+        {
+            keyCode = (int)KeyCode.Mouse1,
+            control = false,
+            shift = false,
+            alt = false
+        };
 
 
         /// <summary>
@@ -233,7 +250,38 @@ namespace ACME
         /// Encode keybinding as saved input key for UUI.
         /// </summary>
         /// <returns></returns>
-        internal InputKey Encode() => SavedInputKey.Encode((KeyCode)keyCode, control, shift, alt);
+        public InputKey Encode() => SavedInputKey.Encode((KeyCode)keyCode, control, shift, alt);
+
+
+        /// <summary>
+        /// Checks to see if the designated key is pressed.
+        /// </summary>
+        /// <returns>True if pressed, false otherwise</returns>
+        public bool IsPressed()
+        {
+            // Check primary key.
+            if (!Input.GetKey((KeyCode)keyCode))
+            {
+                return false;
+            }
+
+            // Check modifier keys,
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) != control)
+            {
+                return false;
+            }
+            if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) != shift)
+            {
+                return false;
+            }
+            if ((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr)) != alt)
+            {
+                return false;
+            }
+
+            // If we got here, all checks have been passed.
+            return true;
+        }
     }
 
 
