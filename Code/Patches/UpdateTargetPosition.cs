@@ -206,7 +206,7 @@ namespace ACME
                 Vector3 direction = new Vector3(Input.GetAxis("Mouse X"), 0f, Input.GetAxis("Mouse Y"));
 
                 // Speed multiplier based on height.
-                float heightSpeedFactor = controller.m_currentPosition.y - 100f;
+                float heightSpeedFactor = controller.m_currentSize / 10f;
                 if (heightSpeedFactor < 5f)
                 {
                     heightSpeedFactor = 5f;
