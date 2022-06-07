@@ -169,7 +169,7 @@ namespace ACME
         {
             keyCode = (int)KeyCode.Mouse1,
             control = false,
-            shift = false,
+            shift = true,
             alt = false
         };
 
@@ -299,7 +299,7 @@ namespace ACME
         /// <param name="shift">Shift modifier key status</param>
         /// <param name="alt">Alt modifier key status</param>
         public UnsavedInputKey(string name, KeyCode keyCode, bool control, bool shift, bool alt) :
-            base(keyName: name, modName: "Repaint", Encode(keyCode, control: control, shift: shift, alt: alt))
+            base(keyName: name, modName: "ACME", Encode(keyCode, control: control, shift: shift, alt: alt))
         {
         }
 
