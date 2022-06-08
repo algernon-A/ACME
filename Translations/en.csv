@@ -22,6 +22,10 @@ CAM_SPD_MIN,Minimum camera movement speed
 CAM_OPT_GEN,General options
 CAM_OPT_FPS,FPS options
 CAM_OPT_DIS,Automatically go to disasters
+CAM_OPT_MDG,Map dragging
+CAM_MDG_INX,Invert X axis
+CAM_MDG_INY,Invert Y axis
+CAM_MDG_SPD,Dragging speed
 KEY_KEY,Panel hotkey
 KEY_GMI,Go to MoveIt selection key
 KEY_MDG,Map drag key

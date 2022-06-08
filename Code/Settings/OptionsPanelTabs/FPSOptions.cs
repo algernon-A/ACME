@@ -28,7 +28,7 @@ namespace ACME
             // Add controls.
 
             // Y position indicator.
-            float currentY = Margin;
+            float currentY = GroupMargin;
 
             // FPS mode key control.
             OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<FPSKeymapping>();

@@ -37,15 +37,6 @@ namespace ACME
 
                 if (!completed)
                 {
-                    if (instruction.labels != null)
-                    {
-                        Logging.Message("found ", instruction.labels.Count, " labels on opcode ", instruction.opcode, ": ");
-                        foreach (Label label in instruction.labels)
-                        {
-                            Logging.Message("    ", label);
-                        }
-                    }
-
                     // Skip any ldc.r4 90s.
                     if (instruction.opcode == OpCodes.Ldc_R4 && instruction.operand is float thisFloat && thisFloat == 90f)
                     {

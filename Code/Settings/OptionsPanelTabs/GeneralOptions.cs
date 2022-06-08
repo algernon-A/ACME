@@ -50,11 +50,6 @@ namespace ACME
             miKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += miKeyMapping.uIPanel.height + Margin;
 
-            // Mouse drag movement key control.
-            OptionsKeymapping mdKeyMapping = panel.gameObject.AddComponent<MapDragKeymapping>();
-            mdKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += mdKeyMapping.uIPanel.height + Margin;
-
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
             buildingCollisionCheck.isChecked = HeightOffset.buildingCollision;

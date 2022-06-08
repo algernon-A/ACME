@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Camera\FPSMode.cs" />
+    <Compile Include="Code\Camera\MapDragging.cs" />
     <Compile Include="Code\Loading.cs" />
     <Compile Include="Code\MessageBox\ListMessageBox.cs" />
     <Compile Include="Code\MessageBox\MessageBoxBase.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Code\Settings\OptionsPanelManager.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\FPSOptions.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\GeneralOptions.cs" />
+    <Compile Include="Code\Settings\OptionsPanelTabs\MapDragOptions.cs" />
     <Compile Include="Code\Settings\PanelUtils.cs" />
     <Compile Include="Code\TranslationFramework\TranslationFramework.cs" />
     <Compile Include="Code\TranslationFramework\Language.cs" />

@@ -124,6 +124,7 @@ namespace ACME
                     // Add tabs and panels.
                     new GeneralOptions(tabStrip, 0);
                     new FPSOptions(tabStrip, 1);
+                    new MapDragOptions(tabStrip, 2);
                 }
             }
             catch (Exception e)

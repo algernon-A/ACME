@@ -164,6 +164,27 @@ namespace ACME
         }
 
 
+        /// <summary>
+        /// Map dragging invert X axis.
+        /// </summary>
+        [XmlElement("MapDragInvertY")]
+        public bool XMLMapDragInvertX { get => MapDragging.InvertXDrag; set => MapDragging.InvertXDrag = value; }
+
+
+        /// <summary>
+        /// Map dragging invert Y axis.
+        /// </summary>
+        [XmlElement("MapDragInvertX")]
+        public bool XMLMapDragInvertY { get => MapDragging.InvertYDrag; set => MapDragging.InvertYDrag = value; }
+
+
+        /// <summary>
+        /// Map dragging speed.
+        /// </summary>
+        [XmlElement("MapDragSpeed")]
+        public float XMLMapDragSpeed { get => MapDragging.DragSpeed; set => MapDragging.DragSpeed = value; }
+
+
         [XmlIgnore]
         internal static KeyBinding mapDragKey = new KeyBinding
         {
