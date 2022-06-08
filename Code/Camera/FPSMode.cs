@@ -11,7 +11,13 @@ namespace ACME
     /// </summary>
     internal static class FPSMode
     {
+        // Status flag.
         internal static bool modeActive = false;
+
+
+        /// <summary>
+        /// Toggles FPS mode.
+        /// </summary>
         internal static void ToggleMode()
         {
             modeActive = !modeActive;

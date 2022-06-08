@@ -15,6 +15,11 @@ namespace ACME
     [HarmonyPatch]
     public static class FPSPatch
     {
+        // Limits.
+        internal const float MinFPSKeySpeed = 0.2f;
+        internal const float MaxFPSKeySpeed = 4.0f;
+
+
         // Control keys - movement.
         public static SavedInputKey cameraMoveLeft, cameraMoveRight, cameraMoveForward, cameraMoveBackward;
 
@@ -23,8 +28,44 @@ namespace ACME
 
         // Delegates to private methods.
         public delegate void UpdateFreeCameraDelegate(CameraController __instance);
-
         private static UpdateFreeCameraDelegate updateFreeCam = Delegate.CreateDelegate(typeof(UpdateFreeCameraDelegate), typeof(CameraController).GetMethod("UpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic)) as UpdateFreeCameraDelegate;
+
+        // Speed settings.
+        private static float keyTurnSpeed = 1.0f, keyMoveSpeed = 1.0f, mouseTurnSpeed = 1.0f;
+
+
+        /// <summary>
+        // FPS turn speed.
+        /// </summary>
+        internal static float KeyTurnSpeed
+        {
+            get => keyTurnSpeed;
+
+            set => keyTurnSpeed = Mathf.Clamp(value, MinFPSKeySpeed, MaxFPSKeySpeed);
+        }
+
+
+        /// <summary>
+        // FPS move speed.
+        /// </summary>
+        internal static float KeyMoveSpeed
+        {
+            get => keyMoveSpeed;
+
+            set => keyMoveSpeed = Mathf.Clamp(value, MinFPSKeySpeed, MaxFPSKeySpeed);
+        }
+
+
+        /// <summary>
+        // FPS move speed.
+        /// </summary>
+        internal static float MouseTurnSpeed
+        {
+            get => mouseTurnSpeed;
+
+            set => mouseTurnSpeed = Mathf.Clamp(value, MinFPSKeySpeed, MaxFPSKeySpeed);
+        }
+
 
         /// <summary>
         /// Pre-emptive Harmony prefix for CameraController.LateUpdate to implement free FPS mod.
@@ -49,39 +90,40 @@ namespace ACME
             if (!UIView.HasModalInput() && !Singleton<ToolManager>.instance.m_properties.HasInputFocus)
             {
                 // Rotation keys,.
+                float rotationSpeed = 60f * keyTurnSpeed;
                 if (cameraRotateLeft.IsPressed())
                 {
-                    cameraRotation.x -= 30f * Time.deltaTime;
+                    cameraRotation.x -= rotationSpeed * Time.deltaTime;
                 }
                 if (cameraRotateRight.IsPressed())
                 {
-                    cameraRotation.x += 30f * Time.deltaTime;
+                    cameraRotation.x += rotationSpeed * Time.deltaTime;
                 }
                 if (cameraRotateUp.IsPressed())
                 {
-                    cameraRotation.y -= 30f * Time.deltaTime;
+                    cameraRotation.y -= rotationSpeed * Time.deltaTime;
                 }
                 if (cameraRotateDown.IsPressed())
                 {
-                    cameraRotation.y += 30f * Time.deltaTime;
+                    cameraRotation.y += rotationSpeed * Time.deltaTime;
                 }
 
                 // Movement keys.
                 if (Input.GetKey(cameraMoveForward.Key))
                 {
-                    direction += Vector3.forward;
+                    direction += Vector3.forward * keyMoveSpeed;
                 }
                 if (Input.GetKey(cameraMoveBackward.Key))
                 {
-                    direction += Vector3.back;
+                    direction += Vector3.back * keyMoveSpeed;
                 }
                 if (Input.GetKey(cameraMoveLeft.Key))
                 {
-                    direction += Vector3.left;
+                    direction += Vector3.left * keyMoveSpeed;
                 }
                 if (Input.GetKey(cameraMoveRight.Key))
                 {
-                    direction += Vector3.right;
+                    direction += Vector3.right * keyMoveSpeed;
                 }
             }
 
@@ -89,13 +131,14 @@ namespace ACME
             if (!Singleton<ToolManager>.instance.m_properties.IsInsideUI)
             {
                 // Mouse wheel.
-                direction += Vector3.forward * Input.GetAxis("Mouse ScrollWheel") * 10f;
+                direction += Vector3.forward * Input.GetAxis("Mouse ScrollWheel") * 10f * keyMoveSpeed;
 
                 // Mouse rotation.
                 if (cameraMouseRotate.IsPressed() || SteamController.GetDigitalAction(SteamController.DigitalInput.RotateMouse))
                 {
-                    cameraRotation.x += Input.GetAxis("Mouse X") * 2f;
-                    cameraRotation.y -= Input.GetAxis("Mouse Y") * 2f;
+                    float speed = mouseTurnSpeed * 2f;
+                    cameraRotation.x += Input.GetAxis("Mouse X") * speed;
+                    cameraRotation.y -= Input.GetAxis("Mouse Y") * speed;
                 }
             }
 

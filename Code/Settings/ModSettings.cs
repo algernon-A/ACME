@@ -153,6 +153,25 @@ namespace ACME
             }
         }
 
+        /// <summary>
+        /// FPS key turning speed.
+        /// </summary>
+        [XmlElement("FPSKeyTurnSpeed")]
+        public float XMLFPSKeyTurnSpeed { get => FPSPatch.KeyTurnSpeed; set => FPSPatch.KeyTurnSpeed = value; }
+
+
+        /// <summary>
+        /// FPS key movement speed.
+        /// </summary>
+        [XmlElement("FPSKeyMoveSpeed")]
+        public float XMLFPSKeyMoveSpeed { get => FPSPatch.KeyMoveSpeed; set => FPSPatch.KeyMoveSpeed = value; }
+
+        /// <summary>
+        /// FPS mouse turning speed.
+        /// </summary>
+        [XmlElement("FPSMouseTurnSpeed")]
+        public float XMLFPSMouseTurnSpeed { get => FPSPatch.MouseTurnSpeed; set => FPSPatch.MouseTurnSpeed = value; }
+
 
         // Mouse drag hotkey.
         [XmlElement("MapDragKey")]

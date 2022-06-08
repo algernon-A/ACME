@@ -26,6 +26,9 @@ CAM_OPT_MDG,Map dragging
 CAM_MDG_INX,Invert X axis
 CAM_MDG_INY,Invert Y axis
 CAM_MDG_SPD,Dragging speed
+CAM_FPS_KTS,Keypress turning speed
+CAM_FPS_KMS,Keypress movement speed
+CAM_FPS_MTS,Mouse turning speed
 KEY_KEY,Panel hotkey
 KEY_GMI,Go to MoveIt selection key
 KEY_MDG,Map drag key

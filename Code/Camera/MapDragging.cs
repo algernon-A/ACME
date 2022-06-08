@@ -5,7 +5,7 @@ namespace ACME
 {
     internal static class MapDragging
     {
-        // Bounds.
+        // Limits.
         internal const float MinDragSpeed = 0.2f;
         internal const float MaxDragSpeed = 2.0f;
 
