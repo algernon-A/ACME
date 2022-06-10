@@ -1,4 +1,6 @@
-﻿- Add map dragging
+﻿Version 0.4 -
+
+- Add map dragging
 - Add default speed controls for FPS mode
 
 
