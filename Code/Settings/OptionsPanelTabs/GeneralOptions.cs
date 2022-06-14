@@ -91,12 +91,20 @@ namespace ACME
             // Speed multiplier.
             UISlider speedSlider = AddSlider(panel, ref currentY, "CAM_SPD_MIN", UpdateTargetPosition.MinCameraSpeed, UpdateTargetPosition.MaxCameraSpeed, UpdateTargetPosition.CameraSpeed);
             speedSlider.eventValueChanged += (control, value) => { UpdateTargetPosition.CameraSpeed = value; };
+            currentY += Margin;
 
             // Follow disasters checkbox.
-            currentY += Margin;
             UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
             disableDisasterGoto.isChecked = FollowDisasterPatch.followDisasters;
             disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.followDisasters = value; };
+            currentY += disableDisasterGoto.height + GroupMargin;
+
+            // Zoom to cursor.
+            UICheckBox zoomToCursorCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_ZTC"));
+            zoomToCursorCheck.isChecked = ModSettings.ZoomToCursor;
+            zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
+            zoomToCursorCheck.tooltipBox = TooltipUtils.TooltipBox;
+            zoomToCursorCheck.tooltip = Translations.Translate("CAM_OPT_ZTC_TIP");
         }
 
 

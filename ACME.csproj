@@ -69,6 +69,7 @@
     <Compile Include="Code\Patches\FollowDisaster.cs" />
     <Compile Include="Code\Patches\FPSPatch.cs" />
     <Compile Include="Code\Patches\HeightOffset.cs" />
+    <Compile Include="Code\Patches\ZoomToCursorPatches.cs" />
     <Compile Include="Code\Patches\Patcher.cs" />
     <Compile Include="Code\Patches\UpdateCurrentPosition.cs" />
     <Compile Include="Code\Patches\UpdateTargetPosition.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Code\Utils\Logging.cs" />
     <Compile Include="Code\Utils\ModUtils.cs" />
     <Compile Include="Code\Utils\TextureUtils.cs" />
+    <Compile Include="Code\Utils\TooltipUtils.cs" />
     <Compile Include="Code\Utils\UIControls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

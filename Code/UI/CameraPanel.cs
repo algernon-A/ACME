@@ -28,9 +28,10 @@ namespace ACME
 		private const float FovSliderY = TiltSliderY + SliderHeight;
 		private const float Check1Y = FovSliderY + SliderHeight;
 		private const float Check2Y = Check1Y + CheckHeight;
+		private const float Check3Y = Check2Y + CheckHeight;
 		private const float Check1X = Margin;
 		private const float Check2X = (PanelWidth - (Margin * 2f)) / 2f;
-		private const float PanelHeight = Check2Y + CheckHeight + Margin;
+		private const float PanelHeight = Check3Y + CheckHeight + Margin;
 
 		// Camera constants.
 		private const float MinFOV = 24f;
@@ -111,7 +112,6 @@ namespace ACME
 
 					// Create new panel instance and add it to GameObject.
 					panel = uiGameObject.AddComponent<CameraPanel>();
-					panel.transform.parent = uiGameObject.transform.parent;
 				}
 			}
 			catch (Exception e)
@@ -247,6 +247,13 @@ namespace ACME
 			UICheckBox treeCollisionCheck = UIControls.LabelledCheckBox(this, Check2X, Check2Y, Translations.Translate("CAM_COL_TRE"));
 			treeCollisionCheck.isChecked = HeightOffset.treeCollision;
 			treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.treeCollision = value; };
+
+			// Zoom to cursor.
+			UICheckBox zoomToCursorCheck = UIControls.LabelledCheckBox(this, Check1X, Check3Y, Translations.Translate("CAM_OPT_ZTC"));
+			zoomToCursorCheck.isChecked = ModSettings.ZoomToCursor;
+			zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
+			zoomToCursorCheck.tooltipBox = TooltipUtils.TooltipBox;
+			zoomToCursorCheck.tooltip = Translations.Translate("CAM_OPT_ZTC_TIP");
 		}
 
 

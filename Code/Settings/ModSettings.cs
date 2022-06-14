@@ -88,6 +88,13 @@ namespace ACME
         public int XMLSpeedMultiplier { get => (int)UpdateTargetPosition.CameraSpeed; set => UpdateTargetPosition.CameraSpeed = value; }
 
 
+        /// <summary>
+        /// Zoom to mouse cursor enabled/disabled.
+        /// </summary>
+        [XmlElement("ZoomToCursor")]
+        public bool XMLZoomToCursor { get => ZoomToCursor; set => ZoomToCursor = value; }
+
+
         // Hotkey element.
         [XmlElement("ToggleKey")]
         public KeyBinding ToggleKey
@@ -202,6 +209,26 @@ namespace ACME
         /// </summary>
         [XmlElement("MapDragSpeed")]
         public float XMLMapDragSpeed { get => MapDragging.DragSpeed; set => MapDragging.DragSpeed = value; }
+
+
+        /// <summary>
+        /// Zoom to cursor enabled.
+        /// </summary>
+        [XmlIgnore]
+        internal static bool ZoomToCursor
+        {
+            get => zoomToCursor;
+
+            set
+            {
+                zoomToCursor = value;
+
+                // Apply/unapply Harmony patch on value change.
+                Patcher.PatchZoomToCursor(value);
+            }
+        }
+        [XmlIgnore]
+        private static bool zoomToCursor = false;
 
 
         [XmlIgnore]

@@ -1,4 +1,7 @@
-﻿Version 0.4 -
+﻿- Add zoom to mouse cursor option
+
+
+Version 0.4 -
 
 - Add map dragging
 - Add default speed controls for FPS mode
