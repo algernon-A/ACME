@@ -206,6 +206,14 @@ namespace ACME
 			closeButton.pressedBgSprite = "buttonclosepressed";
 			closeButton.eventClick += (component, clickEvent) => Close();
 
+			// Decorative icon (top-left).
+			UISprite iconSprite = AddUIComponent<UISprite>();
+			iconSprite.relativePosition = new Vector2(5, 5);
+			iconSprite.height = 32f;
+			iconSprite.width = 32f;
+			iconSprite.atlas = TextureUtils.LoadSingleSpriteAtlas("ACME-UUI");
+			iconSprite.spriteName = "normal";
+
 			// Set camera references.
 			controller = CameraUtils.Controller;
 			mainCamera = CameraUtils.MainCamera;
