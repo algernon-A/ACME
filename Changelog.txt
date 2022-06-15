@@ -1,4 +1,6 @@
-﻿- Add zoom to mouse cursor option
+﻿Version 0.5 -
+
+- Add zoom to mouse cursor option
 
 
 Version 0.4 -
