@@ -93,9 +93,6 @@ namespace ACME
                                 conflictingModNames.Add("Painter");
                             }
                             break;
-                        default:
-                            Logging.KeyMessage(assembly.GetName().Name);
-                            break;
                     }
                 }
             }
