@@ -48,9 +48,7 @@ namespace ACME
             currentY += invertYCheck.height + GroupMargin;
 
             // Drag speed slider .
-            UISlider dragSpeedSlider = UIControls.AddSliderWithValue(panel, Translations.Translate("CAM_MDG_SPD"), MapDragging.MinDragSpeed, MapDragging.MaxDragSpeed, 0.1f, MapDragging.DragSpeed);
-            dragSpeedSlider.parent.relativePosition = new Vector2 (Margin, currentY);
-            dragSpeedSlider.eventValueChanged += (control, value) => { MapDragging.DragSpeed = value; };
+            UISlider dragSpeedSlider = UIControls.AddSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_MDG_SPD"), MapDragging.MinDragSpeed, MapDragging.MaxDragSpeed, 0.1f, MapDragging.DragSpeed, (value) => { MapDragging.DragSpeed = value; });
         }
     }
 }

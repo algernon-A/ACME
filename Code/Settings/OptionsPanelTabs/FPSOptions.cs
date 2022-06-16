@@ -36,20 +36,15 @@ namespace ACME
             currentY += fpsKeyMapping.uIPanel.height + GroupMargin;
 
             // Key turning speed slider.
-            UISlider keyTurnSlider = UIControls.AddSliderWithValue(panel, Translations.Translate("CAM_FPS_KTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyTurnSpeed);
-            keyTurnSlider.parent.relativePosition = new Vector2(Margin, currentY);
-            keyTurnSlider.eventValueChanged += (control, value) => { FPSPatch.KeyTurnSpeed = value; };
+            UISlider keyTurnSlider = UIControls.AddSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_KTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyTurnSpeed, (value) => { FPSPatch.KeyTurnSpeed = value; });
             currentY += keyTurnSlider.parent.height + GroupMargin;
 
             // Key movement speed slider.
-            UISlider keyMoveSlider = UIControls.AddSliderWithValue(panel, Translations.Translate("CAM_FPS_KMS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyMoveSpeed);
-            keyMoveSlider.parent.relativePosition = new Vector2(Margin, currentY);
-            keyMoveSlider.eventValueChanged += (control, value) => { FPSPatch.KeyMoveSpeed = value; };
+            UISlider keyMoveSlider = UIControls.AddSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_KMS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyMoveSpeed, (value) => { FPSPatch.KeyMoveSpeed = value; });
             currentY += keyMoveSlider.parent.height + GroupMargin;
 
             // Mouse turning speed slider.
-            UISlider mouseTurnSlider = UIControls.AddSliderWithValue(panel, Translations.Translate("CAM_FPS_MTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.MouseTurnSpeed);
-            mouseTurnSlider.parent.relativePosition = new Vector2(Margin, currentY);
+            UISlider mouseTurnSlider = UIControls.AddSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_MTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.MouseTurnSpeed, (value) => { FPSPatch.MouseTurnSpeed = value; });
             mouseTurnSlider.eventValueChanged += (control, value) => { FPSPatch.MouseTurnSpeed = value; };
         }
     }

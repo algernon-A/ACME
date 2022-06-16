@@ -121,8 +121,7 @@ namespace ACME
         private UISlider AddDistanceSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
-            UISlider newSlider = UIControls.AddSlider(parent, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
-            newSlider.parent.relativePosition = new Vector2(Margin, yPos);
+            UISlider newSlider = UIControls.AddSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
 
             // Game-distanceLabel label.
             UILabel distanceLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
@@ -152,8 +151,7 @@ namespace ACME
         private UISlider AddSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
-            UISlider newSlider = UIControls.AddSlider(parent, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
-            newSlider.parent.relativePosition = new Vector2(Margin, yPos);
+            UISlider newSlider = UIControls.AddSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
 
             // Value label.
             UILabel valueLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);

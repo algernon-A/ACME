@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ICities;
 using ColossalFramework.UI;
 
 
@@ -238,7 +239,9 @@ namespace ACME
         /// <summary>
         /// Adds a slider with a descriptive text label above.
         /// </summary>
-        /// <param name="parent">Panel to add the control to</param>
+        /// <param name="parent">Parent component</param>
+        /// <param name="xPos">Relative x position)</param>
+        /// <param name="yPos">Relative y position</param>
         /// <param name="text">Descriptive label text</param>
         /// <param name="min">Slider minimum value</param>
         /// <param name="max">Slider maximum value</param>
@@ -246,17 +249,22 @@ namespace ACME
         /// <param name="defaultValue">Slider initial value</param>
         /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
         /// <returns>New UI slider with attached labels</returns>
-        public static UISlider AddSlider(UIComponent parent, string text, float min, float max, float step, float defaultValue, float width = 600f)
+        public static UISlider AddSlider(UIComponent parent, float xPos, float yPos, string text, float min, float max, float step, float defaultValue, float width = 600f)
         {
             // Add slider component.
             UIPanel sliderPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsSliderTemplate")) as UIPanel;
+
+            // Panel layout.
+            sliderPanel.autoLayout = false;
+            sliderPanel.autoSize = false;
+            sliderPanel.width = width + 50f;
+            sliderPanel.height = 65f;
 
             // Label.
             UILabel sliderLabel = sliderPanel.Find<UILabel>("Label");
             sliderLabel.autoHeight = true;
             sliderLabel.width = width;
             sliderLabel.anchor = UIAnchorStyle.Left | UIAnchorStyle.Top;
-            sliderLabel.relativePosition = Vector3.zero;
             sliderLabel.relativePosition = Vector3.zero;
             sliderLabel.text = text;
 
@@ -268,15 +276,13 @@ namespace ACME
             newSlider.value = defaultValue;
 
             // Move default slider position to match resized label.
-            sliderPanel.autoLayout = false;
             newSlider.anchor = UIAnchorStyle.Left | UIAnchorStyle.Top;
             newSlider.relativePosition = PositionUnder(sliderLabel);
+
             newSlider.width = width;
 
-            // Increase height of panel to accomodate it all plus some extra space for margin.
-            sliderPanel.autoSize = false;
-            sliderPanel.width = width + 50f;
-            sliderPanel.height = newSlider.relativePosition.y + newSlider.height + 20f;
+            // Set position.
+            newSlider.parent.relativePosition = new Vector2(xPos, yPos);
 
             return newSlider;
         }
@@ -286,17 +292,20 @@ namespace ACME
         /// Adds a slider with a descriptive text label above and an automatically updating value label immediately to the right.
         /// </summary>
         /// <param name="parent">Panel to add the control to</param>
+        /// <param name="xPos">Relative x position)</param>
+        /// <param name="yPos">Relative y position</param>
         /// <param name="text">Descriptive label text</param>
         /// <param name="min">Slider minimum value</param>
         /// <param name="max">Slider maximum value</param>
         /// <param name="step">Slider minimum step</param>
         /// <param name="defaultValue">Slider initial value</param>
+        /// <param name="eventCallback">Slider event handler</param>
         /// <param name="width">Slider width (excluding value label to right) (default 600)</param>
         /// <returns>New UI slider with attached labels</returns>
-        public static UISlider AddSliderWithValue(UIComponent parent, string text, float min, float max, float step, float defaultValue, float width = 600f)
+        public static UISlider AddSliderWithValue(UIComponent parent, float xPos, float ypos, string text, float min, float max, float step, float defaultValue, OnValueChanged eventCallback, float width = 600f)
         {
             // Add slider component.
-            UISlider newSlider = AddSlider(parent, text, min, max, step, defaultValue, width);
+            UISlider newSlider = AddSlider(parent, xPos, ypos, text, min, max, step, defaultValue, width);
             UIPanel sliderPanel = (UIPanel)newSlider.parent;
 
             // Value label.
@@ -309,6 +318,7 @@ namespace ACME
             newSlider.eventValueChanged += (component, value) =>
             {
                 valueLabel.text = value.ToString();
+                eventCallback(value);
             };
 
             return newSlider;
