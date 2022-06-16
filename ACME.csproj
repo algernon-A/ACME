@@ -118,7 +118,6 @@
     <None Include="Translations\pt-BR.csv" />
     <None Include="Translations\ru-RU.csv" />
     <None Include="Translations\zh-CN.csv" />
-    <None Include="Translations\zh-TW.csv" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
