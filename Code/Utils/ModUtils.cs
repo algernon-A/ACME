@@ -54,6 +54,32 @@ namespace ACME
                                 conflictingModNames.Add("Zoom It!");
                             }
                             break;
+                        case "ZoomToCursor":
+                            // Zoom To Cursor, but only if enabled.
+                            if (plugin.isEnabled)
+                            {
+                                conflictDetected = true;
+                                conflictingModNames.Add("Zoom To Cursor");
+                            }
+                            break;
+                        case "CameraMouseDrag9":
+                            // Mouse Drag Camera, but only if enabled.
+                            if (plugin.isEnabled)
+                            {
+                                Logging.KeyMessage("found CameraMouseDrag9");
+                                conflictDetected = true;
+                                conflictingModNames.Add("Mouse Drag Camera");
+                            }
+                            break;
+                        case "MouseDragCamera0":
+                            // Mouse Drag Camera Inverted, but only if enabled.
+                            if (plugin.isEnabled)
+                            {
+                                Logging.KeyMessage("found MouseDragCamera0");
+                                conflictDetected = true;
+                                conflictingModNames.Add("Mouse Drag Camera Inverted");
+                            }
+                            break;
                         case "VanillaGarbageBinBlocker":
                             // Garbage Bin Controller
                             conflictDetected = true;
@@ -66,6 +92,9 @@ namespace ACME
                                 conflictDetected = true;
                                 conflictingModNames.Add("Painter");
                             }
+                            break;
+                        default:
+                            Logging.KeyMessage(assembly.GetName().Name);
                             break;
                     }
                 }
