@@ -56,9 +56,13 @@ namespace ACME
 
                 // Restore saved attributes.
                 controller.m_targetPosition = savedPositions[positionIndex].position;
+                controller.m_currentPosition = savedPositions[positionIndex].position;
                 controller.m_targetAngle = savedPositions[positionIndex].angle;
+                controller.m_currentAngle = savedPositions[positionIndex].angle;
                 controller.m_targetHeight = savedPositions[positionIndex].height;
+                controller.m_currentHeight = savedPositions[positionIndex].height;
                 controller.m_targetSize = savedPositions[positionIndex].size;
+                controller.m_currentSize = savedPositions[positionIndex].size;
                 CameraUtils.MainCamera.fieldOfView = savedPositions[positionIndex].fov;
             }
         }

@@ -1,4 +1,7 @@
-﻿Version 0.5 -
+﻿- Enforce current camera attriburte updates when restoring saved camera position (not just targets)
+
+
+Version 0.5 -
 
 - Add zoom to mouse cursor option
 
