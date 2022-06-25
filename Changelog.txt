@@ -1,4 +1,5 @@
-﻿- Enforce current camera attriburte updates when restoring saved camera position (not just targets)
+﻿- Move to MoveIt selection now also aligns camera with selection (where applicable)
+- Enforce current camera attribute updates when restoring saved camera position (not just targets)
 
 
 Version 0.5 -

@@ -17,8 +17,8 @@ namespace ACME
         // List of conflcting mod names.
         internal static List<string> conflictingModNames;
 
-        // Move It ActionQueue current action getter.
-        internal static MethodInfo miGetTotalBounds;
+        // Move It methods.
+        internal static MethodInfo miGetTotalBounds, miGetAngle;
 
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace ACME
 
 
         /// <summary>
-        /// Attempts to find the GetTotalBounds method of Move It's current action item.
+        /// Attempts to find the GetTotalBounds and GetAngle methods of Move It's current action item.
         /// </summary>
         internal static void MoveItReflection()
         {
@@ -208,6 +208,14 @@ namespace ACME
             if (miGetTotalBounds == null)
             {
                 Logging.Error("MoveIt.Action.GetTotalBounds not reflected");
+                return;
+            }
+
+            // GetAngle method.
+            miGetAngle = miAction.GetMethod("GetAngle", BindingFlags.Static | BindingFlags.Public);
+            if (miGetAngle == null)
+            {
+                Logging.Error("MoveIt.Action.GetAngle not reflected");
                 return;
             }
 
