@@ -85,11 +85,12 @@ namespace ACME
 
             // Movement vector.
             Vector3 direction = Vector3.zero;
+            Vector3 absDirection = Vector3.zero;
 
             // Ignore key input if UI has focus.
             if (!UIView.HasModalInput() && !Singleton<ToolManager>.instance.m_properties.HasInputFocus)
             {
-                // Rotation keys,.
+                // Rotation keys.
                 float rotationSpeed = 60f * keyTurnSpeed;
                 if (cameraRotateLeft.IsPressed())
                 {
@@ -108,7 +109,8 @@ namespace ACME
                     cameraRotation.y += rotationSpeed * Time.deltaTime;
                 }
 
-                // Movement keys.
+                // Movement keys - relative.
+                bool altDown = Input.GetKey(KeyCode.LeftAlt) | Input.GetKey(KeyCode.RightAlt) | Input.GetKey(KeyCode.AltGr);
                 if (Input.GetKey(cameraMoveForward.Key))
                 {
                     direction += Vector3.forward * keyMoveSpeed;
@@ -125,7 +127,34 @@ namespace ACME
                 {
                     direction += Vector3.right * keyMoveSpeed;
                 }
+
+                // Movement keys - absolute.
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    absDirection += Vector3.forward * keyMoveSpeed;
+                }
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    absDirection += Vector3.back * keyMoveSpeed;
+                }
+                if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    absDirection += Vector3.left * keyMoveSpeed;
+                }
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    absDirection += Vector3.right * keyMoveSpeed;
+                }
+                if (Input.GetKey(KeyCode.PageUp))
+                {
+                    absDirection += Vector3.up * keyMoveSpeed;
+                }
+                if (Input.GetKey(KeyCode.PageDown))
+                {
+                    absDirection += Vector3.down * keyMoveSpeed;
+                }
             }
+
 
             // Ignore mouse input if mouse is inside UI.
             if (!Singleton<ToolManager>.instance.m_properties.IsInsideUI)
@@ -143,13 +172,14 @@ namespace ACME
             }
 
             // Input modifier.
+            float distance = Time.deltaTime * 50f;
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
-                direction *= 10f;
+                distance *= 10f;
             }
             if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
             {
-                direction /= 10f;
+                distance /= 10f;
             }
 
             // Clamp cameraRotation.
@@ -162,16 +192,21 @@ namespace ACME
                 cameraRotation.x -= 360f;
             }
 
-            // Caclulate new rotation and position (moving relative to current facing).
-            Quaternion quaternion = Quaternion.AngleAxis(cameraRotation.x, Vector3.up) * Quaternion.AngleAxis(cameraRotation.y, Vector3.right);
-            cameraPosition += quaternion * direction * 50f * Time.deltaTime;
+            // Calculate new rotation and position (moving relative to current facing).
+            Quaternion xQuad = Quaternion.AngleAxis(cameraRotation.x, Vector3.up);
+            Quaternion xyQuad = xQuad * Quaternion.AngleAxis(cameraRotation.y, Vector3.right);
+            cameraPosition += xyQuad * direction * distance;
+
+            // Absolute movement.
+            cameraPosition += xQuad * absDirection * distance;
+
+            // Apply new position and rotation.
             __instance.m_targetPosition = cameraPosition;
             __instance.m_targetAngle = cameraRotation;
             UpdateCurrentPosition(__instance);
 
-
             // Set controller fields to our updated values.
-            __instance.transform.rotation = quaternion;
+            __instance.transform.rotation = xyQuad;
             __instance.transform.position = __instance.m_currentPosition;
 
             // Pre-empt original method.
