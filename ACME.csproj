@@ -67,6 +67,7 @@
     <Compile Include="Code\MessageBox\MessageBoxBase.cs" />
     <Compile Include="Code\Mod.cs" />
     <Compile Include="Code\Patches\FollowDisaster.cs" />
+    <Compile Include="Code\Patches\FollowTarget.cs" />
     <Compile Include="Code\Patches\FPSPatch.cs" />
     <Compile Include="Code\Patches\HeightOffset.cs" />
     <Compile Include="Code\Patches\ZoomToCursorPatches.cs" />

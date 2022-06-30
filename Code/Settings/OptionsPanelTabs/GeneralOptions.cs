@@ -97,7 +97,7 @@ namespace ACME
             UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
             disableDisasterGoto.isChecked = FollowDisasterPatch.followDisasters;
             disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.followDisasters = value; };
-            currentY += disableDisasterGoto.height + GroupMargin;
+            currentY += disableDisasterGoto.height + Margin;
 
             // Zoom to cursor.
             UICheckBox zoomToCursorCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_ZTC"));
@@ -105,6 +105,12 @@ namespace ACME
             zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
             zoomToCursorCheck.tooltipBox = TooltipUtils.TooltipBox;
             zoomToCursorCheck.tooltip = Translations.Translate("CAM_OPT_ZTC_TIP");
+            currentY += zoomToCursorCheck.height + Margin;
+
+            // Follow disasters checkbox.
+            UICheckBox disableFollowRotationCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DFR"));
+            disableFollowRotationCheck.isChecked = ModSettings.DisableFollowRotation;
+            disableFollowRotationCheck.eventCheckChanged += (control, value) => { ModSettings.DisableFollowRotation = value; };
         }
 
 

@@ -23,6 +23,7 @@ CAM_OPT_GEN,General options
 CAM_OPT_FPS,FPS options
 CAM_OPT_DIS,Automatically go to disasters
 CAM_OPT_ZTC,Zoom to mouse cursor
+CAM_OPT_DFR,Don't change camera rotation when following vehicles or citizens
 CAM_OPT_ZTC_TIP,When this is selected camera zooming will be offset towards the mouse cursor (instead of aligned to the middle of the screen)
 CAM_OPT_MDG,Map dragging
 CAM_MDG_INX,Invert X axis

@@ -16,7 +16,7 @@ namespace ACME
         // Flags.
         internal static bool Patched => _patched;
         private static bool _patched = false;
-        private static bool fpsPatched = false, zoomToCursorPatched = false;
+        private static bool fpsPatched = false, zoomToCursorPatched = false, disableFollowRotationPatched = false;
 
 
         /// <summary>
@@ -41,6 +41,12 @@ namespace ACME
                     if (zoomToCursorPatched != ModSettings.ZoomToCursor)
                     {
                         PatchZoomToCursor(ModSettings.ZoomToCursor);
+                    }
+
+                    // Apply disable follow rotation if set.
+                    if (disableFollowRotationPatched != ModSettings.DisableFollowRotation)
+                    {
+                        PatchZoomToCursor(ModSettings.DisableFollowRotation);
                     }
                 }
                 else
@@ -172,6 +178,57 @@ namespace ACME
 
                     // Update status flag.
                     zoomToCursorPatched = active;
+                }
+                else
+                {
+                    Logging.Error("Harmony not ready");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Applies or unapplies transpiler to disable rotation changes while following a target.
+        /// </summary>
+        /// <param name="active">True to apply patch, false to unapply</param>
+        internal static void PatchFollowRotation(bool active)
+        {
+            // Don't do anything if we're already at the current state.
+            if (disableFollowRotationPatched != active)
+            {
+                // Ensure Harmony is ready before patching.
+                if (HarmonyHelper.IsHarmonyInstalled)
+                {
+                    // Target method.
+                    MethodBase targetMethod = typeof(CameraController).GetMethod("FollowTarget", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (targetMethod == null)
+                    {
+                        Logging.Error("unable to find FollowTarget patch target method");
+                        return;
+                    }
+
+                    // Patch method.
+                    MethodInfo patchMethod = typeof(FollowTargetPatch).GetMethod(nameof(FollowTargetPatch.Transpiler));
+                    if (patchMethod == null)
+                    {
+                        Logging.Error("unable to find FollowTarget transpiler");
+                        return;
+                    }
+
+                    Harmony harmonyInstance = new Harmony(harmonyID);
+
+                    // Apply or remove patches according to flag.
+                    if (active)
+                    {
+                        harmonyInstance.Patch(targetMethod, transpiler: new HarmonyMethod(patchMethod));
+                    }
+                    else
+                    {
+                        harmonyInstance.Unpatch(targetMethod, patchMethod);
+                    }
+
+                    // Update status flag.
+                    disableFollowRotationPatched = active;
                 }
                 else
                 {

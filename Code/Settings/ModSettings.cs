@@ -95,6 +95,13 @@ namespace ACME
         public bool XMLZoomToCursor { get => ZoomToCursor; set => ZoomToCursor = value; }
 
 
+        /// <summary>
+        /// Disable follow rotation enabled/disabled.
+        /// </summary>
+        [XmlElement("DisableFollowRotation")]
+        public bool XMLDisableFollowRotation { get => DisableFollowRotation; set => DisableFollowRotation = value; }
+
+
         // Hotkey element.
         [XmlElement("ToggleKey")]
         public KeyBinding ToggleKey
@@ -229,6 +236,25 @@ namespace ACME
         }
         [XmlIgnore]
         private static bool zoomToCursor = false;
+
+        /// <summary>
+        /// Disable rotation when following a target.
+        /// </summary>
+        [XmlIgnore]
+        internal static bool DisableFollowRotation
+        {
+            get => disableFollowRotation;
+
+            set
+            {
+                disableFollowRotation = value;
+
+                // Apply/unapply Harmony patch on value change.
+                Patcher.PatchFollowRotation(value);
+            }
+        }
+        [XmlIgnore]
+        private static bool disableFollowRotation = false;
 
 
         [XmlIgnore]
