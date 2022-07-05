@@ -41,12 +41,14 @@ namespace ACME
             currentY += languageDropDown.parent.height + Margin;
 
             // Hotkey control.
-            OptionsKeymapping keyMapping = languageDropDown.parent.parent.gameObject.AddComponent<OptionsKeymapping>();
-            keyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += keyMapping.uIPanel.height + Margin;
+            OptionsKeymapping uuiKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<UUIKeymapping>();
+            uuiKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += uuiKeyMapping.uIPanel.height + Margin;
 
             // MoveIt key control.
-            OptionsKeymapping miKeyMapping = panel.gameObject.AddComponent<MoveItKeymapping>();
+            OptionsKeymapping miKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            miKeyMapping.Label = Translations.Translate("KEY_GMI");
+            miKeyMapping.Binding = UIThreading.moveItKey;
             miKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += miKeyMapping.uIPanel.height + Margin;
 

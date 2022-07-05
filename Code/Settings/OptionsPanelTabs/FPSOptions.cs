@@ -31,7 +31,9 @@ namespace ACME
             float currentY = GroupMargin;
 
             // FPS mode key control.
-            OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<FPSKeymapping>();
+            OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            fpsKeyMapping.Label = Translations.Translate("KEY_FPS");
+            fpsKeyMapping.Binding = UIThreading.fpsKey;
             fpsKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += fpsKeyMapping.uIPanel.height + GroupMargin;
 

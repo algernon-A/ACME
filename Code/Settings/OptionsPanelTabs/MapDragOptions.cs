@@ -31,7 +31,9 @@ namespace ACME
             float currentY = GroupMargin;
 
             // Mouse drag movement key control.
-            OptionsKeymapping mdKeyMapping = panel.gameObject.AddComponent<MapDragKeymapping>();
+            OptionsKeymapping mdKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            mdKeyMapping.Label = Translations.Translate("KEY_MDG");
+            mdKeyMapping.Binding = ModSettings.mapDragKey;
             mdKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += mdKeyMapping.uIPanel.height + GroupMargin;
 

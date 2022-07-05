@@ -1,4 +1,4 @@
-﻿- Absolute movement keys added to FPS mode: arrow keys for forward/backwards/left/right, PageUp/PageDwn for up/down
+﻿- Absolute movement keys added to FPS mode: arrow keys for forward/backwards/left/right, PageUp/PageDown for up/down
 - Add option to disable automatic camera rotation when following a target
 - Move to MoveIt selection now also aligns camera with selection (where applicable)
 - Enforce current camera attribute updates when restoring saved camera position (not just targets)

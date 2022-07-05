@@ -45,17 +45,9 @@ namespace ACME
         };
 
 
-        // MoveIt zoom key settings.
-        internal static KeyCode moveItKey = KeyCode.Mouse2;
-        internal static bool moveItCtrl = false;
-        internal static bool moveItAlt = true;
-        internal static bool moveItShift = false;
-
-        // FPS mode key settings.
-        internal static KeyCode fpsKey = KeyCode.Tab;
-        internal static bool fpsCtrl = true;
-        internal static bool fpsAlt = false;
-        internal static bool fpsShift = false;
+        // Hotkeys.
+        internal static KeyBinding moveItKey = new KeyBinding(KeyCode.Mouse2, false, false, false);
+        internal static KeyBinding fpsKey = new KeyBinding(KeyCode.Tab, true, false, false);
 
 
         /// <summary>
@@ -123,11 +115,11 @@ namespace ACME
 
                 // Check for Movit zoom.
                 // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-                bool altOkay = altPressed == moveItAlt;
-                bool ctrlOkay = ctrlPressed == moveItCtrl;
-                bool shiftOkay = shiftPressed == moveItShift;
+                bool altOkay = altPressed == moveItKey.alt;
+                bool ctrlOkay = ctrlPressed == moveItKey.control;
+                bool shiftOkay = shiftPressed == moveItKey.shift;
                 bool modifiersOkay = altOkay & ctrlOkay & shiftOkay;
-                bool keyPressed = modifiersOkay & Input.GetKey(moveItKey);
+                bool keyPressed = modifiersOkay & Input.GetKey(moveItKey.key);
                 if (keyPressed && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
                     // Only process if we're not already doing so.
@@ -148,11 +140,11 @@ namespace ACME
 
                 // Check for FPS hotkey.
                 // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-                altOkay = altPressed == fpsAlt;
-                ctrlOkay = ctrlPressed == fpsCtrl;
-                shiftOkay = shiftPressed == fpsShift;
+                altOkay = altPressed == fpsKey.alt;
+                ctrlOkay = ctrlPressed == fpsKey.control;
+                shiftOkay = shiftPressed == fpsKey.shift;
                 modifiersOkay = altOkay & ctrlOkay & shiftOkay;
-                if (modifiersOkay & Input.GetKey(fpsKey))
+                if (modifiersOkay & Input.GetKey(fpsKey.key))
                 {
                     // Only process if we're not already doing so.
                     if (!fpsProcessed)

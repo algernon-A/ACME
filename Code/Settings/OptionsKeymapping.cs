@@ -6,34 +6,56 @@ using ColossalFramework.UI;
 namespace ACME
 {
     /// <summary>
-    /// Keycode setting control for mod hotkey.
+    /// Keycode setting control for mod hotkeys.
     /// </summary>
     public class OptionsKeymapping : UICustomControl
     {
         // Components.
         internal readonly UIPanel uIPanel;
+        protected readonly UIButton button;
         private readonly UILabel label;
-        private readonly UIButton button;
 
         // State flag.
         private bool isPrimed = false;
 
 
         /// <summary>
-        /// Link to game hotkey setting.
+        /// Target keybinding instance.
         /// </summary>
-        protected virtual InputKey KeySetting
+        internal KeyBinding Binding
         {
-            get => UUI.uuiKey.value;
+            private get => _binding;
 
-            set => UUI.uuiKey.value = value;
+            set
+            {
+                _binding = value;
+                button.text = SavedInputKey.ToLocalizedString("KEYNAME", KeySetting);
+            }
         }
+        private KeyBinding _binding;
 
 
         /// <summary>
         /// Control label.
         /// </summary>
-        protected virtual string Label => Translations.Translate("KEY_KEY");
+        internal string Label { get => label.text; set => label.text = value; }
+
+
+        /// <summary>
+        /// Current setting as ColossalFramework InputKey.
+        /// </summary>
+        protected virtual InputKey KeySetting
+        {
+            get => Binding.Encode();
+
+            set
+            {
+                Binding.key = (KeyCode)(value & 0xFFFFFFF);
+                Binding.control = (value & 0x40000000) != 0;
+                Binding.shift = (value & 0x20000000) != 0;
+                Binding.alt = (value & 0x10000000) != 0;
+            }
+        }
 
 
         /// <summary>
@@ -51,10 +73,6 @@ namespace ACME
             // Attach our event handlers.
             button.eventKeyDown += (control, keyEvent) => OnKeyDown(keyEvent);
             button.eventMouseDown += (control, mouseEvent) => OnMouseDown(mouseEvent);
-
-            // Set label and button text.
-            label.text = Label;
-            button.text = SavedInputKey.ToLocalizedString("KEYNAME", KeySetting);
         }
 
 
@@ -64,8 +82,6 @@ namespace ACME
         /// <param name="keyEvent">Keypress event parameter</param>
         public void OnKeyDown(UIKeyEventParameter keyEvent)
         {
-            Logging.Message("keydown ", isPrimed);
-
             // Only do this if we're primed and the keypress isn't a modifier key.
             if (isPrimed && !IsModifierKey(keyEvent.keycode))
             {
