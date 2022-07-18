@@ -22,7 +22,7 @@ namespace ACME
         /// <summary>
         /// Target keybinding instance.
         /// </summary>
-        internal KeyBinding Binding
+        internal KeybindingBase Binding
         {
             private get => _binding;
 
@@ -32,7 +32,7 @@ namespace ACME
                 button.text = SavedInputKey.ToLocalizedString("KEYNAME", KeySetting);
             }
         }
-        private KeyBinding _binding;
+        private KeybindingBase _binding;
 
 
         /// <summary>
@@ -48,13 +48,7 @@ namespace ACME
         {
             get => Binding.Encode();
 
-            set
-            {
-                Binding.key = (KeyCode)(value & 0xFFFFFFF);
-                Binding.control = (value & 0x40000000) != 0;
-                Binding.shift = (value & 0x20000000) != 0;
-                Binding.alt = (value & 0x10000000) != 0;
-            }
+            set => Binding.SetKey(value);
         }
 
 
@@ -188,7 +182,7 @@ namespace ACME
             ModSettings.Save();
 
             // Set the label for the new hotkey.
-            button.text = SavedInputKey.ToLocalizedString("KEYNAME", key);
+            button.text = SavedInputKey.ToLocalizedString("KEYNAME", KeySetting);
 
             // Remove priming.
             UIView.PopModal();

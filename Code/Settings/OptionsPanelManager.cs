@@ -80,6 +80,8 @@ namespace ACME
             }
         }
 
+        private static UIPanel basePanel;
+        private static UITabstrip tabStrip;
 
         /// <summary>
         /// Creates the panel object in-game and displays it.
@@ -98,7 +100,7 @@ namespace ACME
                     optionsGameObject.transform.parent = optionsPanel.transform;
 
                     // Create a base panel attached to our game object, perfectly overlaying the game options panel.
-                    UIPanel basePanel = optionsGameObject.AddComponent<UIPanel>();
+                    basePanel = optionsGameObject.AddComponent<UIPanel>();
                     basePanel.width = optionsPanel.width - 10f;
                     basePanel.height = 725f;
                     basePanel.clipChildren = false;
@@ -107,7 +109,7 @@ namespace ACME
                     basePanel.relativePosition = new Vector2(10f, 10f);
 
                     // Add tabstrip.
-                    UITabstrip tabStrip = basePanel.AddUIComponent<UITabstrip>();
+                    tabStrip = basePanel.AddUIComponent<UITabstrip>();
                     tabStrip.relativePosition = new Vector3(0, 0);
                     tabStrip.width = basePanel.width;
                     tabStrip.height = basePanel.height;
@@ -123,8 +125,28 @@ namespace ACME
 
                     // Add tabs and panels.
                     new GeneralOptions(tabStrip, 0);
-                    new FPSOptions(tabStrip, 1);
+                    FPSOptions fpsOptions = new FPSOptions(tabStrip, 1);
                     new MapDragOptions(tabStrip, 2);
+
+                    // Tabstrip event handler to toggle scroll for FPS panel.
+                    tabStrip.eventSelectedIndexChanged += (control, tabIndex) =>
+                    {
+                        UIPanel panel = tabStrip.tabContainer.components[tabIndex] as UIPanel;
+
+                        // Check selected tab.
+                        if (tabIndex == 1)
+                        {
+                            // FPS tab - increase containter height to match.
+                            tabContainer.height = fpsOptions.panelHeight + 30f;
+                            control.parent.height = fpsOptions.panelHeight + 30f;
+                        }
+                        else
+                        {
+                            // Standard tab - reset container height.
+                            tabContainer.height = 725f;
+                            control.parent.height = 725f;
+                        }
+                    };
                 }
             }
             catch (Exception e)

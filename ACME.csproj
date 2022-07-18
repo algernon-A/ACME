@@ -75,10 +75,13 @@
     <Compile Include="Code\Patches\UpdateCurrentPosition.cs" />
     <Compile Include="Code\Patches\UpdateTargetPosition.cs" />
     <Compile Include="Code\Serialization.cs" />
-    <Compile Include="Code\Settings\Keybinding.cs" />
+    <Compile Include="Code\Settings\Keybinding\Keybinding.cs" />
+    <Compile Include="Code\Settings\Keybinding\KeybindingBase.cs" />
+    <Compile Include="Code\Settings\Keybinding\KeybindingKey.cs" />
+    <Compile Include="Code\Settings\Keybinding\UnsavedInputKey.cs" />
     <Compile Include="Code\Settings\UUIKeymappingcs.cs" />
     <Compile Include="Code\Settings\ModSettings.cs" />
-    <Compile Include="Code\Settings\OptionsKeymapping.cs" />
+    <Compile Include="Code\Settings\Keybinding\OptionsKeymapping.cs" />
     <Compile Include="Code\Settings\OptionsPanelManager.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\FPSOptions.cs" />
     <Compile Include="Code\Settings\OptionsPanelTabs\GeneralOptions.cs" />

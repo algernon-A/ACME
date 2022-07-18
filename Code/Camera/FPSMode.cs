@@ -27,28 +27,6 @@ namespace ACME
             // Get assigned controls if we're activating.
             if (modeActive)
             {
-                // Get game keybinding fields.
-                FieldInfo m_cameraMouseRotate = typeof(CameraController).GetField("m_cameraMouseRotate", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraRoteateUp = typeof(CameraController).GetField("m_cameraRotateUp", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraRotateDown = typeof(CameraController).GetField("m_cameraRotateDown", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraRotateLeft = typeof(CameraController).GetField("m_cameraRotateLeft", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraRotateRight = typeof(CameraController).GetField("m_cameraRotateRight", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraMoveLeft = typeof(CameraController).GetField("m_cameraMoveLeft", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraMoveRight = typeof(CameraController).GetField("m_cameraMoveRight", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraMoveForward = typeof(CameraController).GetField("m_cameraMoveForward", BindingFlags.Instance | BindingFlags.NonPublic);
-                FieldInfo m_cameraMoveBackward = typeof(CameraController).GetField("m_cameraMoveBackward", BindingFlags.Instance | BindingFlags.NonPublic);
-
-                // Assign game keybinding values to FPSpatch.
-                FPSPatch.cameraMouseRotate = m_cameraMouseRotate.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraRotateUp = m_cameraRoteateUp.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraRotateDown = m_cameraRotateDown.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraRotateLeft = m_cameraRotateLeft.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraRotateRight = m_cameraRotateRight.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraMoveLeft = m_cameraMoveLeft.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraMoveRight = m_cameraMoveRight.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraMoveForward = m_cameraMoveForward.GetValue(controller) as SavedInputKey;
-                FPSPatch.cameraMoveBackward = m_cameraMoveBackward.GetValue(controller) as SavedInputKey;
-
                 // Adjust target position to match current position.
                 controller.ClearTarget();
                 controller.m_targetPosition = controller.transform.position;

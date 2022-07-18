@@ -36,6 +36,21 @@ KEY_KEY,Panel hotkey
 KEY_GMI,Go to MoveIt selection key
 KEY_MDG,Map drag key
 KEY_FPS,Toggle free FPS mode
+KEY_ABS_UP,Up (absolute)
+KEY_ABS_DWN,Down (absolute)
+KEY_ABS_FWD,Forward (absolute)
+KEY_ABS_BCK,Back (absolute)
+KEY_ABS_LFT,Left (absolute)
+KEY_ABS_RHT,Right (absolute)
+KEY_REL_FWD,Forward (relative)
+KEY_REL_BCK,Back (relative)
+KEY_REL_LFT,Left (relative)
+KEY_REL_RHT,Right (relative)
+KEY_ROT_LFT,Rotate left
+KEY_ROT_RHT,Rotate right
+KEY_ROT_UP,Rotate up
+KEY_ROT_DWN,Rotate down
+KEY_ROT_MSE,Mouse look
 KEY_PRS,Press any key
 TRN_CHOICE,Set language
 TRN_SYS,Use game language

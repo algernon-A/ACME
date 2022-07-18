@@ -102,6 +102,24 @@ namespace ACME
         public bool XMLDisableFollowRotation { get => DisableFollowRotation; set => DisableFollowRotation = value; }
 
 
+        /// FPS movement keys.
+        public KeybindingKey FPSAbsUp { get => FPSPatch.absUp; set => FPSPatch.absUp = value; }
+        public KeybindingKey FPSAbsDown { get => FPSPatch.absDown; set => FPSPatch.absDown = value; }
+        public KeybindingKey FPSAbsForward { get => FPSPatch.absForward; set => FPSPatch.absForward = value; }
+        public KeybindingKey FPSAbsBack { get => FPSPatch.absBack; set => FPSPatch.absBack = value; }
+        public KeybindingKey FPSAbsLeft { get => FPSPatch.absLeft; set => FPSPatch.absLeft = value; }
+        public KeybindingKey FPSAbsRight { get => FPSPatch.absRight; set => FPSPatch.absRight = value; }
+        public KeybindingKey FPSRelForward { get => FPSPatch.cameraMoveForward; set => FPSPatch.cameraMoveForward = value; }
+        public KeybindingKey FPSRelBack { get => FPSPatch.cameraMoveBackward; set => FPSPatch.cameraMoveBackward = value; }
+        public KeybindingKey FPSRelLeft { get => FPSPatch.cameraMoveLeft; set => FPSPatch.cameraMoveLeft = value; }
+        public KeybindingKey FPSRelRight { get => FPSPatch.cameraMoveRight; set => FPSPatch.cameraMoveRight = value; }
+        public KeybindingKey FPSLookUp { get => FPSPatch.cameraRotateUp; set => FPSPatch.cameraRotateUp = value; }
+        public KeybindingKey FPSLookDown { get => FPSPatch.cameraRotateDown; set => FPSPatch.cameraRotateDown = value; }
+        public KeybindingKey FPSLookLeft { get => FPSPatch.cameraRotateLeft; set => FPSPatch.cameraRotateLeft = value; }
+        public KeybindingKey FPSLookRight { get => FPSPatch.cameraRotateRight; set => FPSPatch.cameraRotateRight = value; }
+        public KeybindingKey FPSMouseLook{ get => FPSPatch.cameraMouseRotate; set => FPSPatch.cameraMouseRotate = value; }
+
+
         // Hotkey element.
         [XmlElement("ToggleKey")]
         public KeyBinding ToggleKey

@@ -19,12 +19,26 @@ namespace ACME
         internal const float MinFPSKeySpeed = 0.2f;
         internal const float MaxFPSKeySpeed = 4.0f;
 
+        // Coontrol keys - absolute movement.
+        public static KeybindingKey absUp = new KeybindingKey(KeyCode.PageUp);
+        public static KeybindingKey absDown = new KeybindingKey(KeyCode.PageDown);
+        public static KeybindingKey absLeft = new KeybindingKey(KeyCode.LeftArrow);
+        public static KeybindingKey absRight = new KeybindingKey(KeyCode.RightArrow);
+        public static KeybindingKey absForward = new KeybindingKey(KeyCode.UpArrow);
+        public static KeybindingKey absBack = new KeybindingKey(KeyCode.DownArrow);
 
         // Control keys - movement.
-        public static SavedInputKey cameraMoveLeft, cameraMoveRight, cameraMoveForward, cameraMoveBackward;
+        public static KeybindingKey cameraMoveForward = new KeybindingKey(KeyCode.W);
+        public static KeybindingKey cameraMoveBackward = new KeybindingKey(KeyCode.S);
+        public static KeybindingKey cameraMoveLeft = new KeybindingKey(KeyCode.A);
+        public static KeybindingKey cameraMoveRight = new KeybindingKey(KeyCode.D);
 
         // Control keys - rotation.
-        public static SavedInputKey cameraRotateLeft, cameraRotateRight, cameraRotateUp, cameraRotateDown, cameraMouseRotate;
+        public static KeybindingKey cameraRotateLeft = new KeybindingKey(KeyCode.Q);
+        public static KeybindingKey cameraRotateRight = new KeybindingKey(KeyCode.E);
+        public static KeybindingKey cameraRotateUp = new KeybindingKey(KeyCode.R);
+        public static KeybindingKey cameraRotateDown = new KeybindingKey(KeyCode.F);
+        public static KeybindingKey cameraMouseRotate = new KeybindingKey(KeyCode.Mouse2);
 
         // Delegates to private methods.
         public delegate void UpdateFreeCameraDelegate(CameraController __instance);
@@ -92,64 +106,64 @@ namespace ACME
             {
                 // Rotation keys.
                 float rotationSpeed = 60f * keyTurnSpeed;
-                if (cameraRotateLeft.IsPressed())
+                if (Input.GetKey(cameraRotateLeft.key))
                 {
                     cameraRotation.x -= rotationSpeed * Time.deltaTime;
                 }
-                if (cameraRotateRight.IsPressed())
+                if (Input.GetKey(cameraRotateRight.key))
                 {
                     cameraRotation.x += rotationSpeed * Time.deltaTime;
                 }
-                if (cameraRotateUp.IsPressed())
+                if (Input.GetKey(cameraRotateUp.key))
                 {
                     cameraRotation.y -= rotationSpeed * Time.deltaTime;
                 }
-                if (cameraRotateDown.IsPressed())
+                if (Input.GetKey(cameraRotateDown.key))
                 {
                     cameraRotation.y += rotationSpeed * Time.deltaTime;
                 }
 
                 // Movement keys - relative.
                 bool altDown = Input.GetKey(KeyCode.LeftAlt) | Input.GetKey(KeyCode.RightAlt) | Input.GetKey(KeyCode.AltGr);
-                if (Input.GetKey(cameraMoveForward.Key))
+                if (Input.GetKey(cameraMoveForward.key))
                 {
                     direction += Vector3.forward * keyMoveSpeed;
                 }
-                if (Input.GetKey(cameraMoveBackward.Key))
+                if (Input.GetKey(cameraMoveBackward.key))
                 {
                     direction += Vector3.back * keyMoveSpeed;
                 }
-                if (Input.GetKey(cameraMoveLeft.Key))
+                if (Input.GetKey(cameraMoveLeft.key))
                 {
                     direction += Vector3.left * keyMoveSpeed;
                 }
-                if (Input.GetKey(cameraMoveRight.Key))
+                if (Input.GetKey(cameraMoveRight.key))
                 {
                     direction += Vector3.right * keyMoveSpeed;
                 }
 
                 // Movement keys - absolute.
-                if (Input.GetKey(KeyCode.UpArrow))
+                if (Input.GetKey(absForward.key))
                 {
                     absDirection += Vector3.forward * keyMoveSpeed;
                 }
-                if (Input.GetKey(KeyCode.DownArrow))
+                if (Input.GetKey(absBack.key))
                 {
                     absDirection += Vector3.back * keyMoveSpeed;
                 }
-                if (Input.GetKey(KeyCode.LeftArrow))
+                if (Input.GetKey(absLeft.key))
                 {
                     absDirection += Vector3.left * keyMoveSpeed;
                 }
-                if (Input.GetKey(KeyCode.RightArrow))
+                if (Input.GetKey(absRight.key))
                 {
                     absDirection += Vector3.right * keyMoveSpeed;
                 }
-                if (Input.GetKey(KeyCode.PageUp))
+                if (Input.GetKey(absUp.key))
                 {
                     absDirection += Vector3.up * keyMoveSpeed;
                 }
-                if (Input.GetKey(KeyCode.PageDown))
+                if (Input.GetKey(absDown.key))
                 {
                     absDirection += Vector3.down * keyMoveSpeed;
                 }
@@ -163,7 +177,7 @@ namespace ACME
                 direction += Vector3.forward * Input.GetAxis("Mouse ScrollWheel") * 10f * keyMoveSpeed;
 
                 // Mouse rotation.
-                if (cameraMouseRotate.IsPressed() || SteamController.GetDigitalAction(SteamController.DigitalInput.RotateMouse))
+                if (Input.GetKey(cameraMouseRotate.key) || SteamController.GetDigitalAction(SteamController.DigitalInput.RotateMouse))
                 {
                     float speed = mouseTurnSpeed * 2f;
                     cameraRotation.x += Input.GetAxis("Mouse X") * speed;
