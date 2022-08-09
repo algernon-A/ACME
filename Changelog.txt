@@ -1,4 +1,7 @@
-﻿Version 0.5.1 -
+﻿- Update UUI
+
+
+Version 0.5.1 -
 
 - Absolute movement keys added to FPS mode: arrow keys for forward/backwards/left/right, PageUp/PageDown for up/down
 - Add option to disable automatic camera rotation when following a target
