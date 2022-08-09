@@ -1,16 +1,18 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Collections.Generic;
-using ICities;
-using ColossalFramework.Plugins;
-
+﻿// <copyright file="ModUtils.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using System;
+    using System.Reflection;
+    using System.Collections.Generic;
+    using AlgernonCommons;
+    using ColossalFramework.Plugins;
+
     /// <summary>
-    /// Class that manages interactions with other mods, including compatibility and functionality checks.
+    /// Class that manages interactions with other mods.
     /// </summary>
     internal static class ModUtils
     {
@@ -20,140 +22,12 @@ namespace ACME
         // Move It methods.
         internal static MethodInfo miGetTotalBounds, miGetAngle;
 
-
-        /// <summary>
-        /// Checks for any known fatal mod conflicts.
-        /// </summary>
-        /// <returns>True if a mod conflict was detected, false otherwise</returns>
-        internal static bool IsModConflict()
-        {
-            // Initialise flag and list of conflicting mods.
-            bool conflictDetected = false;
-            conflictingModNames = new List<string>();
-
-            // Iterate through the full list of plugins.
-            foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
-            {
-                foreach (Assembly assembly in plugin.GetAssemblies())
-                {
-                    switch (assembly.GetName().Name)
-                    {
-                        case "CameraPositions":
-                            // Camera Positions Utility, but only if enabled.
-                            if (plugin.isEnabled)
-                            {
-                                conflictDetected = true;
-                                conflictingModNames.Add("Camera Positions Utility");
-                            }
-                            break;
-                        case "ZoomIt":
-                            // Zoom It, but only if enabled.
-                            if (plugin.isEnabled)
-                            {
-                                conflictDetected = true;
-                                conflictingModNames.Add("Zoom It!");
-                            }
-                            break;
-                        case "ZoomToCursor":
-                            // Zoom To Cursor, but only if enabled.
-                            if (plugin.isEnabled)
-                            {
-                                conflictDetected = true;
-                                conflictingModNames.Add("Zoom To Cursor");
-                            }
-                            break;
-                        case "CameraMouseDrag9":
-                            // Mouse Drag Camera, but only if enabled.
-                            if (plugin.isEnabled)
-                            {
-                                Logging.KeyMessage("found CameraMouseDrag9");
-                                conflictDetected = true;
-                                conflictingModNames.Add("Mouse Drag Camera");
-                            }
-                            break;
-                        case "MouseDragCamera0":
-                            // Mouse Drag Camera Inverted, but only if enabled.
-                            if (plugin.isEnabled)
-                            {
-                                Logging.KeyMessage("found MouseDragCamera0");
-                                conflictDetected = true;
-                                conflictingModNames.Add("Mouse Drag Camera Inverted");
-                            }
-                            break;
-                        case "VanillaGarbageBinBlocker":
-                            // Garbage Bin Controller
-                            conflictDetected = true;
-                            conflictingModNames.Add("Garbage Bin Controller");
-                            break;
-                        case "Painter":
-                            // Painter - this one is trickier because both Painter and Repaint use Painter.dll (thanks to CO savegame serialization...)
-                            if (plugin.userModInstance.GetType().ToString().Equals("Painter.UserMod"))
-                            {
-                                conflictDetected = true;
-                                conflictingModNames.Add("Painter");
-                            }
-                            break;
-                    }
-                }
-            }
-
-            // Was a conflict detected?
-            if (conflictDetected)
-            {
-                // Yes - log each conflict.
-                foreach (string conflictingMod in conflictingModNames)
-                {
-                    Logging.Error("Conflicting mod found: ", conflictingMod);
-                }
-                Logging.Error("exiting due to mod conflict");
-            }
-
-            return conflictDetected;
-        }
-
-
-        /// <summary>
-        /// Returns the filepath of the current mod assembly.
-        /// </summary>
-        /// <returns>Mod assembly filepath</returns>
-        internal static string GetAssemblyPath()
-        {
-            // Get list of currently active plugins.
-            IEnumerable<PluginManager.PluginInfo> plugins = PluginManager.instance.GetPluginsInfo();
-
-            // Iterate through list.
-            foreach (PluginManager.PluginInfo plugin in plugins)
-            {
-                try
-                {
-                    // Get all (if any) mod instances from this plugin.
-                    IUserMod[] mods = plugin.GetInstances<IUserMod>();
-
-                    // Check to see if the primary instance is this mod.
-                    if (mods.FirstOrDefault() is ACMEMod)
-                    {
-                        // Found it! Return path.
-                        return plugin.modPath;
-                    }
-                }
-                catch
-                {
-                    // Don't care.
-                }
-            }
-
-            // If we got here, then we didn't find the assembly.
-            Logging.Error("assembly path not found");
-            throw new FileNotFoundException(ACMEMod.ModName + ": assembly path not found!");
-        }
-
-
         /// <summary>
         /// Checks to see if another mod is installed and enabled, based on a provided assembly name, and if so, returns the assembly reference.
         /// Case-sensitive!  PloppableRICO is not the same as ploppablerico!
         /// </summary>
-        /// <param name="assemblyName">Name of the mod assembly</param>
-        /// <returns>Assembly reference if target is found and enabled, null otherwise</returns>
+        /// <param name="assemblyName">Name of the mod assembly.</param>
+        /// <returns>Assembly reference if target is found and enabled, null otherwise.</returns>
         internal static Assembly GetEnabledAssembly(string assemblyName)
         {
             // Iterate through the full list of plugins.
@@ -178,7 +52,6 @@ namespace ACME
             return null;
         }
 
-
         /// <summary>
         /// Attempts to find the GetTotalBounds and GetAngle methods of Move It's current action item.
         /// </summary>
@@ -187,7 +60,7 @@ namespace ACME
             Logging.KeyMessage("Attempting to find Move It");
 
             // Get assembly.
-            Assembly miAssembly = ModUtils.GetEnabledAssembly("MoveIt");
+            Assembly miAssembly = GetEnabledAssembly("MoveIt");
 
             if (miAssembly == null)
             {

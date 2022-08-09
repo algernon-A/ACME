@@ -1,16 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using HarmonyLib;
-
+﻿// <copyright file="FollowTarget.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
+    using AlgernonCommons;
+    using HarmonyLib;
+
     /// <summary>
     /// Harmony patch to implement enabling/disabling of automatic camera rotation changes when following a target.
     /// </summary>
     public static class FollowTargetPatch
     {
+        /// <summary>
+        /// Transpiler for CameraCotnroller.FollowTarget to disable automatic camera rotation changes when following a target.
+        /// Manually applied.
+        /// </summary>
+        /// <param name="instructions">Original ILCode.</param>
+        /// <param name="original">Original (target) method.</param>
+        /// <returns>Patched ILCode.</returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
         {
             Logging.Message("transpiling ", original.DeclaringType, ":", original.Name);

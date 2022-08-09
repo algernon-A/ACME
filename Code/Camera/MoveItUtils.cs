@@ -1,8 +1,13 @@
-﻿using UnityEngine;
-
+﻿// <copyright file="MoveItUtils.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using AlgernonCommons;
+    using UnityEngine;
+
     /// <summary>
     /// Class to handle integration with Move It mod.
     /// </summary>

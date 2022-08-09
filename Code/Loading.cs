@@ -1,71 +1,79 @@
-﻿using ICities;
-using ACME.MessageBox;
-
+﻿// <copyright file="Loading.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using AlgernonCommons;
+    using AlgernonCommons.Notifications;
+    using AlgernonCommons.Translation;
+    using AlgernonCommons.UI;
+    using ICities;
+
     /// <summary>
     /// Main loading class: the mod runs from here.
     /// </summary>
     public class Loading : LoadingExtensionBase
     {
         // Internal flags.
-        internal static bool isLoaded = false;
-        private static bool isModEnabled = false;
-        private bool harmonyLoaded = false;
+        private bool _isModEnabled = false;
+        private bool _conflictingMod = false;
+        private bool _harmonyLoaded = false;
 
-        // Used to flag if conflicting mods are running.
-        private static bool conflictingMod = false;
+        /// <summary>
+        /// Gets a value indicating whether the mod has finished loading.
+        /// </summary>
+        internal static bool IsLoaded { get; private set; } = false;
 
         /// <summary>
         /// Called by the game when the mod is initialised at the start of the loading process.
         /// </summary>
-        /// <param name="loading">Loading mode (e.g. game, editor, scenario, etc.)</param>
+        /// <param name="loading">Loading mode (e.g. game, editor, scenario, etc.).</param>
         public override void OnCreated(ILoading loading)
         {
             base.OnCreated(loading);
 
             // Ensure that Harmony patches have been applied.
-            harmonyLoaded = Patcher.Patched;
-            if (!harmonyLoaded)
+            _harmonyLoaded = Patcher.Instance.Patched;
+            if (!_harmonyLoaded)
             {
-                isModEnabled = false;
+                _isModEnabled = false;
                 Logging.Error("Harmony patches not applied; aborting");
                 return;
             }
 
             // Check for mod conflicts.
-            if (ModUtils.IsModConflict())
+            if (ConflictDetection.IsModConflict())
             {
                 // Conflict detected.
-                conflictingMod = true;
-                isModEnabled = false;
+                _conflictingMod = true;
+                _isModEnabled = false;
 
                 // Unload Harmony patches and exit before doing anything further.
-                Patcher.UnpatchAll();
+                Patcher.Instance.UnpatchAll();
                 return;
             }
 
             // Passed all checks - okay to load (if we haven't already fo some reason).
-            if (!isModEnabled)
+            if (!_isModEnabled)
             {
-                isModEnabled = true;
-                Logging.KeyMessage("v " + ACMEMod.Version + " loading");
+                _isModEnabled = true;
+                Logging.KeyMessage(Mod.Instance.Name, " loading");
             }
         }
-
 
         /// <summary>
         /// Called by the game when level loading is complete.
         /// </summary>
-        /// <param name="mode">Loading mode (e.g. game, editor, scenario, etc.)</param>
+        /// <param name="mode">Loading mode (e.g. game, editor, scenario, etc.).</param>
         public override void OnLevelLoaded(LoadMode mode)
         {
             // Check to see that Harmony 2 was properly loaded.
-            if (!harmonyLoaded)
+            if (!_harmonyLoaded)
             {
                 // Harmony 2 wasn't loaded; display warning notification and exit.
-                ListMessageBox harmonyBox = MessageBoxBase.ShowModal<ListMessageBox>();
+                ListNotification harmonyBox = NotificationBase.ShowNotification<ListNotification>();
 
                 // Key text items.
                 harmonyBox.AddParas(Translations.Translate("ERR_HAR0"), Translations.Translate("CAM_ERR_HAR"), Translations.Translate("CAM_ERR_FAT"), Translations.Translate("ERR_HAR1"));
@@ -81,10 +89,10 @@ namespace ACME
             }
 
             // Check to see if a conflicting mod has been detected.
-            if (conflictingMod)
+            if (_conflictingMod)
             {
                 // Mod conflict detected - display warning notification and exit.
-                ListMessageBox modConflictBox = MessageBoxBase.ShowModal<ListMessageBox>();
+                ListNotification modConflictBox = NotificationBase.ShowNotification<ListNotification>();
 
                 // Key text items.
                 modConflictBox.AddParas(Translations.Translate("ERR_CON0"), Translations.Translate("CAM_ERR_FAT"), Translations.Translate("CAM_ERR_CON0"), Translations.Translate("ERR_CON1"));
@@ -102,13 +110,13 @@ namespace ACME
             base.OnLevelLoaded(mode);
 
             // Load mod if it's enabled.
-            if (isModEnabled)
+            if (_isModEnabled)
             {
                 // Apply camera settings.
                 CameraUtils.ApplySettings();
 
                 // Set up options panel event handler (need to redo this now that options panel has been reset after loading into game).
-                OptionsPanel.OptionsEventHook();
+                OptionsPanelManager<OptionsPanel>.OptionsEventHook();
 
                 // Add UUI button.
                 UUI.Setup();

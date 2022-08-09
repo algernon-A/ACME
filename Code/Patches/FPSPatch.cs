@@ -1,14 +1,20 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using UnityEngine;
-using ColossalFramework;
-using ColossalFramework.UI;
-using HarmonyLib;
-
+﻿// <copyright file="FPSPatch.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using System;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using AlgernonCommons;
+    using AlgernonCommons.Keybinding;
+    using ColossalFramework;
+    using ColossalFramework.UI;
+    using HarmonyLib;
+    using UnityEngine;
+
     /// <summary>
     /// Harmony patch to replace CameraControler.LateUpdate for FPS mode.
     /// </summary>
@@ -20,25 +26,25 @@ namespace ACME
         internal const float MaxFPSKeySpeed = 4.0f;
 
         // Coontrol keys - absolute movement.
-        public static KeybindingKey absUp = new KeybindingKey(KeyCode.PageUp);
-        public static KeybindingKey absDown = new KeybindingKey(KeyCode.PageDown);
-        public static KeybindingKey absLeft = new KeybindingKey(KeyCode.LeftArrow);
-        public static KeybindingKey absRight = new KeybindingKey(KeyCode.RightArrow);
-        public static KeybindingKey absForward = new KeybindingKey(KeyCode.UpArrow);
-        public static KeybindingKey absBack = new KeybindingKey(KeyCode.DownArrow);
+        internal static KeyOnlyBinding s_absUp = new KeyOnlyBinding(KeyCode.PageUp);
+        internal static KeyOnlyBinding s_absDown = new KeyOnlyBinding(KeyCode.PageDown);
+        internal static KeyOnlyBinding s_absLeft = new KeyOnlyBinding(KeyCode.LeftArrow);
+        internal static KeyOnlyBinding s_absRight = new KeyOnlyBinding(KeyCode.RightArrow);
+        internal static KeyOnlyBinding s_absForward = new KeyOnlyBinding(KeyCode.UpArrow);
+        internal static KeyOnlyBinding s_absBack = new KeyOnlyBinding(KeyCode.DownArrow);
 
         // Control keys - movement.
-        public static KeybindingKey cameraMoveForward = new KeybindingKey(KeyCode.W);
-        public static KeybindingKey cameraMoveBackward = new KeybindingKey(KeyCode.S);
-        public static KeybindingKey cameraMoveLeft = new KeybindingKey(KeyCode.A);
-        public static KeybindingKey cameraMoveRight = new KeybindingKey(KeyCode.D);
+        internal static KeyOnlyBinding s_cameraMoveForward = new KeyOnlyBinding(KeyCode.W);
+        internal static KeyOnlyBinding s_cameraMoveBackward = new KeyOnlyBinding(KeyCode.S);
+        internal static KeyOnlyBinding s_cameraMoveLeft = new KeyOnlyBinding(KeyCode.A);
+        internal static KeyOnlyBinding s_cameraMoveRight = new KeyOnlyBinding(KeyCode.D);
 
         // Control keys - rotation.
-        public static KeybindingKey cameraRotateLeft = new KeybindingKey(KeyCode.Q);
-        public static KeybindingKey cameraRotateRight = new KeybindingKey(KeyCode.E);
-        public static KeybindingKey cameraRotateUp = new KeybindingKey(KeyCode.R);
-        public static KeybindingKey cameraRotateDown = new KeybindingKey(KeyCode.F);
-        public static KeybindingKey cameraMouseRotate = new KeybindingKey(KeyCode.Mouse2);
+        internal static KeyOnlyBinding s_cameraRotateLeft = new KeyOnlyBinding(KeyCode.Q);
+        internal static KeyOnlyBinding s_cameraRotateRight = new KeyOnlyBinding(KeyCode.E);
+        internal static KeyOnlyBinding s_cameraRotateUp = new KeyOnlyBinding(KeyCode.R);
+        internal static KeyOnlyBinding s_cameraRotateDown = new KeyOnlyBinding(KeyCode.F);
+        internal static KeyOnlyBinding s_cameraMouseRotate = new KeyOnlyBinding(KeyCode.Mouse2);
 
         // Delegates to private methods.
         public delegate void UpdateFreeCameraDelegate(CameraController __instance);
@@ -47,9 +53,8 @@ namespace ACME
         // Speed settings.
         private static float keyTurnSpeed = 1.0f, keyMoveSpeed = 1.0f, mouseTurnSpeed = 1.0f;
 
-
         /// <summary>
-        // FPS turn speed.
+        /// Gets or sets FPS turn speed.
         /// </summary>
         internal static float KeyTurnSpeed
         {
@@ -58,9 +63,8 @@ namespace ACME
             set => keyTurnSpeed = Mathf.Clamp(value, MinFPSKeySpeed, MaxFPSKeySpeed);
         }
 
-
         /// <summary>
-        // FPS move speed.
+        /// Gets or sets FPS move speed.
         /// </summary>
         internal static float KeyMoveSpeed
         {
@@ -69,9 +73,8 @@ namespace ACME
             set => keyMoveSpeed = Mathf.Clamp(value, MinFPSKeySpeed, MaxFPSKeySpeed);
         }
 
-
         /// <summary>
-        // FPS move speed.
+        /// Gets or sets FPS mouse turnng speed.
         /// </summary>
         internal static float MouseTurnSpeed
         {
@@ -80,13 +83,12 @@ namespace ACME
             set => mouseTurnSpeed = Mathf.Clamp(value, MinFPSKeySpeed, MaxFPSKeySpeed);
         }
 
-
         /// <summary>
         /// Pre-emptive Harmony prefix for CameraController.LateUpdate to implement free FPS mod.
         /// Applied and unapplied manually.
         /// </summary>
-        /// <param name="__instance">CameraController instance reference</param>
-        /// <returns>Always false (never execute original method)</returns>
+        /// <param name="__instance">CameraController instance reference.</param>
+        /// <returns>Always false (never execute original method).</returns>
         public static bool LateUpdate(CameraController __instance)
         {
             // Set starting values.
@@ -106,69 +108,68 @@ namespace ACME
             {
                 // Rotation keys.
                 float rotationSpeed = 60f * keyTurnSpeed;
-                if (Input.GetKey(cameraRotateLeft.key))
+                if (Input.GetKey(s_cameraRotateLeft.KeyCode))
                 {
                     cameraRotation.x -= rotationSpeed * Time.deltaTime;
                 }
-                if (Input.GetKey(cameraRotateRight.key))
+                if (Input.GetKey(s_cameraRotateRight.KeyCode))
                 {
                     cameraRotation.x += rotationSpeed * Time.deltaTime;
                 }
-                if (Input.GetKey(cameraRotateUp.key))
+                if (Input.GetKey(s_cameraRotateUp.KeyCode))
                 {
                     cameraRotation.y -= rotationSpeed * Time.deltaTime;
                 }
-                if (Input.GetKey(cameraRotateDown.key))
+                if (Input.GetKey(s_cameraRotateDown.KeyCode))
                 {
                     cameraRotation.y += rotationSpeed * Time.deltaTime;
                 }
 
                 // Movement keys - relative.
                 bool altDown = Input.GetKey(KeyCode.LeftAlt) | Input.GetKey(KeyCode.RightAlt) | Input.GetKey(KeyCode.AltGr);
-                if (Input.GetKey(cameraMoveForward.key))
+                if (Input.GetKey(s_cameraMoveForward.KeyCode))
                 {
                     direction += Vector3.forward * keyMoveSpeed;
                 }
-                if (Input.GetKey(cameraMoveBackward.key))
+                if (Input.GetKey(s_cameraMoveBackward.KeyCode))
                 {
                     direction += Vector3.back * keyMoveSpeed;
                 }
-                if (Input.GetKey(cameraMoveLeft.key))
+                if (Input.GetKey(s_cameraMoveLeft.KeyCode))
                 {
                     direction += Vector3.left * keyMoveSpeed;
                 }
-                if (Input.GetKey(cameraMoveRight.key))
+                if (Input.GetKey(s_cameraMoveRight.KeyCode))
                 {
                     direction += Vector3.right * keyMoveSpeed;
                 }
 
                 // Movement keys - absolute.
-                if (Input.GetKey(absForward.key))
+                if (Input.GetKey(s_absForward.KeyCode))
                 {
                     absDirection += Vector3.forward * keyMoveSpeed;
                 }
-                if (Input.GetKey(absBack.key))
+                if (Input.GetKey(s_absBack.KeyCode))
                 {
                     absDirection += Vector3.back * keyMoveSpeed;
                 }
-                if (Input.GetKey(absLeft.key))
+                if (Input.GetKey(s_absLeft.KeyCode))
                 {
                     absDirection += Vector3.left * keyMoveSpeed;
                 }
-                if (Input.GetKey(absRight.key))
+                if (Input.GetKey(s_absRight.KeyCode))
                 {
                     absDirection += Vector3.right * keyMoveSpeed;
                 }
-                if (Input.GetKey(absUp.key))
+                if (Input.GetKey(s_absUp.KeyCode))
                 {
                     absDirection += Vector3.up * keyMoveSpeed;
                 }
-                if (Input.GetKey(absDown.key))
+                if (Input.GetKey(s_absDown.KeyCode))
                 {
                     absDirection += Vector3.down * keyMoveSpeed;
                 }
             }
-
 
             // Ignore mouse input if mouse is inside UI.
             if (!Singleton<ToolManager>.instance.m_properties.IsInsideUI)
@@ -177,7 +178,7 @@ namespace ACME
                 direction += Vector3.forward * Input.GetAxis("Mouse ScrollWheel") * 10f * keyMoveSpeed;
 
                 // Mouse rotation.
-                if (Input.GetKey(cameraMouseRotate.key) || SteamController.GetDigitalAction(SteamController.DigitalInput.RotateMouse))
+                if (Input.GetKey(s_cameraMouseRotate.KeyCode) || SteamController.GetDigitalAction(SteamController.DigitalInput.RotateMouse))
                 {
                     float speed = mouseTurnSpeed * 2f;
                     cameraRotation.x += Input.GetAxis("Mouse X") * speed;
@@ -227,11 +228,10 @@ namespace ACME
             return false;
         }
 
-
         /// <summary>
         /// Harmony reverse patch to access private method CameraController.UpdateCurrentPosition.
         /// </summary>
-		/// <param name="instance">CameraController instance</param>
+		/// <param name="instance">CameraController instance.</param>
         [HarmonyReversePatch]
         [HarmonyPatch((typeof(CameraController)), "UpdateCurrentPosition")]
         [MethodImpl(MethodImplOptions.NoInlining)]

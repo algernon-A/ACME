@@ -1,9 +1,16 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
-
+﻿// <copyright file="GeneralOptions.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using AlgernonCommons.Keybinding;
+    using AlgernonCommons.Translation;
+    using AlgernonCommons.UI;
+    using ColossalFramework.UI;
+    using UnityEngine;
+
     /// <summary>
     /// Options panel for setting basic mod options.
     /// </summary>
@@ -14,7 +21,6 @@ namespace ACME
         private const float LeftMargin = 24f;
         private const float GroupMargin = 40f;
 
-
         /// <summary>
         /// Adds mod options tab to tabstrip.
         /// </summary>
@@ -22,8 +28,8 @@ namespace ACME
         /// <param name="tabIndex">Index number of tab</param>
         internal GeneralOptions(UITabstrip tabStrip, int tabIndex)
         {
-            // Add tab and helper.
-            UIPanel panel = PanelUtils.AddTab(tabStrip, Translations.Translate("CAM_OPT_GEN"), tabIndex, false);
+            // Add tab.
+            UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("CAM_OPT_GEN"), tabIndex, out UIButton _, autoLayout: false);
 
             // Add controls.
 
@@ -35,22 +41,22 @@ namespace ACME
             languageDropDown.eventSelectedIndexChanged += (control, index) =>
             {
                 Translations.Index = index;
-                OptionsPanel.LocaleChanged();
+                OptionsPanelManager<OptionsPanel>.LocaleChanged();
             };
             languageDropDown.parent.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += languageDropDown.parent.height + Margin;
 
             // Hotkey control.
             OptionsKeymapping uuiKeyMapping = languageDropDown.parent.parent.gameObject.AddComponent<UUIKeymapping>();
-            uuiKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += uuiKeyMapping.uIPanel.height + Margin;
+            uuiKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += uuiKeyMapping.Panel.height + Margin;
 
             // MoveIt key control.
             OptionsKeymapping miKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             miKeyMapping.Label = Translations.Translate("KEY_GMI");
             miKeyMapping.Binding = UIThreading.moveItKey;
-            miKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += miKeyMapping.uIPanel.height + Margin;
+            miKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += miKeyMapping.Panel.height + Margin;
 
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
@@ -97,15 +103,15 @@ namespace ACME
 
             // Follow disasters checkbox.
             UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
-            disableDisasterGoto.isChecked = FollowDisasterPatch.followDisasters;
-            disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.followDisasters = value; };
+            disableDisasterGoto.isChecked = FollowDisasterPatch.FollowDisasters;
+            disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.FollowDisasters = value; };
             currentY += disableDisasterGoto.height + Margin;
 
             // Zoom to cursor.
             UICheckBox zoomToCursorCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_ZTC"));
             zoomToCursorCheck.isChecked = ModSettings.ZoomToCursor;
             zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
-            zoomToCursorCheck.tooltipBox = TooltipUtils.TooltipBox;
+            zoomToCursorCheck.tooltipBox = UIToolTips.WordWrapToolTip;
             zoomToCursorCheck.tooltip = Translations.Translate("CAM_OPT_ZTC_TIP");
             currentY += zoomToCursorCheck.height + Margin;
 
@@ -115,17 +121,16 @@ namespace ACME
             disableFollowRotationCheck.eventCheckChanged += (control, value) => { ModSettings.DisableFollowRotation = value; };
         }
 
-
         /// <summary>
         /// Adds a distance slider.
         /// </summary>
-        /// <param name="parent">Parent component</param>
-        /// <param name="yPos">Relative y-position indicator (will be incremented with slider height)</param>
-        /// <param name="labelKey">Translation key for slider label</param>
-        /// <param name="minValue">Slider minimum value</param>
-        /// <param name="maxValue">Slider maximum value</param>
-        /// <param name="initialValue">Initial slider value</param>
-        /// <returns>New delay slider with attached game-time label</returns>
+        /// <param name="parent">Parent component.</param>
+        /// <param name="yPos">Relative y-position indicator (will be incremented with slider height).</param>
+        /// <param name="labelKey">Translation key for slider label.</param>
+        /// <param name="minValue">Slider minimum value.</param>
+        /// <param name="maxValue">Slider maximum value.</param>
+        /// <param name="initialValue">Initial slider value.</param>
+        /// <returns>New delay slider with attached game-time label.</returns>
         private UISlider AddDistanceSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
@@ -145,17 +150,16 @@ namespace ACME
             return newSlider;
         }
 
-
         /// <summary>
         /// Adds a generic value slider.
         /// </summary>
-        /// <param name="parent">Parent component</param>
-        /// <param name="yPos">Relative y-position indicator (will be incremented with slider height)</param>
-        /// <param name="labelKey">Translation key for slider label</param>
-        /// <param name="minValue">Slider minimum value</param>
-        /// <param name="maxValue">Slider maximum value</param>
-        /// <param name="initialValue">Initial slider value</param>
-        /// <returns>New delay slider with attached game-time label</returns>
+        /// <param name="parent">Parent component.</param>
+        /// <param name="yPos">Relative y-position indicator (will be incremented with slider height).</param>
+        /// <param name="labelKey">Translation key for slider label.</param>
+        /// <param name="minValue">Slider minimum value.</param>
+        /// <param name="maxValue">Slider maximum value.</param>
+        /// <param name="initialValue">Initial slider value.</param>
+        /// <returns>New delay slider with attached game-time labe.l</returns>
         private UISlider AddSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
@@ -175,7 +179,6 @@ namespace ACME
             return newSlider;
         }
 
-
         /// <summary>
         /// Sets the distance value label text for a distance slider.
         /// </summary>
@@ -189,7 +192,6 @@ namespace ACME
                 label.text = value.RoundToNearest(0.1f).ToString("N1") + "m";
             }
         }
-
 
         /// <summary>
         /// Sets the value label text for a generic slider.

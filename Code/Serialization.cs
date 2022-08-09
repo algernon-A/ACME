@@ -1,18 +1,21 @@
-﻿using System.IO;
-using ICities;
-
-
-namespace ACME
+﻿namespace ACME
 {
+    using System.IO;
+    using AlgernonCommons;
+    using ICities;
+
     /// <summary>
     /// Handles savegame data saving and loading.
     /// </summary>
     public class Serializer : SerializableDataExtensionBase
     {
-        // Unique data ID.
-        private readonly string dataID = "ACME";
+        /// <summary>
+        /// Current savegame data version.
+        /// </summary>
         public const int DataVersion = 0;
 
+        // Unique data ID.
+        private readonly string dataID = "ACME";
 
         /// <summary>
         /// Serializes data to the savegame.
@@ -36,7 +39,6 @@ namespace ACME
                 }
             }
         }
-
 
         /// <summary>
         /// Deserializes data from a savegame (or initialises new data structures when none available).

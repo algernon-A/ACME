@@ -1,31 +1,34 @@
-﻿using System;
-using System.Reflection;
-using UnityEngine;
-using ColossalFramework;
-
+﻿// <copyright file="FPSMode.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using System;
+    using System.Reflection;
+    using AlgernonCommons;
+    using UnityEngine;
+
     /// <summary>
     ///  Class to manage free FPS camera mode.
     /// </summary>
     internal static class FPSMode
     {
         // Status flag.
-        internal static bool modeActive = false;
-
+        internal static bool s_modeActive = false;
 
         /// <summary>
         /// Toggles FPS mode.
         /// </summary>
         internal static void ToggleMode()
         {
-            modeActive = !modeActive;
+            s_modeActive = !s_modeActive;
 
             CameraController controller = CameraUtils.Controller;
 
             // Get assigned controls if we're activating.
-            if (modeActive)
+            if (s_modeActive)
             {
                 // Adjust target position to match current position.
                 controller.ClearTarget();
@@ -63,10 +66,10 @@ namespace ACME
             }
 
             // Apply/remove FPS patch.
-            Patcher.PatchFPS(modeActive);
+            Patcher.Instance.PatchFPS(s_modeActive);
 
             // Log message.
-            Logging.Message("FPS mode ", modeActive ? "enabled" : "disabled");
+            Logging.Message("FPS mode ", s_modeActive ? "enabled" : "disabled");
         }
     }
 }

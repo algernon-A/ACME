@@ -1,31 +1,58 @@
-﻿using System.Reflection;
-using HarmonyLib;
-using CitiesHarmony.API;
-
+﻿// <copyright file="Patcher.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using System.Reflection;
+    using AlgernonCommons;
+    using AlgernonCommons.Patching;
+    using CitiesHarmony.API;
+    using HarmonyLib;
+
     /// <summary>
     /// Class to manage the mod's Harmony patches.
     /// </summary>
-    public static class Patcher
+    public class Patcher : PatcherBase
     {
-        // Unique harmony identifier.
-        private const string harmonyID = "com.github.algernon-A.csl.cam";
-
         // Flags.
-        internal static bool Patched => _patched;
-        private static bool _patched = false;
-        private static bool fpsPatched = false, zoomToCursorPatched = false, disableFollowRotationPatched = false;
+        private static bool s_fpsPatched = false;
+        private static bool s_zoomToCursorPatched = false;
+        private static bool s_disableFollowRotationPatched = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Patcher"/> class.
+        /// </summary>
+        /// <param name="harmonyID">This mod's unique Harmony identifier.</param>
+        public Patcher(string harmonyID)
+            : base(harmonyID)
+        {
+        }
 
+        /// <summary>
+        /// Gets the active instance reference.
+        /// </summary>
+        public static new Patcher Instance
+        {
+            get
+            {
+                // Auto-initializing getter.
+                if (s_instance == null)
+                {
+                    s_instance = new Patcher(PatcherMod.Instance.HarmonyID);
+                }
+
+                return s_instance as Patcher;
+            }
+        }
         /// <summary>
         /// Apply all Harmony patches.
         /// </summary>
-        public static void PatchAll()
+        public override void PatchAll()
         {
             // Don't do anything if already patched.
-            if (!_patched)
+            if (!Patched)
             {
                 // Ensure Harmony is ready before patching.
                 if (HarmonyHelper.IsHarmonyInstalled)
@@ -33,18 +60,18 @@ namespace ACME
                     Logging.KeyMessage("deploying Harmony patches");
 
                     // Apply all annotated patches and update flag.
-                    Harmony harmonyInstance = new Harmony(harmonyID);
+                    Harmony harmonyInstance = new Harmony(HarmonyID);
                     harmonyInstance.PatchAll();
-                    _patched = true;
+                    Patched = true;
 
                     // Apply zoom to mouse cursor if set.
-                    if (zoomToCursorPatched != ModSettings.ZoomToCursor)
+                    if (s_zoomToCursorPatched != ModSettings.ZoomToCursor)
                     {
                         PatchZoomToCursor(ModSettings.ZoomToCursor);
                     }
 
                     // Apply disable follow rotation if set.
-                    if (disableFollowRotationPatched != ModSettings.DisableFollowRotation)
+                    if (s_disableFollowRotationPatched != ModSettings.DisableFollowRotation)
                     {
                         PatchZoomToCursor(ModSettings.DisableFollowRotation);
                     }
@@ -56,33 +83,14 @@ namespace ACME
             }
         }
 
-
-        /// <summary>
-        /// Remove all Harmony patches.
-        /// </summary>
-        public static void UnpatchAll()
-        {
-            // Only unapply if patches appplied.
-            if (_patched)
-            {
-                Logging.KeyMessage("reverting Harmony patches");
-
-                // Unapply patches, but only with our HarmonyID.
-                Harmony harmonyInstance = new Harmony(harmonyID);
-                harmonyInstance.UnpatchAll(harmonyID);
-                _patched = false;
-            }
-        }
-
-
         /// <summary>
         /// Applies or unapplies free FPS mode CameraController patch.
         /// </summary>
-        /// <param name="active">True to apply patch, false to unapply</param>
-        internal static void PatchFPS(bool active)
+        /// <param name="active">True to apply patch, false to unapply.</param>
+        internal void PatchFPS(bool active)
         {
             // Don't do anything if we're already at the current state.
-            if (fpsPatched != active)
+            if (s_fpsPatched != active)
             {
                 // Ensure Harmony is ready before patching.
                 if (HarmonyHelper.IsHarmonyInstalled)
@@ -107,7 +115,7 @@ namespace ACME
                         return;
                     }
 
-                    Harmony harmonyInstance = new Harmony(harmonyID);
+                    Harmony harmonyInstance = new Harmony(HarmonyID);
 
                     // Apply or remove patches according to flag.
                     if (active)
@@ -120,7 +128,7 @@ namespace ACME
                     }
 
                     // Update status flag.
-                    fpsPatched = active;
+                    s_fpsPatched = active;
                 }
                 else
                 {
@@ -129,15 +137,14 @@ namespace ACME
             }
         }
 
-
         /// <summary>
         /// Applies or unapplies zoom to cursor CameraController patches.
         /// </summary>
-        /// <param name="active">True to apply patch, false to unapply</param>
-        internal static void PatchZoomToCursor(bool active)
+        /// <param name="active">True to apply patch, false to unapply.</param>
+        internal void PatchZoomToCursor(bool active)
         {
             // Don't do anything if we're already at the current state.
-            if (zoomToCursorPatched != active)
+            if (s_zoomToCursorPatched != active)
             {
                 // Ensure Harmony is ready before patching.
                 if (HarmonyHelper.IsHarmonyInstalled)
@@ -162,7 +169,7 @@ namespace ACME
                         return;
                     }
 
-                    Harmony harmonyInstance = new Harmony(harmonyID);
+                    Harmony harmonyInstance = new Harmony(HarmonyID);
 
                     // Apply or remove patches according to flag.
                     if (active)
@@ -177,7 +184,7 @@ namespace ACME
                     }
 
                     // Update status flag.
-                    zoomToCursorPatched = active;
+                    s_zoomToCursorPatched = active;
                 }
                 else
                 {
@@ -186,15 +193,14 @@ namespace ACME
             }
         }
 
-
         /// <summary>
         /// Applies or unapplies transpiler to disable rotation changes while following a target.
         /// </summary>
-        /// <param name="active">True to apply patch, false to unapply</param>
-        internal static void PatchFollowRotation(bool active)
+        /// <param name="active">True to apply patch, false to unapply.</param>
+        internal void PatchFollowRotation(bool active)
         {
             // Don't do anything if we're already at the current state.
-            if (disableFollowRotationPatched != active)
+            if (s_disableFollowRotationPatched != active)
             {
                 // Ensure Harmony is ready before patching.
                 if (HarmonyHelper.IsHarmonyInstalled)
@@ -215,7 +221,7 @@ namespace ACME
                         return;
                     }
 
-                    Harmony harmonyInstance = new Harmony(harmonyID);
+                    Harmony harmonyInstance = new Harmony(HarmonyID);
 
                     // Apply or remove patches according to flag.
                     if (active)
@@ -228,7 +234,7 @@ namespace ACME
                     }
 
                     // Update status flag.
-                    disableFollowRotationPatched = active;
+                    s_disableFollowRotationPatched = active;
                 }
                 else
                 {

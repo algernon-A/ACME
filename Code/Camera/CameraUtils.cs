@@ -1,9 +1,14 @@
-﻿using System.Reflection;
-using UnityEngine;
-
+﻿// <copyright file="CameraUtils.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+	using System.Reflection;
+	using AlgernonCommons;
+	using UnityEngine;
+
 	/// <summary>
 	/// Utility class for changing camera settings.
 	/// </summary>
@@ -30,11 +35,10 @@ namespace ACME
 		private static Camera mainCamera;
 
 		// Initial camera position.
-		internal static SavedPosition initialPosition = default;
-
+		internal static CameraPositions.SavedPosition initialPosition = default;
 
 		/// <summary>
-		/// CameraController reference.
+		/// Gets the CameraController reference.
 		/// </summary>
 		internal static CameraController Controller
         {
@@ -49,9 +53,8 @@ namespace ACME
 			}
         }
 
-
 		/// <summary>
-		/// Main camera reference.
+		/// Gets the main camera reference.
 		/// </summary>
 		internal static Camera MainCamera
         {
@@ -66,9 +69,8 @@ namespace ACME
 			}
         }
 
-
 		/// <summary>
-		/// Sets the camera controllers base near clip plane base distance, in metres.
+		/// Gets or sets the camera controllers base near clip plane base distance, in metres.
 		/// Applied to the game's camera controller (not directly to the main camera), as that clobbers the camera's nearClipPlane every LateUpdate.
 		/// </summary>
 		public static float NearClipPlane
@@ -88,7 +90,6 @@ namespace ACME
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// Applies the current cammera settings to the game camera.

@@ -1,14 +1,18 @@
-﻿using UnityEngine;
-using ColossalFramework;
-using HarmonyLib;
-
+﻿// <copyright file="HeightOffset.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+	using UnityEngine;
+	using ColossalFramework;
+	using HarmonyLib;
+
 	/// <summary>
 	/// Harmony patch to implement collision check disabling and terrain proximity customization.
 	/// </summary>
-    [HarmonyPatch(typeof(CameraController), "CalculateCameraHeightOffset")]
+	[HarmonyPatch(typeof(CameraController), "CalculateCameraHeightOffset")]
     public static class HeightOffset
     {
 		// Terrain clearance bounds.
@@ -26,7 +30,7 @@ namespace ACME
 		private static float terrainClearanceModifier = -3.2f;
 
 		/// <summary>
-		/// Terrain clearance amount, in metres.
+		/// Gets or sets the camera terrain clearance amount, in metres.
 		/// </summary>
 		internal static float TerrainClearance
         {
@@ -44,10 +48,10 @@ namespace ACME
 		/// Pre-emptive Harmony Prefix patch to CameraController.CalculateCameraHeightOffset.
 		/// Implements selective collision checks and overrides terrain proximity limit.
 		/// </summary>
-		/// <param name="__result">Original method result</param>
-		/// <param name="worldPos">Camera world position</param>
-		/// <param name="distance">Target distance/param>
-		/// <returns>Always false (never execute original method)</returns>
+		/// <param name="__result">Original method result.</param>
+		/// <param name="worldPos">Camera world position.</param>
+		/// <param name="distance">Target distance.</param>
+		/// <returns>Always false (never execute original method).</returns>
 		public static bool Prefix(ref float __result, Vector3 worldPos, float distance)
         {
 			/// Calculate base offset, based on water bobbing setting.

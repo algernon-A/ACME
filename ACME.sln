@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACME", "ACME.csproj", "{12EC98AF-B96B-465A-91D7-53BC1E7B92E4}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AlgernonCommonsPatchingShared", "..\AlgernonCommons\AlgernonCommonsPatchingShared.shproj", "{25AEF446-6F0D-43A8-BB84-D1306789B68C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,5 +23,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4B4D278-DCDA-4A88-B8CB-E9228844855E}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems*{12ec98af-b96b-465a-91d7-53bc1e7b92e4}*SharedItemsImports = 5
+		..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems*{25aef446-6f0d-43a8-bb84-d1306789b68c}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

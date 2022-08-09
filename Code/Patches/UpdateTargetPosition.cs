@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using UnityEngine;
-using HarmonyLib;
-
+﻿// <copyright file="UpdateTargetPosition.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
+    using AlgernonCommons;
+    using HarmonyLib;
+    using UnityEngine;
+
     /// <summary>
     /// Harmony transpiler to allow camera angles above horizontal and implement variable movement speed multipliers.
     /// </summary>
@@ -19,21 +24,19 @@ namespace ACME
         internal const float MaxCameraSpeed = 70f;
 
         // Camera speed multiplier.
-        private static float cameraSpeed = 15f;
-
+        private static float s_cameraSpeed = 15f;
 
         /// <summary>
-        /// Camera speed multiplier.
+        /// Gets or sets the camera speed multiplier.
         /// </summary>
-        internal static float CameraSpeed { get => cameraSpeed; set => cameraSpeed = Mathf.Clamp(value, MinCameraSpeed, MaxCameraSpeed); }
-
+        internal static float CameraSpeed { get => s_cameraSpeed; set => s_cameraSpeed = Mathf.Clamp(value, MinCameraSpeed, MaxCameraSpeed); }
 
         /// <summary>
         /// Harmony transpiler to replace hardcoded camera angle limits and implement variable movement speed multipliers.
         /// Finds a bound check for 'if < 0 then =0' and replaces 0 with -90 (for camera angle) and inserts calls to custom movement multiplier methods.
         /// </summary>
-        /// <param name="instructions">Original ILCode</param>
-        /// <returns>Patched ILCode</returns>
+        /// <param name="instructions">Original ILCode.</param>
+        /// <returns>Patched ILCode.</returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             // Vector2 y field info.
@@ -163,28 +166,29 @@ namespace ACME
         /// <summary>
         /// Calculates the multiplier of key-based camera movement where appropriate.
         /// </summary>
-        /// <param name="baseMult">Base speed multiplier (calculated by game)</param>
-        /// <param name="instance">CameraController instance reference</param>
-        /// <returns>Speed multiplier for calculating target position update</returns>
-        public static float KeyMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 43f) ? baseMult : (baseMult * cameraSpeed / instance.m_currentSize);
+        /// <param name="baseMult">Base speed multiplier (calculated by game).</param>
+        /// <param name="instance">CameraController instance reference.</param>
+        /// <returns>Speed multiplier for calculating target position update.</returns>
+        public static float KeyMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 43f) ? baseMult : (baseMult * s_cameraSpeed / instance.m_currentSize);
 
 
         /// Calculates the multiplier of scroll whell-based camera movement where appropriate.
         /// </summary>
-        /// <param name="baseMult">Base speed multiplier (calculated by game)</param>
-        /// <param name="instance">CameraController instance reference</param>
-        /// <returns>Speed multiplier for calculating target position update</returns>
-        public static float ScrollMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 5f) ? baseMult : (baseMult * cameraSpeed / 2 / instance.m_currentSize);
+        /// <param name="baseMult">Base speed multiplier (calculated by game).</param>
+        /// <param name="instance">CameraController instance reference.</param>
+        /// <returns>Speed multiplier for calculating target position update.</returns>
+        public static float ScrollMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 5f) ? baseMult : (baseMult * s_cameraSpeed / 2 / instance.m_currentSize);
 
 
         /// <summary>
         /// Samples terrain height for camera, based on water bobbing setting.
         /// </summary>
-        /// <param name="terrainManager">TerrainManager instance</param>
-        /// <param name="worldPos">Camera world position</param>
-        /// <param name="timeLerp">Perform Linear Interpolation over time ('bobbing')</param>
-        /// <param name="waterOffset">Water offset distance (ignored)</param>
-        /// <returns>Applicable terrain height</returns>
-        public static float SampleHeight(TerrainManager terrainManager, Vector3 worldPos, bool timeLerp, float waterOffset) => HeightOffset.waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleRawHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
+        /// <param name="terrainManager">TerrainManager instance.</param>
+        /// <param name="worldPos">Camera world position.</param>
+        /// <param name="timeLerp">Perform Linear Interpolation over time ('bobbing').</param>
+        /// <param name="waterOffset">Water offset distance (ignored).</param>
+        /// <returns>Applicable terrain height.</returns>
+        public static float SampleHeight(TerrainManager terrainManager, Vector3 worldPos, bool timeLerp, float waterOffset) =>
+            HeightOffset.waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleRawHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
     }
 }

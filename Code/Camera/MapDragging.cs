@@ -1,14 +1,20 @@
-﻿using UnityEngine;
-
+﻿// <copyright file="MapDragging.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using UnityEngine;
+
+    /// <summary>
+    /// Implementing map dragging.
+    /// </summary>
     internal static class MapDragging
     {
         // Limits.
         internal const float MinDragSpeed = 0.2f;
         internal const float MaxDragSpeed = 2.0f;
-
 
         // Map dragging settings;
         private static float dragXdirection = 1.0f, dragYdirection = 1.0f, dragSpeed = 1.0f;
@@ -16,9 +22,8 @@ namespace ACME
         // Map dragging status.
         private static bool isDragging = false;
 
-
         /// <summary>
-        /// Map dragging X axis inversion.
+        /// Gets or sets a vlaue indicating whether the map dragging X axis movement is inverted.
         /// </summary>
         internal static bool InvertXDrag
         {
@@ -27,9 +32,8 @@ namespace ACME
             set => dragXdirection = value ? -1.0f : 1.0f;
         }
 
-
         /// <summary>
-        /// Map dragging Y axis inversion.
+        /// Gets or sets a vlaue indicating whether the map dragging y axis movement is inverted.
         /// </summary>
         internal static bool InvertYDrag
         {
@@ -38,9 +42,8 @@ namespace ACME
             set => dragYdirection = value ? -1.0f : 1.0f;
         }
 
-
         /// <summary>
-        // Map dragging speed.
+        // Gets or sets map dragging speed.
         /// </summary>
         internal static float DragSpeed
         {
@@ -48,7 +51,6 @@ namespace ACME
 
             set => dragSpeed = Mathf.Clamp(value, MinDragSpeed, MaxDragSpeed);
         }
-
 
         /// <summary>
         /// Implements mouse map dragging.

@@ -1,9 +1,14 @@
-﻿using UnityEngine;
-using ICities;
-
+﻿// <copyright file="UIThreading.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using AlgernonCommons.Keybinding;
+    using ICities;
+    using UnityEngine;
+
     /// <summary>
     /// Threading to capture hotkeys.
     /// </summary>
@@ -44,11 +49,9 @@ namespace ACME
             KeyCode.F12
         };
 
-
         // Hotkeys.
-        internal static KeyBinding moveItKey = new KeyBinding(KeyCode.Mouse2, false, false, false);
-        internal static KeyBinding fpsKey = new KeyBinding(KeyCode.Tab, true, false, false);
-
+        internal static Keybinding moveItKey = new Keybinding(KeyCode.Mouse2, false, false, false);
+        internal static Keybinding fpsKey = new Keybinding(KeyCode.Tab, true, false, false);
 
         /// <summary>
         /// Constructor - sets instance reference.
@@ -58,7 +61,6 @@ namespace ACME
             // Set instance reference.
             instance = this;
         }
-
 
         /// <summary>
         /// Activates/deactivates hotkey.
@@ -73,7 +75,6 @@ namespace ACME
                 }
             }
         }
-
 
         /// <summary>
         /// Look for keypress to activate tool.
@@ -115,11 +116,11 @@ namespace ACME
 
                 // Check for Movit zoom.
                 // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-                bool altOkay = altPressed == moveItKey.alt;
-                bool ctrlOkay = ctrlPressed == moveItKey.control;
-                bool shiftOkay = shiftPressed == moveItKey.shift;
+                bool altOkay = altPressed == moveItKey.Alt;
+                bool ctrlOkay = ctrlPressed == moveItKey.Control;
+                bool shiftOkay = shiftPressed == moveItKey.Shift;
                 bool modifiersOkay = altOkay & ctrlOkay & shiftOkay;
-                bool keyPressed = modifiersOkay & Input.GetKey(moveItKey.key);
+                bool keyPressed = modifiersOkay & Input.GetKey(moveItKey.KeyCode);
                 if (keyPressed && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
                     // Only process if we're not already doing so.
@@ -140,11 +141,11 @@ namespace ACME
 
                 // Check for FPS hotkey.
                 // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-                altOkay = altPressed == fpsKey.alt;
-                ctrlOkay = ctrlPressed == fpsKey.control;
-                shiftOkay = shiftPressed == fpsKey.shift;
+                altOkay = altPressed == fpsKey.Alt;
+                ctrlOkay = ctrlPressed == fpsKey.Control;
+                shiftOkay = shiftPressed == fpsKey.Shift;
                 modifiersOkay = altOkay & ctrlOkay & shiftOkay;
-                if (modifiersOkay & Input.GetKey(fpsKey.key))
+                if (modifiersOkay & Input.GetKey(fpsKey.KeyCode))
                 {
                     // Only process if we're not already doing so.
                     if (!fpsProcessed)

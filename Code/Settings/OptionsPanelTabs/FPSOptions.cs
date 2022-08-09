@@ -1,9 +1,16 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
-
+﻿// <copyright file="FPSOptions.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
+    using AlgernonCommons.Keybinding;
+    using AlgernonCommons.Translation;
+    using AlgernonCommons.UI;
+    using ColossalFramework.UI;
+    using UnityEngine;
+
     /// <summary>
     /// Options panel for setting FPS options.
     /// </summary>
@@ -17,31 +24,28 @@ namespace ACME
         // Number of keybindings.
         private const int NumKeys = 15;
 
-
         // Panel height calculation.
         internal float panelHeight;
 
-
         // FPS keybindings.
-        private KeybindingKey[] keyBindings = new KeybindingKey[NumKeys]
+        private KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[NumKeys]
         {
-            FPSPatch.cameraMoveForward,
-            FPSPatch.cameraMoveBackward,
-            FPSPatch.cameraMoveLeft,
-            FPSPatch.cameraMoveRight,
-            FPSPatch.absForward,
-            FPSPatch.absBack,
-            FPSPatch.absLeft,
-            FPSPatch.absRight,
-            FPSPatch.absUp,
-            FPSPatch.absDown,
-            FPSPatch.cameraRotateUp,
-            FPSPatch.cameraRotateDown,
-            FPSPatch.cameraRotateLeft,
-            FPSPatch.cameraRotateRight,
-            FPSPatch.cameraMouseRotate
+            FPSPatch.s_cameraMoveForward,
+            FPSPatch.s_cameraMoveBackward,
+            FPSPatch.s_cameraMoveLeft,
+            FPSPatch.s_cameraMoveRight,
+            FPSPatch.s_absForward,
+            FPSPatch.s_absBack,
+            FPSPatch.s_absLeft,
+            FPSPatch.s_absRight,
+            FPSPatch.s_absUp,
+            FPSPatch.s_absDown,
+            FPSPatch.s_cameraRotateUp,
+            FPSPatch.s_cameraRotateDown,
+            FPSPatch.s_cameraRotateLeft,
+            FPSPatch.s_cameraRotateRight,
+            FPSPatch.s_cameraMouseRotate
         };
-
 
         // FPS keybinding labels.
         private string[] keyLabels = new string[NumKeys]
@@ -63,9 +67,6 @@ namespace ACME
             "KEY_ROT_MSE"
         };
 
-        UIPanel panel;
-
-
         /// <summary>
         /// Adds mod options tab to tabstrip.
         /// </summary>
@@ -73,8 +74,8 @@ namespace ACME
         /// <param name="tabIndex">Index number of tab</param>
         internal FPSOptions(UITabstrip tabStrip, int tabIndex)
         {
-            // Add tab and helper.
-            panel = PanelUtils.AddTab(tabStrip, Translations.Translate("CAM_OPT_FPS"), tabIndex, false);
+            // Add tab.
+            UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("CAM_OPT_FPS"), tabIndex, out UIButton _, autoLayout: false);
 
             // Y position indicator.
             float currentY = GroupMargin;
@@ -83,8 +84,8 @@ namespace ACME
             OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             fpsKeyMapping.Label = Translations.Translate("KEY_FPS");
             fpsKeyMapping.Binding = UIThreading.fpsKey;
-            fpsKeyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += fpsKeyMapping.uIPanel.height + GroupMargin;
+            fpsKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += fpsKeyMapping.Panel.height + GroupMargin;
 
             // Key turning speed slider.
             UISlider keyTurnSlider = UIControls.AddSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_KTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyTurnSpeed, (value) => { FPSPatch.KeyTurnSpeed = value; });
@@ -105,8 +106,8 @@ namespace ACME
                 OptionsKeymapping keyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
                 keyMapping.Label = Translations.Translate(keyLabels[i]);
                 keyMapping.Binding = keyBindings[i];
-                keyMapping.uIPanel.relativePosition = new Vector2(LeftMargin, currentY);
-                currentY += keyMapping.uIPanel.height;
+                keyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+                currentY += keyMapping.Panel.height;
             }
 
             // Set panel height.

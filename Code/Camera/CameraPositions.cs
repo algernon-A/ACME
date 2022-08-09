@@ -1,22 +1,13 @@
-﻿using System.IO;
-using UnityEngine;
-
+﻿// <copyright file="CameraPositions.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
 
 namespace ACME
 {
-	/// <summary>
-	/// Structure to store saved camera positions.
-	/// </summary>
-	public struct SavedPosition
-	{
-		public bool isValid;
-		public Vector3 position;
-		public Vector2 angle;
-		public float height;
-		public float size;
-		public float fov;
-	}
-
+    using System.IO;
+    using AlgernonCommons;
+    using UnityEngine;
 
     /// <summary>
     /// Utility class for changing camera settings.
@@ -26,10 +17,8 @@ namespace ACME
         // Numer of stored positions available.
         internal const int NumSaves = 22;
 
-
         // Array of saved positions.
         private static SavedPosition[] savedPositions = new SavedPosition[NumSaves];
-
 
         /// <summary>
         /// Saves a camera position.
@@ -40,7 +29,6 @@ namespace ACME
             // Save current camera attributes.
             savedPositions[positionIndex] = CurrentPosition();
         }
-
 
         /// <summary>
         /// Loads a saved camera position.
@@ -66,10 +54,11 @@ namespace ACME
                 CameraUtils.MainCamera.fieldOfView = savedPositions[positionIndex].fov;
             }
         }
+
         /// <summary>
         /// Serializes savegame data.
         /// </summary>
-        /// <param name="stream">Binary writer instance to serialize to</param>
+        /// <param name="writer">BinaryWriter instance to serialize to.</param>
         internal static void Serialize(BinaryWriter writer)
         {
             Logging.Message("serializing camera positions");
@@ -88,11 +77,10 @@ namespace ACME
             WritePosition(CurrentPosition(), writer);
         }
 
-
         /// <summary>
         /// Deserializes savegame data.
         /// </summary>
-        /// <param name="stream">Data memory stream to deserialize from</param>
+        /// <param name="reader">BinaryReader instance to deserialize from.</param>
         internal static void Deserialize(BinaryReader reader)
         {
             Logging.Message("deserializing savegame data");
@@ -114,11 +102,10 @@ namespace ACME
             }
         }
 
-
         /// <summary>
         /// Gets current camera position as a SavedPosition struct.
         /// </summary>
-        /// <returns>New SavedPosition struct reflecting current camera position</returns>
+        /// <returns>New SavedPosition struct reflecting current camera position.</returns>
         private static SavedPosition CurrentPosition()
         {
             // Local reference.
@@ -135,7 +122,6 @@ namespace ACME
                 fov = CameraUtils.MainCamera.fieldOfView
             };
         }
-
 
         /// <summary>
         /// Serializes a camera position to the given BinaryWriter.
@@ -154,7 +140,6 @@ namespace ACME
             writer.Write(position.size);
             writer.Write(position.fov);
         }
-
 
         /// <summary>
         /// Deserializes a camera position from the given BinaryReader.
@@ -182,6 +167,19 @@ namespace ACME
                 size = reader.ReadSingle(),
                 fov = reader.ReadSingle()
             };
+        }
+
+        /// <summary>
+        /// Structure to store saved camera positions.
+        /// </summary>
+        public struct SavedPosition
+        {
+            public bool isValid;
+            public Vector3 position;
+            public Vector2 angle;
+            public float height;
+            public float size;
+            public float fov;
         }
     }
 }
