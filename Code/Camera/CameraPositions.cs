@@ -37,21 +37,21 @@ namespace ACME
         internal static void LoadPosition(int positionIndex)
         {
             // Don't do anything if position isn't valid.
-            if (savedPositions[positionIndex].isValid)
+            if (savedPositions[positionIndex].IsValid)
             {
                 // Local reference.
                 CameraController controller = CameraUtils.Controller;
 
                 // Restore saved attributes.
-                controller.m_targetPosition = savedPositions[positionIndex].position;
-                controller.m_currentPosition = savedPositions[positionIndex].position;
-                controller.m_targetAngle = savedPositions[positionIndex].angle;
-                controller.m_currentAngle = savedPositions[positionIndex].angle;
-                controller.m_targetHeight = savedPositions[positionIndex].height;
-                controller.m_currentHeight = savedPositions[positionIndex].height;
-                controller.m_targetSize = savedPositions[positionIndex].size;
-                controller.m_currentSize = savedPositions[positionIndex].size;
-                CameraUtils.MainCamera.fieldOfView = savedPositions[positionIndex].fov;
+                controller.m_targetPosition = savedPositions[positionIndex].Position;
+                controller.m_currentPosition = savedPositions[positionIndex].Position;
+                controller.m_targetAngle = savedPositions[positionIndex].Angle;
+                controller.m_currentAngle = savedPositions[positionIndex].Angle;
+                controller.m_targetHeight = savedPositions[positionIndex].Height;
+                controller.m_currentHeight = savedPositions[positionIndex].Height;
+                controller.m_targetSize = savedPositions[positionIndex].Size;
+                controller.m_currentSize = savedPositions[positionIndex].Size;
+                CameraUtils.MainCamera.fieldOfView = savedPositions[positionIndex].FOV;
             }
         }
 
@@ -114,12 +114,12 @@ namespace ACME
             // Save current camera attributes.
             return new SavedPosition
             {
-                isValid = true,
-                position = controller.m_targetPosition,
-                angle = controller.m_targetAngle,
-                height = controller.m_targetHeight,
-                size = controller.m_currentSize,
-                fov = CameraUtils.MainCamera.fieldOfView
+                IsValid = true,
+                Position = controller.m_targetPosition,
+                Angle = controller.m_targetAngle,
+                Height = controller.m_targetHeight,
+                Size = controller.m_currentSize,
+                FOV = CameraUtils.MainCamera.fieldOfView
             };
         }
 
@@ -130,15 +130,15 @@ namespace ACME
         /// <param name="writer">Target BinaryWriter</param>
         private static void WritePosition(SavedPosition position, BinaryWriter writer)
         {
-            writer.Write(position.isValid);
-            writer.Write(position.position.x);
-            writer.Write(position.position.y);
-            writer.Write(position.position.z);
-            writer.Write(position.angle.x);
-            writer.Write(position.angle.y);
-            writer.Write(position.height);
-            writer.Write(position.size);
-            writer.Write(position.fov);
+            writer.Write(position.IsValid);
+            writer.Write(position.Position.x);
+            writer.Write(position.Position.y);
+            writer.Write(position.Position.z);
+            writer.Write(position.Angle.x);
+            writer.Write(position.Angle.y);
+            writer.Write(position.Height);
+            writer.Write(position.Size);
+            writer.Write(position.FOV);
         }
 
         /// <summary>
@@ -151,21 +151,21 @@ namespace ACME
             return new SavedPosition
             {
                 // Serialize key and simple fields.
-                isValid = reader.ReadBoolean(),
-                position = new Vector3
+                IsValid = reader.ReadBoolean(),
+                Position = new Vector3
                 {
                     x = reader.ReadSingle(),
                     y = reader.ReadSingle(),
                     z = reader.ReadSingle()
                 },
-                angle = new Vector2
+                Angle = new Vector2
                 {
                     x = reader.ReadSingle(),
                     y = reader.ReadSingle()
                 },
-                height = reader.ReadSingle(),
-                size = reader.ReadSingle(),
-                fov = reader.ReadSingle()
+                Height = reader.ReadSingle(),
+                Size = reader.ReadSingle(),
+                FOV = reader.ReadSingle()
             };
         }
 
@@ -174,12 +174,35 @@ namespace ACME
         /// </summary>
         public struct SavedPosition
         {
-            public bool isValid;
-            public Vector3 position;
-            public Vector2 angle;
-            public float height;
-            public float size;
-            public float fov;
+            /// <summary>
+            /// Indicates whether or not this position record is valid (in-use).
+            /// </summary>
+            public bool IsValid;
+
+            /// <summary>
+            /// Camera position.
+            /// </summary>
+            public Vector3 Position;
+
+            /// <summary>
+            /// Camera angle.
+            /// </summary>
+            public Vector2 Angle;
+
+            /// <summary>
+            /// Camera height.
+            /// </summary>
+            public float Height;
+
+            /// <summary>
+            /// Camera size.
+            /// </summary>
+            public float Size;
+
+            /// <summary>
+            /// Camera Field Of View.
+            /// </summary>
+            public float FOV;
         }
     }
 }

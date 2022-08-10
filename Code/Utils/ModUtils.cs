@@ -7,7 +7,6 @@ namespace ACME
 {
     using System;
     using System.Reflection;
-    using System.Collections.Generic;
     using AlgernonCommons;
     using ColossalFramework.Plugins;
 
@@ -16,9 +15,6 @@ namespace ACME
     /// </summary>
     internal static class ModUtils
     {
-        // List of conflcting mod names.
-        internal static List<string> conflictingModNames;
-
         // Move It methods.
         internal static MethodInfo miGetTotalBounds, miGetAngle;
 

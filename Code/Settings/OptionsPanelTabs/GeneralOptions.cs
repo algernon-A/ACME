@@ -37,13 +37,12 @@ namespace ACME
             float currentY = Margin;
 
             // Language choice.
-            UIDropDown languageDropDown = UIControls.AddPlainDropDown(panel, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
+            UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(panel, LeftMargin, currentY, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
             languageDropDown.eventSelectedIndexChanged += (control, index) =>
             {
                 Translations.Index = index;
                 OptionsPanelManager<OptionsPanel>.LocaleChanged();
             };
-            languageDropDown.parent.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += languageDropDown.parent.height + Margin;
 
             // Hotkey control.
@@ -59,31 +58,31 @@ namespace ACME
             currentY += miKeyMapping.Panel.height + Margin;
 
             // Building collision checkbox.
-            UICheckBox buildingCollisionCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
+            UICheckBox buildingCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
             buildingCollisionCheck.isChecked = HeightOffset.buildingCollision;
             buildingCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.buildingCollision = value; };
             currentY += buildingCollisionCheck.height + Margin;
 
             // Network collision checkbox.
-            UICheckBox netCollisionCHeck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_NET"));
+            UICheckBox netCollisionCHeck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_NET"));
             netCollisionCHeck.isChecked = HeightOffset.networkCollision;
             netCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.networkCollision = value; };
             currentY += netCollisionCHeck.height + Margin;
 
             // Prop collision checkbox.
-            UICheckBox propCollisionCHeck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_PRO"));
+            UICheckBox propCollisionCHeck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_PRO"));
             propCollisionCHeck.isChecked = HeightOffset.propCollision;
             propCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.propCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Tree collision checkbox.
-            UICheckBox treeCollisionCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_TRE"));
+            UICheckBox treeCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_TRE"));
             treeCollisionCheck.isChecked = HeightOffset.treeCollision;
             treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.treeCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Water bobbing checkbox.
-            UICheckBox waterBobbingCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_WAT"));
+            UICheckBox waterBobbingCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_WAT"));
             waterBobbingCheck.isChecked = HeightOffset.waterBobbing;
             waterBobbingCheck.eventCheckChanged += (control, value) => { HeightOffset.waterBobbing = value; };
             currentY += propCollisionCHeck.height + GroupMargin;
@@ -102,13 +101,13 @@ namespace ACME
             currentY += Margin;
 
             // Follow disasters checkbox.
-            UICheckBox disableDisasterGoto = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
+            UICheckBox disableDisasterGoto = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
             disableDisasterGoto.isChecked = FollowDisasterPatch.FollowDisasters;
             disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.FollowDisasters = value; };
             currentY += disableDisasterGoto.height + Margin;
 
             // Zoom to cursor.
-            UICheckBox zoomToCursorCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_ZTC"));
+            UICheckBox zoomToCursorCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_ZTC"));
             zoomToCursorCheck.isChecked = ModSettings.ZoomToCursor;
             zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
             zoomToCursorCheck.tooltipBox = UIToolTips.WordWrapToolTip;
@@ -116,7 +115,7 @@ namespace ACME
             currentY += zoomToCursorCheck.height + Margin;
 
             // Follow disasters checkbox.
-            UICheckBox disableFollowRotationCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DFR"));
+            UICheckBox disableFollowRotationCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DFR"));
             disableFollowRotationCheck.isChecked = ModSettings.DisableFollowRotation;
             disableFollowRotationCheck.eventCheckChanged += (control, value) => { ModSettings.DisableFollowRotation = value; };
         }
@@ -134,10 +133,10 @@ namespace ACME
         private UISlider AddDistanceSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
-            UISlider newSlider = UIControls.AddSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
+            UISlider newSlider = UISliders.AddPlainSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
 
             // Game-distanceLabel label.
-            UILabel distanceLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
+            UILabel distanceLabel = UILabels.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
             newSlider.objectUserData = distanceLabel;
 
             // Force set slider value to populate initial time label and add event handler.
@@ -163,10 +162,10 @@ namespace ACME
         private UISlider AddSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
-            UISlider newSlider = UIControls.AddSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
+            UISlider newSlider = UISliders.AddPlainSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 1f, initialValue);
 
             // Value label.
-            UILabel valueLabel = UIControls.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
+            UILabel valueLabel = UILabels.AddLabel(newSlider.parent, Margin, newSlider.parent.height - 15f, string.Empty);
             newSlider.objectUserData = valueLabel;
 
             // Force set slider value to populate initial time label and add event handler.

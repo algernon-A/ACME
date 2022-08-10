@@ -46,10 +46,13 @@
         [XmlElement("PropCollision")]
         public bool XMLPropCollision { get => HeightOffset.propCollision; set => HeightOffset.propCollision = value; }
 
+        /// <summary>
         /// Gets or sets a value indicating whether tree collision is enabled.
+        /// </summary>
         [XmlElement("TreeCollision")]
         public bool XMLTreeCollision { get => HeightOffset.treeCollision; set => HeightOffset.treeCollision = value; }
 
+        /// <summary>
         /// Gets or sets a value indicating whether water bobbing is enabled.
         /// </summary>
         [XmlElement("WaterBobbing")]
@@ -203,7 +206,9 @@
         [XmlElement("FPSMouseTurnSpeed")]
         public float XMLFPSMouseTurnSpeed { get => FPSPatch.MouseTurnSpeed; set => FPSPatch.MouseTurnSpeed = value; }
 
-        // Gets or sets the map drag hotkey.
+        /// <summary>
+        /// Gets or sets the map drag hotkey.
+        /// </summary>
         [XmlElement("MapDragKey")]
         public Keybinding MapDragKey { get => mapDragKey; set => mapDragKey = value; }
 
@@ -220,7 +225,7 @@
         public bool XMLMapDragInvertY { get => MapDragging.InvertYDrag; set => MapDragging.InvertYDrag = value; }
 
         /// <summary>
-        // Gets or sets map dragging speed.
+        /// Gets or sets map dragging speed.
         /// </summary>
         [XmlElement("MapDragSpeed")]
         public float XMLMapDragSpeed { get => MapDragging.DragSpeed; set => MapDragging.DragSpeed = value; }

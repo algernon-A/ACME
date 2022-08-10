@@ -98,7 +98,7 @@ namespace ACME
                 modConflictBox.AddParas(Translations.Translate("ERR_CON0"), Translations.Translate("CAM_ERR_FAT"), Translations.Translate("CAM_ERR_CON0"), Translations.Translate("ERR_CON1"));
 
                 // Add conflicting mod name(s).
-                modConflictBox.AddList(ModUtils.conflictingModNames.ToArray());
+                modConflictBox.AddList(ConflictDetection.ConflictingModNames.ToArray());
 
                 // Closing para.
                 modConflictBox.AddParas(Translations.Translate("CAM_ERR_CON1"));

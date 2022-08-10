@@ -111,17 +111,17 @@ namespace ACME
 			NearClipPlane = nearClipPlane;
 
 			// Set initial camera position, if we have one.
-			if (initialPosition.isValid)
+			if (initialPosition.IsValid)
             {
-				controller.m_targetPosition = initialPosition.position;
-				controller.m_targetAngle = initialPosition.angle;
-				controller.m_targetSize = initialPosition.size;
-				controller.m_targetHeight = initialPosition.height;
-				controller.m_targetSize = initialPosition.size;
+				controller.m_targetPosition = initialPosition.Position;
+				controller.m_targetAngle = initialPosition.Angle;
+				controller.m_targetSize = initialPosition.Size;
+				controller.m_targetHeight = initialPosition.Height;
+				controller.m_targetSize = initialPosition.Size;
 
 				if (MainCamera != null)
 				{
-					MainCamera.fieldOfView = initialPosition.fov;
+					MainCamera.fieldOfView = initialPosition.FOV;
 				}
 				else
                 {

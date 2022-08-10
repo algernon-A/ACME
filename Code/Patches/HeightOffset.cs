@@ -54,7 +54,7 @@ namespace ACME
 		/// <returns>Always false (never execute original method).</returns>
 		public static bool Prefix(ref float __result, Vector3 worldPos, float distance)
         {
-			/// Calculate base offset, based on water bobbing setting.
+			// Calculate base offset, based on water bobbing setting.
 			float offset = UpdateTargetPosition.SampleHeight(Singleton<TerrainManager>.instance, worldPos, timeLerp: true, TerrainClearance);
 
 			// Boilerplate game code start.

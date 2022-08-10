@@ -115,13 +115,7 @@ namespace ACME
                 }
 
                 // Check for Movit zoom.
-                // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-                bool altOkay = altPressed == moveItKey.Alt;
-                bool ctrlOkay = ctrlPressed == moveItKey.Control;
-                bool shiftOkay = shiftPressed == moveItKey.Shift;
-                bool modifiersOkay = altOkay & ctrlOkay & shiftOkay;
-                bool keyPressed = modifiersOkay & Input.GetKey(moveItKey.KeyCode);
-                if (keyPressed && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
+                if (moveItKey.IsPressed() && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
                     // Only process if we're not already doing so.
                     if (!moveItProcessed)
@@ -140,12 +134,7 @@ namespace ACME
                 }
 
                 // Check for FPS hotkey.
-                // Modifiers have to *exactly match* settings, e.g. "alt-E" should not trigger on "ctrl-alt-E".
-                altOkay = altPressed == fpsKey.Alt;
-                ctrlOkay = ctrlPressed == fpsKey.Control;
-                shiftOkay = shiftPressed == fpsKey.Shift;
-                modifiersOkay = altOkay & ctrlOkay & shiftOkay;
-                if (modifiersOkay & Input.GetKey(fpsKey.KeyCode))
+                if (fpsKey.IsPressed())
                 {
                     // Only process if we're not already doing so.
                     if (!fpsProcessed)

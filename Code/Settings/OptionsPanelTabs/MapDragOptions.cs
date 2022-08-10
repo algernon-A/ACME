@@ -44,19 +44,20 @@ namespace ACME
             currentY += mdKeyMapping.Panel.height + GroupMargin;
 
             // Invert x axis checkbox.
-            UICheckBox invertXCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_MDG_INX"));
+            UICheckBox invertXCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_MDG_INX"));
             invertXCheck.isChecked = MapDragging.InvertXDrag;
-            invertXCheck.eventCheckChanged += (control, value) => { MapDragging.InvertXDrag = value; };
+            invertXCheck.eventCheckChanged += (c, value) => { MapDragging.InvertXDrag = value; };
             currentY += invertXCheck.height + Margin;
 
             // Invert y axis checkbox.
-            UICheckBox invertYCheck = UIControls.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_MDG_INY"));
+            UICheckBox invertYCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_MDG_INY"));
             invertYCheck.isChecked = MapDragging.InvertYDrag;
-            invertYCheck.eventCheckChanged += (control, value) => { MapDragging.InvertYDrag = value; };
+            invertYCheck.eventCheckChanged += (c, value) => { MapDragging.InvertYDrag = value; };
             currentY += invertYCheck.height + GroupMargin;
 
             // Drag speed slider .
-            UISlider dragSpeedSlider = UIControls.AddSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_MDG_SPD"), MapDragging.MinDragSpeed, MapDragging.MaxDragSpeed, 0.1f, MapDragging.DragSpeed, (value) => { MapDragging.DragSpeed = value; });
+            UISlider dragSpeedSlider = UISliders.AddPlainSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_MDG_SPD"), MapDragging.MinDragSpeed, MapDragging.MaxDragSpeed, 0.1f, MapDragging.DragSpeed);
+            dragSpeedSlider.eventValueChanged += (c, value) => { MapDragging.DragSpeed = value; };
         }
     }
 }

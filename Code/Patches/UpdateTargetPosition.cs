@@ -33,7 +33,7 @@ namespace ACME
 
         /// <summary>
         /// Harmony transpiler to replace hardcoded camera angle limits and implement variable movement speed multipliers.
-        /// Finds a bound check for 'if < 0 then =0' and replaces 0 with -90 (for camera angle) and inserts calls to custom movement multiplier methods.
+        /// Finds a bound check for 'if less than 0 then = 0' and replaces 0 with -90 (for camera angle) and inserts calls to custom movement multiplier methods.
         /// </summary>
         /// <param name="instructions">Original ILCode.</param>
         /// <returns>Patched ILCode.</returns>
@@ -162,7 +162,6 @@ namespace ACME
             }
         }
 
-
         /// <summary>
         /// Calculates the multiplier of key-based camera movement where appropriate.
         /// </summary>
@@ -171,14 +170,13 @@ namespace ACME
         /// <returns>Speed multiplier for calculating target position update.</returns>
         public static float KeyMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 43f) ? baseMult : (baseMult * s_cameraSpeed / instance.m_currentSize);
 
-
+        /// <summary>
         /// Calculates the multiplier of scroll whell-based camera movement where appropriate.
         /// </summary>
         /// <param name="baseMult">Base speed multiplier (calculated by game).</param>
         /// <param name="instance">CameraController instance reference.</param>
         /// <returns>Speed multiplier for calculating target position update.</returns>
         public static float ScrollMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 5f) ? baseMult : (baseMult * s_cameraSpeed / 2 / instance.m_currentSize);
-
 
         /// <summary>
         /// Samples terrain height for camera, based on water bobbing setting.

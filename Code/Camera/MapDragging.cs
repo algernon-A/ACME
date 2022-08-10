@@ -43,7 +43,7 @@ namespace ACME
         }
 
         /// <summary>
-        // Gets or sets map dragging speed.
+        /// Gets or sets map dragging speed.
         /// </summary>
         internal static float DragSpeed
         {

@@ -131,29 +131,29 @@ namespace ACME
 			_fovSlider = AddCameraSlider(this, Margin, FovSliderY, PanelWidth - (Margin * 2f), "CAM_FOV", MinFOV, MaxFOV, 0.01f, _mainCamera.fieldOfView, "N1", "fov");
 
 			// Building collision checkbox.
-			UICheckBox buildingCollisionCheck = UIControls.LabelledCheckBox(this, Check1X, Check1Y, Translations.Translate("CAM_COL_BLD"));
+			UICheckBox buildingCollisionCheck = UICheckBoxes.AddLabelledCheckBox(this, Check1X, Check1Y, Translations.Translate("CAM_COL_BLD"));
 			buildingCollisionCheck.isChecked = HeightOffset.buildingCollision;
-			buildingCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.buildingCollision = value; };
+			buildingCollisionCheck.eventCheckChanged += (c, value) => { HeightOffset.buildingCollision = value; };
 
 			// Network collision checkbox.
-			UICheckBox netCollisionCHeck = UIControls.LabelledCheckBox(this, Check1X, Check2Y, Translations.Translate("CAM_COL_NET"));
+			UICheckBox netCollisionCHeck = UICheckBoxes.AddLabelledCheckBox(this, Check1X, Check2Y, Translations.Translate("CAM_COL_NET"));
 			netCollisionCHeck.isChecked = HeightOffset.networkCollision;
-			netCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.networkCollision = value; };
+			netCollisionCHeck.eventCheckChanged += (c, value) => { HeightOffset.networkCollision = value; };
 
 			// Prop collision checkbox.
-			UICheckBox propCollisionCHeck = UIControls.LabelledCheckBox(this, Check2X, Check1Y, Translations.Translate("CAM_COL_PRO"));
+			UICheckBox propCollisionCHeck = UICheckBoxes.AddLabelledCheckBox(this, Check2X, Check1Y, Translations.Translate("CAM_COL_PRO"));
 			propCollisionCHeck.isChecked = HeightOffset.propCollision;
-			propCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.propCollision = value; };
+			propCollisionCHeck.eventCheckChanged += (c, value) => { HeightOffset.propCollision = value; };
 
 			// Tree collision checkbox.
-			UICheckBox treeCollisionCheck = UIControls.LabelledCheckBox(this, Check2X, Check2Y, Translations.Translate("CAM_COL_TRE"));
+			UICheckBox treeCollisionCheck = UICheckBoxes.AddLabelledCheckBox(this, Check2X, Check2Y, Translations.Translate("CAM_COL_TRE"));
 			treeCollisionCheck.isChecked = HeightOffset.treeCollision;
-			treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.treeCollision = value; };
+			treeCollisionCheck.eventCheckChanged += (c, value) => { HeightOffset.treeCollision = value; };
 
 			// Zoom to cursor.
-			UICheckBox zoomToCursorCheck = UIControls.LabelledCheckBox(this, Check1X, Check3Y, Translations.Translate("CAM_OPT_ZTC"));
+			UICheckBox zoomToCursorCheck = UICheckBoxes.AddLabelledCheckBox(this, Check1X, Check3Y, Translations.Translate("CAM_OPT_ZTC"));
 			zoomToCursorCheck.isChecked = ModSettings.ZoomToCursor;
-			zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
+			zoomToCursorCheck.eventCheckChanged += (c, value) => { ModSettings.ZoomToCursor = value; };
 			zoomToCursorCheck.tooltipBox = UIToolTips.WordWrapToolTip;
 			zoomToCursorCheck.tooltip = Translations.Translate("CAM_OPT_ZTC_TIP");
 		}
@@ -275,12 +275,12 @@ namespace ACME
 		/// <summary>
 		/// Target position slider value change event handler.
 		/// </summary>
-		/// <param name="control">Calling component</param>
+		/// <param name="c">Calling component</param>
 		/// <param name="value">New value</param>
-		private void PositionSliderChanged(UIComponent control, float value)
+		private void PositionSliderChanged(UIComponent c, float value)
 		{
 			// Slider
-			if (control is CameraSlider slider)
+			if (c is CameraSlider slider)
 			{
 				// Update tied value.
 				switch (slider.name)
@@ -311,26 +311,26 @@ namespace ACME
 		/// <summary>
 		/// Adds a camera slider to the specified component.
 		/// </summary>
-		/// <param name="parent">Parent component</param>
-		/// <param name="xPos">Relative X position</param
-		/// <param name="yPos">Relative Y position</param
-		/// <param name="width">Slider width</param>
-		/// <param name="labelKey">Text label translation key</param>
-		/// <param name="minValue">Minimum displayed value</param
-		/// <param name="maxValue">Maximum displayed value</param>
-		/// <param name="stepSize">Default slider step size</param>
-		/// <param name="initialValue">Initial value</param>
-		/// <param name="stringFormat">Value display string format</param>
-		/// <param name="name">Slider name</param>
-		/// <returns>New CameraSlider</returns>
+		/// <param name="parent">Parent component.</param>
+		/// <param name="xPos">Relative X position.</param>
+		/// <param name="yPos">Relative Y position.</param>
+		/// <param name="width">Slider width.</param>
+		/// <param name="labelKey">Text label translation key.</param>
+		/// <param name="minValue">Minimum displayed value.</param>
+		/// <param name="maxValue">Maximum displayed value.</param>
+		/// <param name="stepSize">Default slider step size.</param>
+		/// <param name="initialValue">Initial value.</param>
+		/// <param name="stringFormat">Value display string format.</param>
+		/// <param name="name">Slider name.</param>
+		/// <returns>New CameraSlider.</returns>
 		private CameraSlider AddCameraSlider(UIComponent parent, float xPos, float yPos, float width, string labelKey, float minValue, float maxValue, float stepSize, float initialValue, string stringFormat, string name)
 		{
+			// Layout constants.
 			const float SliderY = 18f;
 			const float ValueY = 3f;
 			const float LabelY = -13f;
 			const float SliderHeight = 18f;
 			const float FloatTextFieldWidth = 70f;
-
 
 			// Slider control.
 			CameraSlider newSlider = parent.AddUIComponent<CameraSlider>();
@@ -343,10 +343,10 @@ namespace ACME
 
 			// Value field - added to parent, not to slider, otherwise slider catches all input attempts.  Integer textfields (stepsize == 1) have shorter widths.
 			float textFieldWidth = FloatTextFieldWidth;
-			UITextField valueField = UIControls.TinyTextField(parent, xPos + newSlider.width - textFieldWidth, yPos + ValueY, textFieldWidth);
+			UITextField valueField = UITextFields.AddTinyTextField(parent, xPos + newSlider.width - textFieldWidth, yPos + ValueY, textFieldWidth);
 
 			// Title label.
-			UILabel titleLabel = UIControls.AddLabel(newSlider, 0f, LabelY, Translations.Translate(labelKey), textScale: 0.7f);
+			UILabel titleLabel = UILabels.AddLabel(newSlider, 0f, LabelY, Translations.Translate(labelKey), textScale: 0.7f);
 
 			// Autoscale tile label text, with minimum size 0.35.
 			while (titleLabel.width > newSlider.width - textFieldWidth && titleLabel.textScale > 0.35f)
