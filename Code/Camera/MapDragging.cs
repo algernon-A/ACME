@@ -12,34 +12,42 @@ namespace ACME
     /// </summary>
     internal static class MapDragging
     {
-        // Limits.
+        /// <summary>
+        /// Minimum map drag speed.
+        /// </summary>
         internal const float MinDragSpeed = 0.2f;
+
+        /// <summary>
+        /// Maximum map drag spead.
+        /// </summary>
         internal const float MaxDragSpeed = 2.0f;
 
         // Map dragging settings;
-        private static float dragXdirection = 1.0f, dragYdirection = 1.0f, dragSpeed = 1.0f;
+        private static float s_dragXdirection = 1.0f;
+        private static float s_dragYdirection = 1.0f;
+        private static float s_dragSpeed = 1.0f;
 
         // Map dragging status.
         private static bool isDragging = false;
 
         /// <summary>
-        /// Gets or sets a vlaue indicating whether the map dragging X axis movement is inverted.
+        /// Gets or sets a value indicating whether the map dragging X axis movement is inverted.
         /// </summary>
         internal static bool InvertXDrag
         {
-            get => dragXdirection < 0f;
+            get => s_dragXdirection < 0f;
 
-            set => dragXdirection = value ? -1.0f : 1.0f;
+            set => s_dragXdirection = value ? -1.0f : 1.0f;
         }
 
         /// <summary>
-        /// Gets or sets a vlaue indicating whether the map dragging y axis movement is inverted.
+        /// Gets or sets a value indicating whether the map dragging y axis movement is inverted.
         /// </summary>
         internal static bool InvertYDrag
         {
-            get => dragYdirection < 0f;
+            get => s_dragYdirection < 0f;
 
-            set => dragYdirection = value ? -1.0f : 1.0f;
+            set => s_dragYdirection = value ? -1.0f : 1.0f;
         }
 
         /// <summary>
@@ -47,19 +55,19 @@ namespace ACME
         /// </summary>
         internal static float DragSpeed
         {
-            get => dragSpeed;
+            get => s_dragSpeed;
 
-            set => dragSpeed = Mathf.Clamp(value, MinDragSpeed, MaxDragSpeed);
+            set => s_dragSpeed = Mathf.Clamp(value, MinDragSpeed, MaxDragSpeed);
         }
 
         /// <summary>
         /// Implements mouse map dragging.
         /// </summary>
-        /// <param name="controller">Cameraa controller reference</param>
+        /// <param name="controller">Cameraa controller reference.</param>
         public static void MapDrag(CameraController controller)
         {
             // Is the rotate button pressed?
-            if (ModSettings.mapDragKey.IsPressed())
+            if (ModSettings.MapDragKey.IsPressed())
             {
                 // Get screen mouse movement direction.
                 Vector3 direction = new Vector3(Input.GetAxis("Mouse X"), 0f, Input.GetAxis("Mouse Y"));
@@ -71,11 +79,12 @@ namespace ACME
                     // Minimum 1.5.
                     heightSpeedFactor = 1f;
                 }
-                float speedMultiplier = heightSpeedFactor * dragSpeed;
+
+                float speedMultiplier = heightSpeedFactor * s_dragSpeed;
 
                 // Apply speed multiplier and direction factors.
-                direction.x *= speedMultiplier * dragXdirection;
-                direction.z *= speedMultiplier * dragYdirection;
+                direction.x *= speedMultiplier * s_dragXdirection;
+                direction.z *= speedMultiplier * s_dragYdirection;
 
                 // Convert screen movement to relative to camera rotation.
                 Quaternion quaternion = Quaternion.FromToRotation(Vector3.right, controller.transform.right);

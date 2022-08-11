@@ -14,7 +14,9 @@ namespace ACME
     /// </summary>
     public static class CameraPositions
     {
-        // Numer of stored positions available.
+        /// <summary>
+        /// Number of stored positions available.
+        /// </summary>
         internal const int NumSaves = 22;
 
         // Array of saved positions.
@@ -23,7 +25,7 @@ namespace ACME
         /// <summary>
         /// Saves a camera position.
         /// </summary>
-        /// <param name="positionIndex">Camera position index to save to</param>
+        /// <param name="positionIndex">Camera position index to save to.</param>
         internal static void SavePosition(int positionIndex)
         {
             // Save current camera attributes.
@@ -33,7 +35,7 @@ namespace ACME
         /// <summary>
         /// Loads a saved camera position.
         /// </summary>
-        /// <param name="positionIndex">Camera position index to load from</param>
+        /// <param name="positionIndex">Camera position index to load from.</param>
         internal static void LoadPosition(int positionIndex)
         {
             // Don't do anything if position isn't valid.
@@ -98,7 +100,7 @@ namespace ACME
             // If version 1, read current camera position.
             if (version == 1)
             {
-                CameraUtils.initialPosition = ReadPosition(reader);
+                CameraUtils.InitialPosition = ReadPosition(reader);
             }
         }
 
@@ -119,15 +121,15 @@ namespace ACME
                 Angle = controller.m_targetAngle,
                 Height = controller.m_targetHeight,
                 Size = controller.m_currentSize,
-                FOV = CameraUtils.MainCamera.fieldOfView
+                FOV = CameraUtils.MainCamera.fieldOfView,
             };
         }
 
         /// <summary>
         /// Serializes a camera position to the given BinaryWriter.
         /// </summary>
-        /// <param name="position">Position to serialize</param>
-        /// <param name="writer">Target BinaryWriter</param>
+        /// <param name="position">Position to serialize.</param>
+        /// <param name="writer">Target BinaryWriter.</param>
         private static void WritePosition(SavedPosition position, BinaryWriter writer)
         {
             writer.Write(position.IsValid);
@@ -144,8 +146,8 @@ namespace ACME
         /// <summary>
         /// Deserializes a camera position from the given BinaryReader.
         /// </summary>
-        /// <param name="reader">BinaryReader to use</param>
-        /// <returns>New saved camera position</returns>
+        /// <param name="reader">BinaryReader to use.</param>
+        /// <returns>New saved camera position.</returns>
         private static SavedPosition ReadPosition(BinaryReader reader)
         {
             return new SavedPosition
@@ -156,16 +158,16 @@ namespace ACME
                 {
                     x = reader.ReadSingle(),
                     y = reader.ReadSingle(),
-                    z = reader.ReadSingle()
+                    z = reader.ReadSingle(),
                 },
                 Angle = new Vector2
                 {
                     x = reader.ReadSingle(),
-                    y = reader.ReadSingle()
+                    y = reader.ReadSingle(),
                 },
                 Height = reader.ReadSingle(),
                 Size = reader.ReadSingle(),
-                FOV = reader.ReadSingle()
+                FOV = reader.ReadSingle(),
             };
         }
 

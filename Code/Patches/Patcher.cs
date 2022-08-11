@@ -46,6 +46,7 @@ namespace ACME
                 return s_instance as Patcher;
             }
         }
+
         /// <summary>
         /// Apply all Harmony patches.
         /// </summary>
@@ -101,6 +102,7 @@ namespace ACME
                     {
                         targetMethod = typeof(CameraController).GetMethod("LateUpdate", BindingFlags.NonPublic | BindingFlags.Instance);
                     }
+
                     if (targetMethod == null)
                     {
                         Logging.Error("unable to find FPS patch target method");

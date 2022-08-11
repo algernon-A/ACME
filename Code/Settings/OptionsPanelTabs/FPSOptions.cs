@@ -24,27 +24,24 @@ namespace ACME
         // Number of keybindings.
         private const int NumKeys = 15;
 
-        // Panel height calculation.
-        internal float panelHeight;
-
         // FPS keybindings.
         private KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[NumKeys]
         {
-            FPSPatch.s_cameraMoveForward,
-            FPSPatch.s_cameraMoveBackward,
-            FPSPatch.s_cameraMoveLeft,
-            FPSPatch.s_cameraMoveRight,
-            FPSPatch.s_absForward,
-            FPSPatch.s_absBack,
-            FPSPatch.s_absLeft,
-            FPSPatch.s_absRight,
-            FPSPatch.s_absUp,
-            FPSPatch.s_absDown,
-            FPSPatch.s_cameraRotateUp,
-            FPSPatch.s_cameraRotateDown,
-            FPSPatch.s_cameraRotateLeft,
-            FPSPatch.s_cameraRotateRight,
-            FPSPatch.s_cameraMouseRotate
+            FPSPatch.CameraMoveForward,
+            FPSPatch.CameraMoveBackward,
+            FPSPatch.CameraMoveLeft,
+            FPSPatch.CameraMoveRight,
+            FPSPatch.AbsForward,
+            FPSPatch.AbsBack,
+            FPSPatch.AbsLeft,
+            FPSPatch.AbsRight,
+            FPSPatch.AbsUp,
+            FPSPatch.AbsDown,
+            FPSPatch.CameraRotateUp,
+            FPSPatch.CameraRotateDown,
+            FPSPatch.CameraRotateLeft,
+            FPSPatch.CameraRotateRight,
+            FPSPatch.CameraMouseRotate,
         };
 
         // FPS keybinding labels.
@@ -64,14 +61,14 @@ namespace ACME
             "KEY_ROT_DWN",
             "KEY_ROT_LFT",
             "KEY_ROT_RHT",
-            "KEY_ROT_MSE"
+            "KEY_ROT_MSE",
         };
 
         /// <summary>
-        /// Adds mod options tab to tabstrip.
+        /// Initializes a new instance of the <see cref="FPSOptions"/> class.
         /// </summary>
-        /// <param name="tabStrip">Tab strip to add to</param>
-        /// <param name="tabIndex">Index number of tab</param>
+        /// <param name="tabStrip">Tab strip to add to.</param>
+        /// <param name="tabIndex">Index number of tab.</param>
         internal FPSOptions(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
@@ -83,7 +80,7 @@ namespace ACME
             // FPS mode key control.
             OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             fpsKeyMapping.Label = Translations.Translate("KEY_FPS");
-            fpsKeyMapping.Binding = UIThreading.fpsKey;
+            fpsKeyMapping.Binding = UIThreading.FPSModeKey;
             fpsKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += fpsKeyMapping.Panel.height + GroupMargin;
 
@@ -114,7 +111,12 @@ namespace ACME
 
             // Set panel height.
             panel.height = currentY;
-            panelHeight = currentY;
+            PanelHeight = currentY;
         }
+
+        /// <summary>
+        /// Gets or sets the panel height.
+        /// </summary>
+        internal float PanelHeight { get; set; }
     }
 }

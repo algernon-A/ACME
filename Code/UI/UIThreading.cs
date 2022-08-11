@@ -15,12 +15,11 @@ namespace ACME
     public class UIThreading : ThreadingExtensionBase
     {
         // Instance reference.
-        private static UIThreading instance;
+        private static UIThreading s_instance;
 
-        // Flags.
-        private bool operating = false;
-        private bool moveItProcessed = false;
-        private bool fpsProcessed = false;
+        // Hotkeys.
+        private static Keybinding s_moveItKey = new Keybinding(KeyCode.Mouse2, false, false, true);
+        private static Keybinding s_fpsKey = new Keybinding(KeyCode.Tab, true, false, false);
 
         // Saved position hotkeys.
         private readonly KeyCode[] positionKeys = new KeyCode[CameraPositions.NumSaves]
@@ -46,48 +45,58 @@ namespace ACME
             KeyCode.F9,
             KeyCode.F10,
             KeyCode.F11,
-            KeyCode.F12
+            KeyCode.F12,
         };
 
-        // Hotkeys.
-        internal static Keybinding moveItKey = new Keybinding(KeyCode.Mouse2, false, false, false);
-        internal static Keybinding fpsKey = new Keybinding(KeyCode.Tab, true, false, false);
+        // Flags.
+        private bool operating = false;
+        private bool moveItProcessed = false;
+        private bool fpsProcessed = false;
 
         /// <summary>
-        /// Constructor - sets instance reference.
+        /// Initializes a new instance of the <see cref="UIThreading"/> class.
         /// </summary>
         public UIThreading()
         {
             // Set instance reference.
-            instance = this;
+            s_instance = this;
         }
 
         /// <summary>
-        /// Activates/deactivates hotkey.
+        /// Sets a value indicating whether hotkey detection is active.
         /// </summary>
         internal static bool Operating
         {
             set
             {
-                if (instance != null)
+                if (s_instance != null)
                 {
-                    instance.operating = value;
+                    s_instance.operating = value;
                 }
             }
         }
 
         /// <summary>
+        /// Gets or sets the zoom to Move It selection hotkey.
+        /// </summary>
+        internal static Keybinding MoveItKey { get => s_moveItKey; set => s_moveItKey = value; }
+
+        /// <summary>
+        /// Gets or sets the zoom FPS activation hotkey.
+        /// </summary>
+        internal static Keybinding FPSModeKey { get => s_fpsKey; set => s_fpsKey = value; }
+
+        /// <summary>
         /// Look for keypress to activate tool.
         /// </summary>
-        /// <param name="realTimeDelta"></param>
-        /// <param name="simulationTimeDelta"></param>
+        /// <param name="realTimeDelta">Real-time delta since last update.</param>
+        /// <param name="simulationTimeDelta">Simulation time delta since last update.</param>
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             // Don't do anything if not active.
             if (operating)
             {
                 // Check modifier keys according to settings.
-                bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
                 bool ctrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
                 bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
@@ -115,7 +124,7 @@ namespace ACME
                 }
 
                 // Check for Movit zoom.
-                if (moveItKey.IsPressed() && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
+                if (s_moveItKey.IsPressed() && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
                     // Only process if we're not already doing so.
                     if (!moveItProcessed)
@@ -134,7 +143,7 @@ namespace ACME
                 }
 
                 // Check for FPS hotkey.
-                if (fpsKey.IsPressed())
+                if (s_fpsKey.IsPressed())
                 {
                     // Only process if we're not already doing so.
                     if (!fpsProcessed)

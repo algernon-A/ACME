@@ -16,7 +16,7 @@ namespace ACME
         private UITabContainer _tabContainer;
 
         /// <summary>
-        /// Creates the panel object in-game and displays it.
+        /// Initializes a new instance of the <see cref="OptionsPanel"/> class.
         /// </summary>
         private OptionsPanel()
         {
@@ -37,13 +37,13 @@ namespace ACME
             tabStrip.eventSelectedIndexChanged += (c, tabIndex) =>
             {
                 UIPanel panel = tabStrip.tabContainer.components[tabIndex] as UIPanel;
-                
+
                 // Check selected tab.
                 if (tabIndex == 1)
                 {
                     // FPS tab - increase containter height to match.
-                    _tabContainer.height = fpsOptions.panelHeight + 30f;
-                    c.parent.height = fpsOptions.panelHeight + 30f;
+                    _tabContainer.height = fpsOptions.PanelHeight + 30f;
+                    c.parent.height = fpsOptions.PanelHeight + 30f;
                 }
                 else
                 {

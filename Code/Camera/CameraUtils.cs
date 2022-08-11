@@ -5,129 +5,145 @@
 
 namespace ACME
 {
-	using System.Reflection;
-	using AlgernonCommons;
-	using UnityEngine;
+    using System.Reflection;
+    using AlgernonCommons;
+    using UnityEngine;
 
-	/// <summary>
-	/// Utility class for changing camera settings.
-	/// </summary>
-	public static class CameraUtils
-	{
-		// Minimum and maximum near clip distance.
-		internal const float MinNearClip = 0.1f;
-		internal const float MaxNearClip = 10f;
+    /// <summary>
+    /// Utility class for changing camera settings.
+    /// </summary>
+    public static class CameraUtils
+    {
+        /// <summary>
+        /// Minimum near clip distance.
+        /// </summary>
+        internal const float MinNearClip = 0.1f;
 
-		// Minimum and maximum distance.
-		internal const float MinDistance = 2;
-		internal const float MaxDistance = 44000f;
+        /// <summary>
+        /// Maximum near clip distance.
+        /// </summary>
+        internal const float MaxNearClip = 10f;
 
-		// Current near clip plane distance (game default is 5).
-		private static float nearClipPlane = 1f;
+        /// <summary>
+        /// Minimum camera distance from target.
+        /// </summary>
+        internal const float MinDistance = 2;
 
-		// CameraManager m_originalNearPlane.
-		private readonly static FieldInfo originalNearPlane = typeof(CameraController).GetField("m_originalNearPlane", BindingFlags.NonPublic | BindingFlags.Instance);
+        /// <summary>
+        /// Maximum camera distance from target.
+        /// </summary>
+        internal const float MaxDistance = 44000f;
 
-		// CameraController reference.
-		private static CameraController cameraController;
+        // CameraManager m_originalNearPlane.
+        private static readonly FieldInfo OriginalNearPlane = typeof(CameraController).GetField("m_originalNearPlane", BindingFlags.NonPublic | BindingFlags.Instance);
 
-		// Main camera reference.
-		private static Camera mainCamera;
+        // Current near clip plane distance (game default is 5).
+        private static float nearClipPlane = 1f;
 
-		// Initial camera position.
-		internal static CameraPositions.SavedPosition initialPosition = default;
+        // CameraController reference.
+        private static CameraController cameraController;
 
-		/// <summary>
-		/// Gets the CameraController reference.
-		/// </summary>
-		internal static CameraController Controller
+        // Main camera reference.
+        private static Camera mainCamera;
+
+        /// <summary>
+        /// Sets the camera's initial saved position.
+        /// </summary>
+        internal static CameraPositions.SavedPosition InitialPosition { private get; set; } = default;
+
+        /// <summary>
+        /// Gets the CameraController reference.
+        /// </summary>
+        internal static CameraController Controller
         {
-			get
+            get
             {
-				// Get camera controller if we haven't already, and main camera has been instantiated.
-				if (cameraController == null)
+                // Get camera controller if we haven't already, and main camera has been instantiated.
+                if (cameraController == null)
                 {
-					cameraController = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<CameraController>();
-				}
-				return cameraController;
-			}
+                    cameraController = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<CameraController>();
+                }
+
+                return cameraController;
+            }
         }
 
-		/// <summary>
-		/// Gets the main camera reference.
-		/// </summary>
-		internal static Camera MainCamera
+        /// <summary>
+        /// Gets the main camera reference.
+        /// </summary>
+        internal static Camera MainCamera
         {
-			get
+            get
             {
-				// Get main camera if we haven't already.
-				if (mainCamera == null)
-				{
-					mainCamera = Controller.GetComponent<Camera>();
-				}
-				return mainCamera;
-			}
+                // Get main camera if we haven't already.
+                if (mainCamera == null)
+                {
+                    mainCamera = Controller.GetComponent<Camera>();
+                }
+
+                return mainCamera;
+            }
         }
 
-		/// <summary>
-		/// Gets or sets the camera controllers base near clip plane base distance, in metres.
-		/// Applied to the game's camera controller (not directly to the main camera), as that clobbers the camera's nearClipPlane every LateUpdate.
-		/// </summary>
-		public static float NearClipPlane
-		{
-			get => nearClipPlane;
+        /// <summary>
+        /// Gets or sets the camera controllers base near clip plane base distance, in metres.
+        /// Applied to the game's camera controller (not directly to the main camera), as that clobbers the camera's nearClipPlane every LateUpdate.
+        /// </summary>
+        internal static float NearClipPlane
+        {
+            get => nearClipPlane;
 
-			set
-			{
-				// Clamp value to min and max permitted.
-				nearClipPlane = Mathf.Clamp(MinNearClip, value, MaxNearClip);
-
-				// Set field with updated value (only if game has loaded, e.g. Controller isn't null).
-				CameraController controller = Controller;
-				if (controller != null)
-				{
-					originalNearPlane.SetValue(controller, nearClipPlane);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Applies the current cammera settings to the game camera.
-		/// Should only be called once level has loaded.
-		/// </summary>
-		public static void ApplySettings()
-		{
-			// Local reference.
-			CameraController controller = Controller;
-
-			// Remove border limts.
-			controller.m_unlimitedCamera = true;
-
-			// Set camera minimum and maximum distance from target.
-			controller.m_minDistance = MinDistance;
-			controller.m_maxDistance = MaxDistance;
-
-			// Apply near clip plane.
-			NearClipPlane = nearClipPlane;
-
-			// Set initial camera position, if we have one.
-			if (initialPosition.IsValid)
+            set
             {
-				controller.m_targetPosition = initialPosition.Position;
-				controller.m_targetAngle = initialPosition.Angle;
-				controller.m_targetSize = initialPosition.Size;
-				controller.m_targetHeight = initialPosition.Height;
-				controller.m_targetSize = initialPosition.Size;
+                // Clamp value to min and max permitted.
+                nearClipPlane = Mathf.Clamp(MinNearClip, value, MaxNearClip);
 
-				if (MainCamera != null)
-				{
-					MainCamera.fieldOfView = initialPosition.FOV;
-				}
-				else
+                // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
+                CameraController controller = Controller;
+                if (controller != null)
                 {
-					Logging.Error("unable to locate main camera");
+                    OriginalNearPlane.SetValue(controller, nearClipPlane);
                 }
             }
-		}
-	}
+        }
+
+        /// <summary>
+        /// Applies the current cammera settings to the game camera.
+        /// Should only be called once level has loaded.
+        /// </summary>
+        internal static void ApplySettings()
+        {
+            // Local reference.
+            CameraController controller = Controller;
+
+            // Remove border limts.
+            controller.m_unlimitedCamera = true;
+
+            // Set camera minimum and maximum distance from target.
+            controller.m_minDistance = MinDistance;
+            controller.m_maxDistance = MaxDistance;
+
+            // Apply near clip plane.
+            NearClipPlane = nearClipPlane;
+
+            // Set initial camera position, if we have one.
+            if (InitialPosition.IsValid)
+            {
+                controller.m_targetPosition = InitialPosition.Position;
+                controller.m_targetAngle = InitialPosition.Angle;
+                controller.m_targetSize = InitialPosition.Size;
+                controller.m_targetHeight = InitialPosition.Height;
+                controller.m_targetSize = InitialPosition.Size;
+
+                if (MainCamera != null)
+                {
+                    MainCamera.fieldOfView = InitialPosition.FOV;
+                }
+                else
+                {
+                    Logging.Error("unable to locate main camera");
+                }
+            }
+        }
+    }
 }

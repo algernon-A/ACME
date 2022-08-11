@@ -22,10 +22,10 @@ namespace ACME
         private const float GroupMargin = 40f;
 
         /// <summary>
-        /// Adds mod options tab to tabstrip.
+        /// Initializes a new instance of the <see cref="MapDragOptions"/> class.
         /// </summary>
-        /// <param name="tabStrip">Tab strip to add to</param>
-        /// <param name="tabIndex">Index number of tab</param>
+        /// <param name="tabStrip">Tab strip to add to.</param>
+        /// <param name="tabIndex">Index number of tab.</param>
         internal MapDragOptions(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab .
@@ -39,7 +39,7 @@ namespace ACME
             // Mouse drag movement key control.
             OptionsKeymapping mdKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             mdKeyMapping.Label = Translations.Translate("KEY_MDG");
-            mdKeyMapping.Binding = ModSettings.mapDragKey;
+            mdKeyMapping.Binding = ModSettings.MapDragKey;
             mdKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += mdKeyMapping.Panel.height + GroupMargin;
 

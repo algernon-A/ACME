@@ -22,10 +22,10 @@ namespace ACME
         private const float GroupMargin = 40f;
 
         /// <summary>
-        /// Adds mod options tab to tabstrip.
+        /// Initializes a new instance of the <see cref="GeneralOptions"/> class.
         /// </summary>
-        /// <param name="tabStrip">Tab strip to add to</param>
-        /// <param name="tabIndex">Index number of tab</param>
+        /// <param name="tabStrip">Tab strip to add to.</param>
+        /// <param name="tabIndex">Index number of tab.</param>
         internal GeneralOptions(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
@@ -53,38 +53,38 @@ namespace ACME
             // MoveIt key control.
             OptionsKeymapping miKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             miKeyMapping.Label = Translations.Translate("KEY_GMI");
-            miKeyMapping.Binding = UIThreading.moveItKey;
+            miKeyMapping.Binding = UIThreading.MoveItKey;
             miKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += miKeyMapping.Panel.height + Margin;
 
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
-            buildingCollisionCheck.isChecked = HeightOffset.buildingCollision;
-            buildingCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.buildingCollision = value; };
+            buildingCollisionCheck.isChecked = HeightOffset.BuildingCollision;
+            buildingCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.BuildingCollision = value; };
             currentY += buildingCollisionCheck.height + Margin;
 
             // Network collision checkbox.
             UICheckBox netCollisionCHeck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_NET"));
-            netCollisionCHeck.isChecked = HeightOffset.networkCollision;
-            netCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.networkCollision = value; };
+            netCollisionCHeck.isChecked = HeightOffset.NetworkCollision;
+            netCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.NetworkCollision = value; };
             currentY += netCollisionCHeck.height + Margin;
 
             // Prop collision checkbox.
             UICheckBox propCollisionCHeck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_PRO"));
-            propCollisionCHeck.isChecked = HeightOffset.propCollision;
-            propCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.propCollision = value; };
+            propCollisionCHeck.isChecked = HeightOffset.PropCollision;
+            propCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.PropCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Tree collision checkbox.
             UICheckBox treeCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_TRE"));
-            treeCollisionCheck.isChecked = HeightOffset.treeCollision;
-            treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.treeCollision = value; };
+            treeCollisionCheck.isChecked = HeightOffset.TreeCollision;
+            treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.TreeCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Water bobbing checkbox.
             UICheckBox waterBobbingCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_WAT"));
-            waterBobbingCheck.isChecked = HeightOffset.waterBobbing;
-            waterBobbingCheck.eventCheckChanged += (control, value) => { HeightOffset.waterBobbing = value; };
+            waterBobbingCheck.isChecked = UpdateTargetPosition.WaterBobbing;
+            waterBobbingCheck.eventCheckChanged += (control, value) => { UpdateTargetPosition.WaterBobbing = value; };
             currentY += propCollisionCHeck.height + GroupMargin;
 
             // Ground proximity slider .
@@ -158,7 +158,7 @@ namespace ACME
         /// <param name="minValue">Slider minimum value.</param>
         /// <param name="maxValue">Slider maximum value.</param>
         /// <param name="initialValue">Initial slider value.</param>
-        /// <returns>New delay slider with attached game-time labe.l</returns>
+        /// <returns>New delay slider with attached game-time label.</returns>
         private UISlider AddSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
         {
             // Create new slider.
@@ -181,8 +181,8 @@ namespace ACME
         /// <summary>
         /// Sets the distance value label text for a distance slider.
         /// </summary>
-        /// <param name="control">Calling component</param>
-        /// <param name="value">New value</param>
+        /// <param name="control">Calling component.</param>
+        /// <param name="value">New value.</param>
         private void SetDistanceLabel(UIComponent control, float value)
         {
             // Ensure that there's a valid label attached to the slider.
@@ -195,8 +195,8 @@ namespace ACME
         /// <summary>
         /// Sets the value label text for a generic slider.
         /// </summary>
-        /// <param name="control">Calling component</param>
-        /// <param name="value">New value</param>
+        /// <param name="control">Calling component.</param>
+        /// <param name="value">New value.</param>
         private void SetSliderLabel(UIComponent control, float value)
         {
             // Ensure that there's a valid label attached to the slider.

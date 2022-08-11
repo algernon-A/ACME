@@ -1,4 +1,9 @@
-﻿namespace ACME
+﻿// <copyright file="ModSettings.cs" company="algernon (K. Algernon A. Sheppard)">
+// Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+// </copyright>
+
+namespace ACME
 {
     using System.IO;
     using System.Xml.Serialization;
@@ -9,12 +14,14 @@
     /// <summary>
     /// Global mod settings.
     /// </summary>
-    /// 
     [XmlRoot("ACME")]
     public class ModSettings : SettingsXMLBase
     {
+        /// <summary>
+        /// Settings file name.
+        /// </summary>
         [XmlIgnore]
-        internal static Keybinding mapDragKey = new Keybinding(KeyCode.Mouse1, false, true, false);
+        private static readonly string SettingsFileName = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "ACME.xml");
 
         // Private flags.
         [XmlIgnore]
@@ -23,40 +30,34 @@
         private static bool _disableFollowRotation = false;
 
         /// <summary>
-        /// Settings file name.
-        /// </summary>
-        [XmlIgnore]
-        private static readonly string SettingsFileName = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "ACME.xml");
-
-        /// <summary>
         /// Gets or sets a value indicating whether building collision is enabled.
         /// </summary>
         [XmlElement("BuildingCollision")]
-        public bool XMLBuildingCollision { get => HeightOffset.buildingCollision; set => HeightOffset.buildingCollision = value; }
+        public bool XMLBuildingCollision { get => HeightOffset.BuildingCollision; set => HeightOffset.BuildingCollision = value; }
 
         /// <summary>
         /// Gets or sets a value indicating whether network collision is enabled.
         /// </summary>
         [XmlElement("NetworkCollision")]
-        public bool XMLNetworkCollision { get => HeightOffset.networkCollision; set => HeightOffset.networkCollision = value; }
+        public bool XMLNetworkCollision { get => HeightOffset.NetworkCollision; set => HeightOffset.NetworkCollision = value; }
 
         /// <summary>
         /// Gets or sets a value indicating whether prop collision is enabled.
         /// </summary>
         [XmlElement("PropCollision")]
-        public bool XMLPropCollision { get => HeightOffset.propCollision; set => HeightOffset.propCollision = value; }
+        public bool XMLPropCollision { get => HeightOffset.PropCollision; set => HeightOffset.PropCollision = value; }
 
         /// <summary>
         /// Gets or sets a value indicating whether tree collision is enabled.
         /// </summary>
         [XmlElement("TreeCollision")]
-        public bool XMLTreeCollision { get => HeightOffset.treeCollision; set => HeightOffset.treeCollision = value; }
+        public bool XMLTreeCollision { get => HeightOffset.TreeCollision; set => HeightOffset.TreeCollision = value; }
 
         /// <summary>
         /// Gets or sets a value indicating whether water bobbing is enabled.
         /// </summary>
         [XmlElement("WaterBobbing")]
-        public bool XMLWaterBobbing { get => HeightOffset.waterBobbing; set => HeightOffset.waterBobbing = value; }
+        public bool XMLWaterBobbing { get => UpdateTargetPosition.WaterBobbing; set => UpdateTargetPosition.WaterBobbing = value; }
 
         /// <summary>
         /// Gets or sets the camera terrain clearance amount, in metres.
@@ -71,7 +72,7 @@
         public bool XMLFollowDisasters { get => FollowDisasterPatch.FollowDisasters; set => FollowDisasterPatch.FollowDisasters = value; }
 
         /// <summary>
-		/// Gets or sets the camera controllers base near clip plane base distance, in metres.
+        /// Gets or sets the camera controllers base near clip plane base distance, in metres.
         /// </summary>
         [XmlElement("NearClip")]
         public float XMLNearClip { get => CameraUtils.NearClipPlane; set => CameraUtils.NearClipPlane = value; }
@@ -97,96 +98,95 @@
         /// <summary>
         /// Gets or sets the FPS mod absolute up movement key.
         /// </summary>
-        public KeyOnlyBinding FPSAbsUp { get => FPSPatch.s_absUp; set => FPSPatch.s_absUp = value; }
+        public KeyOnlyBinding FPSAbsUp { get => FPSPatch.AbsUp; set => FPSPatch.AbsUp = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod absolute down movement key.
         /// </summary>
-        public KeyOnlyBinding FPSAbsDown { get => FPSPatch.s_absDown; set => FPSPatch.s_absDown = value; }
+        public KeyOnlyBinding FPSAbsDown { get => FPSPatch.AbsDown; set => FPSPatch.AbsDown = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod absolute forward movement key.
         /// </summary>
-        public KeyOnlyBinding FPSAbsForward { get => FPSPatch.s_absForward; set => FPSPatch.s_absForward = value; }
+        public KeyOnlyBinding FPSAbsForward { get => FPSPatch.AbsForward; set => FPSPatch.AbsForward = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod absolute back movement key.
         /// </summary>
-        public KeyOnlyBinding FPSAbsBack { get => FPSPatch.s_absBack; set => FPSPatch.s_absBack = value; }
+        public KeyOnlyBinding FPSAbsBack { get => FPSPatch.AbsBack; set => FPSPatch.AbsBack = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod absolute left movement key.
         /// </summary>
-        public KeyOnlyBinding FPSAbsLeft { get => FPSPatch.s_absLeft; set => FPSPatch.s_absLeft = value; }
+        public KeyOnlyBinding FPSAbsLeft { get => FPSPatch.AbsLeft; set => FPSPatch.AbsLeft = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod absolute right movement key.
         /// </summary>
-        public KeyOnlyBinding FPSAbsRight { get => FPSPatch.s_absRight; set => FPSPatch.s_absRight = value; }
+        public KeyOnlyBinding FPSAbsRight { get => FPSPatch.AbsRight; set => FPSPatch.AbsRight = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod relative forward movement key.
         /// </summary>
-        public KeyOnlyBinding FPSRelForward { get => FPSPatch.s_cameraMoveForward; set => FPSPatch.s_cameraMoveForward = value; }
+        public KeyOnlyBinding FPSRelForward { get => FPSPatch.CameraMoveForward; set => FPSPatch.CameraMoveForward = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod relative back movement key.
         /// </summary>
-        public KeyOnlyBinding FPSRelBack { get => FPSPatch.s_cameraMoveBackward; set => FPSPatch.s_cameraMoveBackward = value; }
+        public KeyOnlyBinding FPSRelBack { get => FPSPatch.CameraMoveBackward; set => FPSPatch.CameraMoveBackward = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod relative left movement key.
         /// </summary>
-        public KeyOnlyBinding FPSRelLeft { get => FPSPatch.s_cameraMoveLeft; set => FPSPatch.s_cameraMoveLeft = value; }
+        public KeyOnlyBinding FPSRelLeft { get => FPSPatch.CameraMoveLeft; set => FPSPatch.CameraMoveLeft = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod relative right movement key.
         /// </summary>
-        public KeyOnlyBinding FPSRelRight { get => FPSPatch.s_cameraMoveRight; set => FPSPatch.s_cameraMoveRight = value; }
+        public KeyOnlyBinding FPSRelRight { get => FPSPatch.CameraMoveRight; set => FPSPatch.CameraMoveRight = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod look up key.
         /// </summary>
-        public KeyOnlyBinding FPSLookUp { get => FPSPatch.s_cameraRotateUp; set => FPSPatch.s_cameraRotateUp = value; }
+        public KeyOnlyBinding FPSLookUp { get => FPSPatch.CameraRotateUp; set => FPSPatch.CameraRotateUp = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod look down key.
         /// </summary>
-        public KeyOnlyBinding FPSLookDown { get => FPSPatch.s_cameraRotateDown; set => FPSPatch.s_cameraRotateDown = value; }
+        public KeyOnlyBinding FPSLookDown { get => FPSPatch.CameraRotateDown; set => FPSPatch.CameraRotateDown = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod look left key.
         /// </summary>
-        public KeyOnlyBinding FPSLookLeft { get => FPSPatch.s_cameraRotateLeft; set => FPSPatch.s_cameraRotateLeft = value; }
+        public KeyOnlyBinding FPSLookLeft { get => FPSPatch.CameraRotateLeft; set => FPSPatch.CameraRotateLeft = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod look right key.
         /// </summary>
-        public KeyOnlyBinding FPSLookRight { get => FPSPatch.s_cameraRotateRight; set => FPSPatch.s_cameraRotateRight = value; }
+        public KeyOnlyBinding FPSLookRight { get => FPSPatch.CameraRotateRight; set => FPSPatch.CameraRotateRight = value; }
 
         /// <summary>
         /// Gets or sets the FPS mod mouse look key.
         /// </summary>
-        public KeyOnlyBinding FPSMouseLook{ get => FPSPatch.s_cameraMouseRotate; set => FPSPatch.s_cameraMouseRotate = value; }
+        public KeyOnlyBinding FPSMouseLook { get => FPSPatch.CameraMouseRotate; set => FPSPatch.CameraMouseRotate = value; }
 
         /// <summary>
         /// Gets or sets the UUI hotkey.
         /// </summary>
         [XmlElement("ToggleKey")]
-        public Keybinding ToggleKey { get => UUI.uuiKey.Keybinding; set => UUI.uuiKey.Keybinding = value; }
-
+        public Keybinding ToggleKey { get => UUI.UUIKey.Keybinding; set => UUI.UUIKey.Keybinding = value; }
 
         /// <summary>
         /// Gets or sets the MoveIt zoom hotkey.
         /// </summary>
         [XmlElement("MoveItZoomKey")]
-        public Keybinding MoveItZoomKey { get => UIThreading.moveItKey; set => UIThreading.moveItKey = value; }
+        public Keybinding MoveItZoomKey { get => UIThreading.MoveItKey; set => UIThreading.MoveItKey = value; }
 
         /// <summary>
         /// Gets or sets the FPS mode hotkey.
         /// </summary>
         [XmlElement("FPSModeKey")]
-        public Keybinding FPSModeKey { get => UIThreading.fpsKey; set => UIThreading.fpsKey = value; }
+        public Keybinding FPSModeKey { get => UIThreading.FPSModeKey; set => UIThreading.FPSModeKey = value; }
 
         /// <summary>
         /// Gets or sets FPS turn speed.
@@ -210,16 +210,16 @@
         /// Gets or sets the map drag hotkey.
         /// </summary>
         [XmlElement("MapDragKey")]
-        public Keybinding MapDragKey { get => mapDragKey; set => mapDragKey = value; }
+        public Keybinding XMLMapDragKey { get => MapDragKey; set => MapDragKey = value; }
 
         /// <summary>
-        /// Gets or sets a vlaue indicating whether the map dragging X axis movement is inverted.
+        /// Gets or sets a value indicating whether the map dragging X axis movement is inverted.
         /// </summary>
         [XmlElement("MapDragInvertY")]
         public bool XMLMapDragInvertX { get => MapDragging.InvertXDrag; set => MapDragging.InvertXDrag = value; }
 
         /// <summary>
-        /// Gets or sets a vlaue indicating whether the map dragging Y axis movement is inverted.
+        /// Gets or sets a value indicating whether the map dragging Y axis movement is inverted.
         /// </summary>
         [XmlElement("MapDragInvertX")]
         public bool XMLMapDragInvertY { get => MapDragging.InvertYDrag; set => MapDragging.InvertYDrag = value; }
@@ -229,6 +229,12 @@
         /// </summary>
         [XmlElement("MapDragSpeed")]
         public float XMLMapDragSpeed { get => MapDragging.DragSpeed; set => MapDragging.DragSpeed = value; }
+
+        /// <summary>
+        /// Gets or sets the map dragging hotkey.
+        /// </summary>
+        [XmlIgnore]
+        internal static Keybinding MapDragKey { get; set; } = new Keybinding(KeyCode.Mouse1, false, true, false);
 
         /// <summary>
         /// Gets or sets a value indicating whether zoom to cursor functionality is enabled.

@@ -16,7 +16,7 @@ namespace ACME
     internal static class FPSMode
     {
         // Status flag.
-        internal static bool s_modeActive = false;
+        private static bool s_modeActive = false;
 
         /// <summary>
         /// Toggles FPS mode.
@@ -39,9 +39,9 @@ namespace ACME
             {
                 // Deactivating mode; set CameraController position to match current position.
                 // Reverse game CameraController.UpdateTransform calculations.
-                float verticalOffset = controller.m_currentSize * Mathf.Max(0f, 1f - controller.m_currentHeight / controller.m_maxDistance) / Mathf.Tan((float)Math.PI / 180f * CameraUtils.MainCamera.fieldOfView);
+                float verticalOffset = controller.m_currentSize * Mathf.Max(0f, 1f - (controller.m_currentHeight / controller.m_maxDistance)) / Mathf.Tan((float)Math.PI / 180f * CameraUtils.MainCamera.fieldOfView);
                 Quaternion quaternion = Quaternion.AngleAxis(controller.m_currentAngle.x, Vector3.up) * Quaternion.AngleAxis(controller.m_currentAngle.y, Vector3.right);
-                Vector3 cameraPos = controller.m_currentPosition + quaternion * new Vector3(0f, 0f, 0f - verticalOffset);
+                Vector3 cameraPos = controller.m_currentPosition + (quaternion * new Vector3(0f, 0f, 0f - verticalOffset));
                 cameraPos.y += CameraController.CalculateCameraHeightOffset(cameraPos, verticalOffset);
                 cameraPos = CameraController.ClampCameraPosition(cameraPos);
                 cameraPos += controller.m_cameraShake * Mathf.Sqrt(verticalOffset);

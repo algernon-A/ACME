@@ -47,7 +47,9 @@ namespace ACME
                                 conflictDetected = true;
                                 s_conflictingModNames.Add("Camera Positions Utility");
                             }
+
                             break;
+
                         case "ZoomIt":
                             // Zoom It, but only if enabled.
                             if (plugin.isEnabled)
@@ -55,7 +57,9 @@ namespace ACME
                                 conflictDetected = true;
                                 s_conflictingModNames.Add("Zoom It!");
                             }
+
                             break;
+
                         case "ZoomToCursor":
                             // Zoom To Cursor, but only if enabled.
                             if (plugin.isEnabled)
@@ -63,7 +67,9 @@ namespace ACME
                                 conflictDetected = true;
                                 s_conflictingModNames.Add("Zoom To Cursor");
                             }
+
                             break;
+
                         case "CameraMouseDrag9":
                             // Mouse Drag Camera, but only if enabled.
                             if (plugin.isEnabled)
@@ -72,7 +78,9 @@ namespace ACME
                                 conflictDetected = true;
                                 s_conflictingModNames.Add("Mouse Drag Camera");
                             }
+
                             break;
+
                         case "MouseDragCamera0":
                             // Mouse Drag Camera Inverted, but only if enabled.
                             if (plugin.isEnabled)
@@ -81,12 +89,15 @@ namespace ACME
                                 conflictDetected = true;
                                 s_conflictingModNames.Add("Mouse Drag Camera Inverted");
                             }
+
                             break;
+
                         case "VanillaGarbageBinBlocker":
                             // Garbage Bin Controller
                             conflictDetected = true;
                             s_conflictingModNames.Add("Garbage Bin Controller");
                             break;
+
                         case "Painter":
                             // Painter - this one is trickier because both Painter and Repaint use Painter.dll (thanks to CO savegame serialization...)
                             if (plugin.userModInstance.GetType().ToString().Equals("Painter.UserMod"))
@@ -94,6 +105,7 @@ namespace ACME
                                 conflictDetected = true;
                                 s_conflictingModNames.Add("Painter");
                             }
+
                             break;
                     }
                 }

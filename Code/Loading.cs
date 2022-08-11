@@ -122,7 +122,7 @@ namespace ACME
                 UUI.Setup();
 
                 // Perform MoveIt reflection.
-                ModUtils.MoveItReflection();
+                MoveItUtils.MoveItReflection();
 
                 // Activate keys.
                 UIThreading.Operating = true;

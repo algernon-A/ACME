@@ -5,9 +5,9 @@
 
 namespace ACME
 {
-    using UnityEngine;
     using ColossalFramework;
     using ColossalFramework.Math;
+    using UnityEngine;
 
     /// <summary>
     /// Harmony patches to implement zoom to mouse cursor functionality.
@@ -21,25 +21,26 @@ namespace ACME
         /// Harmony Prefix patch for CameraController.UpdateTargetPosition to record frame starting currentSize.
         /// </summary>
         /// <param name="__instance">CameraController instance.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony")]
         public static void UpdateTargetPrefix(CameraController __instance)
         {
             // Simply recording the original is quicker than reverse engineering the value or accessing private members.
             s_oldCurrentSize = __instance.m_currentSize;
         }
 
-
         /// <summary>
         /// Harmony Prefix patch for CameraController.UpdateTransform, to implement mouse cursor zooming.
         /// </summary>
         /// <param name="__instance">CameraController instance.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony")]
         public static void UpdateTransformPrefix(CameraController __instance)
         {
             // Try basic raycast.
-            Vector3 output = new Vector3();
+            Vector3 output = default;
             if (s_oldCurrentSize != 0f && s_oldCurrentSize != __instance.m_currentSize && RayCast(ref output))
             {
                 // Raycast successful - calculate position offset based on zoom fraction (between current and ray hit positions).
-                float zoomScale = 1f - __instance.m_currentSize / s_oldCurrentSize;
+                float zoomScale = 1f - (__instance.m_currentSize / s_oldCurrentSize);
                 Vector3 offset = zoomScale * (output - __instance.m_currentPosition);
 
                 // Maintain y coordination (adjusts for application of currentSize and avoids 'bouncing').
@@ -50,7 +51,7 @@ namespace ACME
                 __instance.m_currentPosition += offset;
             }
         }
-        
+
         /// <summary>
         /// Basic terrain raycasting for zoom to cursor function.
         /// </summary>

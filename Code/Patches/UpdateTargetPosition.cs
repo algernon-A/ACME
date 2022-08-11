@@ -19,17 +19,31 @@ namespace ACME
     [HarmonyPatch(typeof(CameraController), "UpdateTargetPosition")]
     public static class UpdateTargetPosition
     {
-        // Minumum and maximum speed multiplier.
+        /// <summary>
+        /// Minimum camera speed multiplier.
+        /// </summary>
         internal const float MinCameraSpeed = 1f;
+
+        /// <summary>
+        /// Maximum camera speed multiplier.
+        /// </summary>
         internal const float MaxCameraSpeed = 70f;
 
         // Camera speed multiplier.
         private static float s_cameraSpeed = 15f;
 
+        // Water bobbing active.
+        private static bool s_waterBobbing = false;
+
         /// <summary>
         /// Gets or sets the camera speed multiplier.
         /// </summary>
         internal static float CameraSpeed { get => s_cameraSpeed; set => s_cameraSpeed = Mathf.Clamp(value, MinCameraSpeed, MaxCameraSpeed); }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether water bobbing is enabled.
+        /// </summary>
+        internal static bool WaterBobbing { get => s_waterBobbing; set => s_waterBobbing = value; }
 
         /// <summary>
         /// Harmony transpiler to replace hardcoded camera angle limits and implement variable movement speed multipliers.
@@ -45,7 +59,6 @@ namespace ACME
             // TerrainManager.SampleRawHeightSmoothWithWater info.
             MethodInfo waterInfo = typeof(TerrainManager).GetMethod(nameof(TerrainManager.SampleRawHeightSmoothWithWater), new Type[] { typeof(Vector3), typeof(bool), typeof(float) });
 
-
             // Instruction parsing.
             IEnumerator<CodeInstruction> instructionsEnumerator = instructions.GetEnumerator();
             CodeInstruction instruction;
@@ -53,7 +66,6 @@ namespace ACME
             // Status flags.
             bool completedBounds = false;
             bool completedTerrain = false;
-
 
             // Method calls for flagging insertion of custom multiplier code.
             MethodInfo handleKeyEvents = typeof(CameraController).GetMethod("HandleKeyEvents", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -106,6 +118,7 @@ namespace ACME
                             }
                         }
                     }
+
                     // Is this ldfld float32 [UnityEngine]UnityEngine.Vector2::y?
                     else if (instruction.opcode == OpCodes.Ldfld && instruction.LoadsField(vector2y))
                     {
@@ -187,6 +200,6 @@ namespace ACME
         /// <param name="waterOffset">Water offset distance (ignored).</param>
         /// <returns>Applicable terrain height.</returns>
         public static float SampleHeight(TerrainManager terrainManager, Vector3 worldPos, bool timeLerp, float waterOffset) =>
-            HeightOffset.waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleRawHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
+            s_waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleRawHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
     }
 }

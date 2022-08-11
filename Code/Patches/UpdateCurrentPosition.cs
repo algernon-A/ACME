@@ -20,8 +20,8 @@ namespace ACME
         /// Harmony transpiler to remove hardcoded camera tilt distance limit.
         /// Drops instructions to always use m_targetAngle.y instead of factoring in m_maxTiltDistance and m_targetSize.
         /// </summary>
-        /// <param name="instructions">Original ILCode</param>
-        /// <returns>Patched ILCode</returns>
+        /// <param name="instructions">Original ILCode.</param>
+        /// <returns>Patched ILCode.</returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             // Instruction parsing.
@@ -50,6 +50,7 @@ namespace ACME
                         {
                             savedLabels = instruction.labels;
                         }
+
                         continue;
                     }
 
