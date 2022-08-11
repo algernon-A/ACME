@@ -1,4 +1,6 @@
-﻿- Implement AlgernonCommons.
+﻿Version 0.5.2 -
+
+- Implement AlgernonCommons.
 - Update UUI
 
 
