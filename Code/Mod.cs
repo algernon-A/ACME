@@ -14,7 +14,7 @@ namespace ACME
     /// <summary>
     /// The base mod class for instantiation by the game.
     /// </summary>
-    public class Mod : PatcherMod, IUserMod
+    public class Mod : PatcherMod<OptionsPanel, Patcher>, IUserMod
     {
         /// <summary>
         /// Gets the mod's base display name (name only).
@@ -53,16 +53,6 @@ namespace ACME
         }
 
         /// <summary>
-        /// Called by the game when the mod options panel is setup.
-        /// </summary>
-        /// <param name="helper">UI helper instance.</param>
-        public void OnSettingsUI(UIHelperBase helper)
-        {
-            // Create options panel.
-            OptionsPanelManager<OptionsPanel>.Setup(helper);
-        }
-
-        /// <summary>
         /// Saves settings file.
         /// </summary>
         public override void SaveSettings() => ModSettings.Save();
@@ -71,15 +61,5 @@ namespace ACME
         /// Loads settings file.
         /// </summary>
         public override void LoadSettings() => ModSettings.Load();
-
-        /// <summary>
-        /// Apply Harmony patches.
-        /// </summary>
-        protected override void ApplyPatches() => Patcher.Instance.PatchAll();
-
-        /// <summary>
-        /// Remove Harmony patches.
-        /// </summary>
-        protected override void RemovePatches() => Patcher.Instance.UnpatchAll();
     }
 }

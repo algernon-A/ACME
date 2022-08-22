@@ -8,6 +8,7 @@ namespace ACME
     using System;
     using System.Reflection;
     using AlgernonCommons;
+    using AlgernonCommons.Patching;
     using UnityEngine;
 
     /// <summary>
@@ -66,7 +67,7 @@ namespace ACME
             }
 
             // Apply/remove FPS patch.
-            Patcher.Instance.PatchFPS(s_modeActive);
+            PatcherManager<Patcher>.Instance.PatchFPS(s_modeActive);
 
             // Log message.
             Logging.Message("FPS mode ", s_modeActive ? "enabled" : "disabled");

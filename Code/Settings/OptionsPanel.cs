@@ -11,18 +11,17 @@ namespace ACME
     /// <summary>
     /// Class to handle the mod's options panel.
     /// </summary>
-    internal class OptionsPanel : UIPanel
+    public class OptionsPanel : UIPanel
     {
         private UITabContainer _tabContainer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsPanel"/> class.
         /// </summary>
-        private OptionsPanel()
+        internal OptionsPanel()
         {
             // Add tabstrip.
             UITabstrip tabStrip = UITabstrips.AddTabStrip(this, 0f, 0f, OptionsPanelManager<OptionsPanel>.PanelWidth, OptionsPanelManager<OptionsPanel>.PanelHeight, out _tabContainer);
-            tabStrip.clipChildren = false;
 
             // Add tabs and panels.
             new GeneralOptions(tabStrip, 0);

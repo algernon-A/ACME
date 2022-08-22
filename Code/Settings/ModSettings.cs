@@ -8,6 +8,7 @@ namespace ACME
     using System.IO;
     using System.Xml.Serialization;
     using AlgernonCommons.Keybinding;
+    using AlgernonCommons.Patching;
     using AlgernonCommons.XML;
     using UnityEngine;
 
@@ -249,7 +250,7 @@ namespace ACME
                 _zoomToCursor = value;
 
                 // Apply/unapply Harmony patch on value change.
-                Patcher.Instance.PatchZoomToCursor(value);
+                PatcherManager<Patcher>.Instance.PatchZoomToCursor(value);
             }
         }
 
@@ -266,7 +267,7 @@ namespace ACME
                 _disableFollowRotation = value;
 
                 // Apply/unapply Harmony patch on value change.
-                Patcher.Instance.PatchFollowRotation(value);
+                PatcherManager<Patcher>.Instance.PatchFollowRotation(value);
             }
         }
 

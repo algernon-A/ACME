@@ -22,69 +22,6 @@ namespace ACME
         private static bool s_disableFollowRotationPatched = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Patcher"/> class.
-        /// </summary>
-        /// <param name="harmonyID">This mod's unique Harmony identifier.</param>
-        public Patcher(string harmonyID)
-            : base(harmonyID)
-        {
-        }
-
-        /// <summary>
-        /// Gets the active instance reference.
-        /// </summary>
-        public static new Patcher Instance
-        {
-            get
-            {
-                // Auto-initializing getter.
-                if (s_instance == null)
-                {
-                    s_instance = new Patcher(PatcherMod.Instance.HarmonyID);
-                }
-
-                return s_instance as Patcher;
-            }
-        }
-
-        /// <summary>
-        /// Apply all Harmony patches.
-        /// </summary>
-        public override void PatchAll()
-        {
-            // Don't do anything if already patched.
-            if (!Patched)
-            {
-                // Ensure Harmony is ready before patching.
-                if (HarmonyHelper.IsHarmonyInstalled)
-                {
-                    Logging.KeyMessage("deploying Harmony patches");
-
-                    // Apply all annotated patches and update flag.
-                    Harmony harmonyInstance = new Harmony(HarmonyID);
-                    harmonyInstance.PatchAll();
-                    Patched = true;
-
-                    // Apply zoom to mouse cursor if set.
-                    if (s_zoomToCursorPatched != ModSettings.ZoomToCursor)
-                    {
-                        PatchZoomToCursor(ModSettings.ZoomToCursor);
-                    }
-
-                    // Apply disable follow rotation if set.
-                    if (s_disableFollowRotationPatched != ModSettings.DisableFollowRotation)
-                    {
-                        PatchZoomToCursor(ModSettings.DisableFollowRotation);
-                    }
-                }
-                else
-                {
-                    Logging.Error("Harmony not ready");
-                }
-            }
-        }
-
-        /// <summary>
         /// Applies or unapplies free FPS mode CameraController patch.
         /// </summary>
         /// <param name="active">True to apply patch, false to unapply.</param>
@@ -244,5 +181,11 @@ namespace ACME
                 }
             }
         }
+
+        /// <summary>
+        /// Peforms any additional actions (such as custom patching) after PatchAll is called.
+        /// </summary>
+        /// <param name="harmonyInstance">Haromny instance for patching.</param>
+        protected override void OnPatchAll(Harmony harmonyInstance) => PatchZoomToCursor(ModSettings.ZoomToCursor);
     }
 }

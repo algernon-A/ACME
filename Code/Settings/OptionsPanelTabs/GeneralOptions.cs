@@ -38,7 +38,7 @@ namespace ACME
 
             // Language choice.
             UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(panel, LeftMargin, currentY, Translations.Translate("TRN_CHOICE"), Translations.LanguageList, Translations.Index);
-            languageDropDown.eventSelectedIndexChanged += (control, index) =>
+            languageDropDown.eventSelectedIndexChanged += (c, index) =>
             {
                 Translations.Index = index;
                 OptionsPanelManager<OptionsPanel>.LocaleChanged();
