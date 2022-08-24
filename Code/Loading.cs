@@ -5,7 +5,9 @@
 
 namespace ACME
 {
+    using System.Collections.Generic;
     using AlgernonCommons.Patching;
+    using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ICities;
 
@@ -14,6 +16,18 @@ namespace ACME
     /// </summary>
     public sealed class Loading : PatcherLoadingBase<OptionsPanel, Patcher>
     {
+        /// <summary>
+        /// Gets any text for a trailing confict notification paragraph (e.g. "These mods must be removed before this mod can operate").
+        /// </summary>
+        protected override string ConflictRemovedText => Translations.Translate("CAM_ERR_CON1");
+
+        /// <summary>
+        /// Checks for any mod conflicts.
+        /// Called as part of checking prior to executing any OnCreated actions.
+        /// </summary>
+        /// <returns>A list of conflicting mod names (null or empty if none).</returns>
+        protected override List<string> CheckModConflicts() => ConflictDetection.CheckConflictingMods();
+
         /// <summary>
         /// Performs any actions upon successful level loading completion.
         /// </summary>
