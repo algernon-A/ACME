@@ -8,6 +8,7 @@ namespace ACME
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
+    using ColossalFramework;
     using ColossalFramework.UI;
     using UnityEngine;
 
@@ -21,11 +22,32 @@ namespace ACME
         private const float LeftMargin = 24f;
         private const float GroupMargin = 40f;
 
-        // Number of keybindings.
-        private const int NumKeys = 15;
+
+        /// <summary>
+        /// Keybinding index enum.
+        /// </summary>
+        private enum KeyBindingIndex : int
+        {
+            CameraMoveForward = 0,
+            CameraMoveBackward,
+            CameraMoveLeft,
+            CameraMoveRight,
+            AbsForward,
+            AbsBack,
+            AbsLeft,
+            AbsRight,
+            AbsUp,
+            AbsDown,
+            CameraRotateUp,
+            CameraRotateDown,
+            CameraRotateLeft,
+            CameraRotateRight,
+            CameraMouseRotate,
+            NumKeys,
+        }
 
         // FPS keybindings.
-        private readonly KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[NumKeys]
+        private readonly KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[(int)KeyBindingIndex.NumKeys]
         {
             FPSPatch.CameraMoveForward,
             FPSPatch.CameraMoveBackward,
@@ -45,7 +67,7 @@ namespace ACME
         };
 
         // FPS keybinding labels.
-        private readonly string[] keyLabels = new string[NumKeys]
+        private readonly string[] keyLabels = new string[(int)KeyBindingIndex.NumKeys]
         {
             "KEY_REL_FWD",
             "KEY_REL_BCK",
@@ -63,6 +85,9 @@ namespace ACME
             "KEY_ROT_RHT",
             "KEY_ROT_MSE",
         };
+
+        // Keymapping controls.
+        private readonly OptionsKeymapping[] keyMappingControls = new OptionsKeymapping[(int)KeyBindingIndex.NumKeys];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FPSOptions"/> class.
@@ -113,14 +138,38 @@ namespace ACME
 
             // Add fps keys.
             float currentKeyY = 0;
-            for (int i = 0; i < NumKeys; ++i)
+            for (int i = 0; i < (int)KeyBindingIndex.NumKeys; ++i)
             {
-                OptionsKeymapping keyMapping = scrollPanel.gameObject.AddComponent<OptionsKeymapping>();
-                keyMapping.Label = Translations.Translate(keyLabels[i]);
-                keyMapping.Binding = keyBindings[i];
-                keyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentKeyY);
-                currentKeyY += keyMapping.Panel.height;
+                keyMappingControls[i] = scrollPanel.gameObject.AddComponent<OptionsKeymapping>();
+                keyMappingControls[i].Label = Translations.Translate(keyLabels[i]);
+                keyMappingControls[i].Binding = keyBindings[i];
+                keyMappingControls[i].Panel.relativePosition = new Vector2(LeftMargin, currentKeyY);
+                currentKeyY += keyMappingControls[i].Panel.height;
             }
+
+            UIButton resetButton = UIButtons.AddButton(panel, 0f, scrollPanel.relativePosition.y + scrollPanel.height + Margin, Translations.Translate("KEY_FPS_RES"), width: 300f);
+            resetButton.tooltip = Translations.Translate("KEY_FPS_RES_TIP");
+            resetButton.eventClicked += (c, p) =>
+            {
+                // Sync to game.
+                keyMappingControls[(int)KeyBindingIndex.CameraMoveForward].KeySetting = new SavedInputKey(Settings.cameraMoveForward, Settings.gameSettingsFile, DefaultSettings.cameraMoveForward, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraMoveBackward].KeySetting = new SavedInputKey(Settings.cameraMoveBackward, Settings.gameSettingsFile, DefaultSettings.cameraMoveBackward, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraMoveLeft].KeySetting = new SavedInputKey(Settings.cameraMoveLeft, Settings.gameSettingsFile, DefaultSettings.cameraMoveLeft, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraMoveRight].KeySetting = new SavedInputKey(Settings.cameraMoveRight, Settings.gameSettingsFile, DefaultSettings.cameraMoveRight, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraRotateLeft].KeySetting = new SavedInputKey(Settings.cameraRotateLeft, Settings.gameSettingsFile, DefaultSettings.cameraRotateLeft, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraRotateRight].KeySetting = new SavedInputKey(Settings.cameraRotateRight, Settings.gameSettingsFile, DefaultSettings.cameraRotateRight, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraRotateUp].KeySetting = new SavedInputKey(Settings.cameraRotateUp, Settings.gameSettingsFile, DefaultSettings.cameraRotateUp, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraRotateDown].KeySetting = new SavedInputKey(Settings.cameraRotateDown, Settings.gameSettingsFile, DefaultSettings.cameraRotateDown, autoUpdate: false);
+                keyMappingControls[(int)KeyBindingIndex.CameraMouseRotate].KeySetting = new SavedInputKey(Settings.cameraMouseRotate, Settings.gameSettingsFile, DefaultSettings.cameraMouseRotate, autoUpdate: false);
+
+                // Reset mod defaults (no game equivalent).
+                keyMappingControls[(int)KeyBindingIndex.AbsUp].KeySetting = new KeyOnlyBinding(KeyCode.PageUp).Encode();
+                keyMappingControls[(int)KeyBindingIndex.AbsDown].KeySetting = new KeyOnlyBinding(KeyCode.PageDown).Encode();
+                keyMappingControls[(int)KeyBindingIndex.AbsLeft].KeySetting = new KeyOnlyBinding(KeyCode.LeftArrow).Encode();
+                keyMappingControls[(int)KeyBindingIndex.AbsRight].KeySetting = new KeyOnlyBinding(KeyCode.RightArrow).Encode();
+                keyMappingControls[(int)KeyBindingIndex.AbsForward].KeySetting = new KeyOnlyBinding(KeyCode.UpArrow).Encode();
+                keyMappingControls[(int)KeyBindingIndex.AbsBack].KeySetting = new KeyOnlyBinding(KeyCode.DownArrow).Encode();
+            };
         }
     }
 }
