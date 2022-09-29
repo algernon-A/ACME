@@ -34,17 +34,41 @@ namespace ACME
         /// </summary>
         internal const float MaxDistance = 44000f;
 
+        /// <summary>
+        /// Minimum minimum shadow distance.
+        /// </summary>
+        internal const float MinMinShadowDistance = 10f;
+
+        /// <summary>
+        /// Maximum minimum shadow distance.
+        /// </summary>
+        internal const float MaxMinShadowDistance = 4000f;
+
+        /// <summary>
+        /// Minimum maximum shadow distance.
+        /// </summary>
+        internal const float MinMaxShadowDistance = 4000f;
+
+        /// <summary>
+        /// Maximum maximum shadow distance.
+        /// </summary>
+        internal const float MaxMaxShadowDistance = 45000f;
+
         // CameraManager m_originalNearPlane.
         private static readonly FieldInfo OriginalNearPlane = typeof(CameraController).GetField("m_originalNearPlane", BindingFlags.NonPublic | BindingFlags.Instance);
 
         // Current near clip plane distance (game default is 5).
-        private static float nearClipPlane = 1f;
+        private static float s_nearClipPlane = 1f;
 
         // CameraController reference.
-        private static CameraController cameraController;
+        private static CameraController s_cameraController;
 
         // Main camera reference.
-        private static Camera mainCamera;
+        private static Camera s_mainCamera;
+
+        // Shadow parameters.
+        private static float s_minShadowDistance = 400f;
+        private static float s_maxShadowDistance = 4000f;
 
         /// <summary>
         /// Sets the camera's initial saved position.
@@ -59,12 +83,12 @@ namespace ACME
             get
             {
                 // Get camera controller if we haven't already, and main camera has been instantiated.
-                if (cameraController == null)
+                if (s_cameraController == null)
                 {
-                    cameraController = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<CameraController>();
+                    s_cameraController = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<CameraController>();
                 }
 
-                return cameraController;
+                return s_cameraController;
             }
         }
 
@@ -76,12 +100,12 @@ namespace ACME
             get
             {
                 // Get main camera if we haven't already.
-                if (mainCamera == null)
+                if (s_mainCamera == null)
                 {
-                    mainCamera = Controller.GetComponent<Camera>();
+                    s_mainCamera = Controller.GetComponent<Camera>();
                 }
 
-                return mainCamera;
+                return s_mainCamera;
             }
         }
 
@@ -91,18 +115,60 @@ namespace ACME
         /// </summary>
         internal static float NearClipPlane
         {
-            get => nearClipPlane;
+            get => s_nearClipPlane;
 
             set
             {
                 // Clamp value to min and max permitted.
-                nearClipPlane = Mathf.Clamp(MinNearClip, value, MaxNearClip);
+                s_nearClipPlane = Mathf.Clamp(MinNearClip, value, MaxNearClip);
 
                 // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
                 CameraController controller = Controller;
                 if (controller != null)
                 {
-                    OriginalNearPlane.SetValue(controller, nearClipPlane);
+                    OriginalNearPlane.SetValue(controller, s_nearClipPlane);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the camera controller's minimum shadow distance, which is used to determine shadow clarity.
+        /// </summary>
+        internal static float MinShadowDistance
+        {
+            get => s_minShadowDistance;
+
+            set
+            {
+                // Clamp value to min and max permitted.
+                s_minShadowDistance = Mathf.Clamp(MinMinShadowDistance, value, MaxMinShadowDistance);
+
+                // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
+                CameraController controller = Controller;
+                if (controller != null)
+                {
+                    controller.m_minShadowDistance = s_minShadowDistance;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the camera controller's maximum shadow distance.
+        /// </summary>
+        internal static float MaxShadowDistance
+        {
+            get => s_maxShadowDistance;
+
+            set
+            {
+                // Clamp value to min and max permitted.
+                s_maxShadowDistance = Mathf.Clamp(MinMaxShadowDistance, value, MaxMaxShadowDistance);
+
+                // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
+                CameraController controller = Controller;
+                if (controller != null)
+                {
+                    controller.m_maxShadowDistance = value;
                 }
             }
         }
@@ -123,8 +189,12 @@ namespace ACME
             controller.m_minDistance = MinDistance;
             controller.m_maxDistance = MaxDistance;
 
+            // Set shadow parameters.
+            controller.m_minShadowDistance = MinShadowDistance;
+            controller.m_maxShadowDistance = MaxShadowDistance;
+
             // Apply near clip plane.
-            NearClipPlane = nearClipPlane;
+            NearClipPlane = s_nearClipPlane;
 
             // Set initial camera position, if we have one.
             if (InitialPosition.IsValid)

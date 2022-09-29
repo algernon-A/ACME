@@ -13,7 +13,7 @@ namespace ACME
     /// </summary>
     public class OptionsPanel : UIPanel
     {
-        private UITabContainer _tabContainer;
+        private readonly UITabContainer _tabContainer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsPanel"/> class.
@@ -27,6 +27,7 @@ namespace ACME
             new GeneralOptions(tabStrip, 0);
             FPSOptions fpsOptions = new FPSOptions(tabStrip, 1);
             new MapDragOptions(tabStrip, 2);
+            new ShadowOptions(tabStrip, 3);
 
             // Select first tab.
             tabStrip.selectedIndex = -1;

@@ -31,8 +31,6 @@ namespace ACME
             // Add tab.
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("CAM_OPT_GEN"), tabIndex, out UIButton _, autoLayout: false);
 
-            // Add controls.
-
             // Y position indicator.
             float currentY = Margin;
 

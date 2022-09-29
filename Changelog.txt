@@ -1,4 +1,8 @@
-﻿Version 0.5.3 -
+﻿- Add patch to restore vanilla shadow calculation values when custom mod values are applied
+- Add customizable shadow calculation parameters
+
+
+Version 0.5.3 -
 
 - Update AlgernonCommons.
 

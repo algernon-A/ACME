@@ -25,7 +25,7 @@ namespace ACME
         private const int NumKeys = 15;
 
         // FPS keybindings.
-        private KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[NumKeys]
+        private readonly KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[NumKeys]
         {
             FPSPatch.CameraMoveForward,
             FPSPatch.CameraMoveBackward,
@@ -45,7 +45,7 @@ namespace ACME
         };
 
         // FPS keybinding labels.
-        private string[] keyLabels = new string[NumKeys]
+        private readonly string[] keyLabels = new string[NumKeys]
         {
             "KEY_REL_FWD",
             "KEY_REL_BCK",

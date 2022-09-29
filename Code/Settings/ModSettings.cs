@@ -97,6 +97,18 @@ namespace ACME
         public bool XMLDisableFollowRotation { get => DisableFollowRotation; set => DisableFollowRotation = value; }
 
         /// <summary>
+        /// Gets or sets the camera controllers minimum shadow distance (shadow sharpness).
+        /// </summary>
+        [XmlElement("MinShadowDistance")]
+        public float XMLMinShadowDistance { get => CameraUtils.MinShadowDistance; set => CameraUtils.MinShadowDistance = value; }
+
+        /// <summary>
+        /// Gets or sets the camera controllers maximum shadow distance, in metres.
+        /// </summary>
+        [XmlElement("MaxShadowDistance")]
+        public float XMLMaxShadowDistance { get => CameraUtils.MaxShadowDistance; set => CameraUtils.MaxShadowDistance = value; }
+
+        /// <summary>
         /// Gets or sets the FPS mod absolute up movement key.
         /// </summary>
         public KeyOnlyBinding FPSAbsUp { get => FPSPatch.AbsUp; set => FPSPatch.AbsUp = value; }

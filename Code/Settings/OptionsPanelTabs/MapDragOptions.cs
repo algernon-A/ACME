@@ -28,10 +28,8 @@ namespace ACME
         /// <param name="tabIndex">Index number of tab.</param>
         internal MapDragOptions(UITabstrip tabStrip, int tabIndex)
         {
-            // Add tab .
+            // Add tab.
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("CAM_OPT_MDG"), tabIndex, out UIButton _, autoLayout: false);
-
-            // Add controls.
 
             // Y position indicator.
             float currentY = GroupMargin;
