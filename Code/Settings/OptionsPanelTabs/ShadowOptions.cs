@@ -8,6 +8,7 @@ namespace ACME
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
+    using UnityEngine;
 
     /// <summary>
     /// Options panel for setting shadow options.

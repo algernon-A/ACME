@@ -1,5 +1,6 @@
 ﻿- Add patch to restore vanilla shadow calculation values when custom mod values are applied
 - Add customizable shadow calculation parameters
+- Update FPS options panel layout
 
 
 Version 0.5.3 -

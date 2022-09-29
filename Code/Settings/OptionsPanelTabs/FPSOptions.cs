@@ -82,41 +82,45 @@ namespace ACME
             fpsKeyMapping.Label = Translations.Translate("KEY_FPS");
             fpsKeyMapping.Binding = UIThreading.FPSModeKey;
             fpsKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += fpsKeyMapping.Panel.height + GroupMargin;
+            currentY += fpsKeyMapping.Panel.height + Margin;
 
             // Key turning speed slider.
             UISlider keyTurnSlider = UISliders.AddPlainSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_KTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyTurnSpeed);
             keyTurnSlider.eventValueChanged += (c, value) => { FPSPatch.KeyTurnSpeed = value; };
-            currentY += keyTurnSlider.parent.height + GroupMargin;
+            currentY += keyTurnSlider.parent.height + Margin;
 
             // Key movement speed slider.
             UISlider keyMoveSlider = UISliders.AddPlainSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_KMS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyMoveSpeed);
             keyMoveSlider.eventValueChanged += (c, value) => { FPSPatch.KeyMoveSpeed = value; };
-            currentY += keyMoveSlider.parent.height + GroupMargin;
+            currentY += keyMoveSlider.parent.height + Margin;
 
             // Mouse turning speed slider.
             UISlider mouseTurnSlider = UISliders.AddPlainSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_MTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.MouseTurnSpeed);
             mouseTurnSlider.eventValueChanged += (c, value) => { FPSPatch.MouseTurnSpeed = value; };
-            currentY += mouseTurnSlider.parent.height + GroupMargin;
+            currentY += mouseTurnSlider.parent.height + Margin;
+
+            // Add scrollable panel for hotkeys.
+            UIScrollablePanel scrollPanel = panel.AddUIComponent<UIScrollablePanel>();
+            scrollPanel.relativePosition = new Vector2(0, currentY);
+            scrollPanel.autoSize = false;
+            scrollPanel.autoLayout = false;
+            scrollPanel.width = panel.width - GroupMargin;
+            scrollPanel.height = panel.height - currentY - GroupMargin;
+            scrollPanel.clipChildren = true;
+            scrollPanel.builtinKeyNavigation = true;
+            scrollPanel.scrollWheelDirection = UIOrientation.Vertical;
+            UIScrollbars.AddScrollbar(panel, scrollPanel);
 
             // Add fps keys.
+            float currentKeyY = 0;
             for (int i = 0; i < NumKeys; ++i)
             {
-                OptionsKeymapping keyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+                OptionsKeymapping keyMapping = scrollPanel.gameObject.AddComponent<OptionsKeymapping>();
                 keyMapping.Label = Translations.Translate(keyLabels[i]);
                 keyMapping.Binding = keyBindings[i];
-                keyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
-                currentY += keyMapping.Panel.height;
+                keyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentKeyY);
+                currentKeyY += keyMapping.Panel.height;
             }
-
-            // Set panel height.
-            panel.height = currentY;
-            PanelHeight = currentY;
         }
-
-        /// <summary>
-        /// Gets or sets the panel height.
-        /// </summary>
-        internal float PanelHeight { get; set; }
     }
 }
