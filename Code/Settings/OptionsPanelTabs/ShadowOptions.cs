@@ -40,6 +40,8 @@ namespace ACME
             // Shadow distance slider .
             UISlider minShadowDistanceSlider = UISliders.AddPlainSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_SHD_MIN"), CameraUtils.MinMinShadowDistance, CameraUtils.MaxMinShadowDistance, 10f, CameraUtils.MinShadowDistance);
             minShadowDistanceSlider.eventValueChanged += (c, value) => { CameraUtils.MinShadowDistance = value; };
+            UILabels.AddLabel(minShadowDistanceSlider, 0f, minShadowDistanceSlider.height + Margin, Translations.Translate("SHARP"), textScale: 0.7f);
+            UILabels.AddLabel(minShadowDistanceSlider, minShadowDistanceSlider.width, minShadowDistanceSlider.height + Margin, Translations.Translate("FUZZY"), textScale: 0.7f, alignment: UIHorizontalAlignment.Right);
         }
     }
 }

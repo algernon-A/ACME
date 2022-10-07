@@ -65,7 +65,7 @@ namespace ACME
             set
             {
                 // Internal terrain clearance factor starts at -5f.
-                terrainClearanceModifier = -5f + Mathf.Clamp(MinTerrainClearance, value, MaxTerrainClearance);
+                terrainClearanceModifier = -5f + Mathf.Clamp(value, MinTerrainClearance, MaxTerrainClearance);
             }
         }
 

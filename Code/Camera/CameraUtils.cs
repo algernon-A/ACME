@@ -37,22 +37,22 @@ namespace ACME
         /// <summary>
         /// Minimum minimum shadow distance.
         /// </summary>
-        internal const float MinMinShadowDistance = 10f;
+        internal const float MinMinShadowDistance = 20f;
 
         /// <summary>
         /// Maximum minimum shadow distance.
         /// </summary>
-        internal const float MaxMinShadowDistance = 4000f;
+        internal const float MaxMinShadowDistance = 2500f;
 
         /// <summary>
         /// Minimum maximum shadow distance.
         /// </summary>
-        internal const float MinMaxShadowDistance = 4000f;
+        internal const float MinMaxShadowDistance = 3000f;
 
         /// <summary>
         /// Maximum maximum shadow distance.
         /// </summary>
-        internal const float MaxMaxShadowDistance = 45000f;
+        internal const float MaxMaxShadowDistance = 14000f;
 
         // CameraManager m_originalNearPlane.
         private static readonly FieldInfo OriginalNearPlane = typeof(CameraController).GetField("m_originalNearPlane", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -120,7 +120,7 @@ namespace ACME
             set
             {
                 // Clamp value to min and max permitted.
-                s_nearClipPlane = Mathf.Clamp(MinNearClip, value, MaxNearClip);
+                s_nearClipPlane = Mathf.Clamp(value, MinNearClip, MaxNearClip);
 
                 // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
                 CameraController controller = Controller;
@@ -141,7 +141,7 @@ namespace ACME
             set
             {
                 // Clamp value to min and max permitted.
-                s_minShadowDistance = Mathf.Clamp(MinMinShadowDistance, value, MaxMinShadowDistance);
+                s_minShadowDistance = Mathf.Clamp(value, MinMinShadowDistance, MaxMinShadowDistance);
 
                 // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
                 CameraController controller = Controller;
@@ -162,7 +162,7 @@ namespace ACME
             set
             {
                 // Clamp value to min and max permitted.
-                s_maxShadowDistance = Mathf.Clamp(MinMaxShadowDistance, value, MaxMaxShadowDistance);
+                s_maxShadowDistance = Mathf.Clamp(value, MinMaxShadowDistance, MaxMaxShadowDistance);
 
                 // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
                 CameraController controller = Controller;

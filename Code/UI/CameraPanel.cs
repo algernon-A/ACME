@@ -33,7 +33,9 @@ namespace ACME
         private const float ZoomSliderY = RotSliderY + SliderHeight;
         private const float TiltSliderY = ZoomSliderY + SliderHeight;
         private const float FovSliderY = TiltSliderY + SliderHeight;
-        private const float Check1Y = FovSliderY + SliderHeight;
+        private const float ShadowMaxSliderY = FovSliderY + SliderHeight;
+        private const float ShadowMinSliderY = ShadowMaxSliderY + SliderHeight;
+        private const float Check1Y = ShadowMinSliderY + SliderHeight;
         private const float Check2Y = Check1Y + CheckHeight;
         private const float Check3Y = Check2Y + CheckHeight;
         private const float Check1X = Margin;
@@ -59,6 +61,8 @@ namespace ACME
         private readonly CameraSlider _zoomSlider;
         private readonly CameraSlider _tiltSlider;
         private readonly CameraSlider _fovSlider;
+        private readonly CameraSlider _shadowMaxSlider;
+        private readonly CameraSlider _shadowMinSlider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraPanel"/> class.
@@ -129,6 +133,10 @@ namespace ACME
 
             // FOV slider.
             _fovSlider = AddCameraSlider(this, Margin, FovSliderY, PanelWidth - (Margin * 2f), "CAM_FOV", MinFOV, MaxFOV, 0.01f, _mainCamera.fieldOfView, "N1", "fov");
+
+            // Shadow sliders.
+            _shadowMaxSlider = AddCameraSlider(this, Margin, ShadowMaxSliderY, PanelWidth - (Margin * 2f), "CAM_SHD_MAX", CameraUtils.MinMaxShadowDistance, CameraUtils.MaxMaxShadowDistance, 100f, CameraUtils.MaxShadowDistance, "N0", "shadMax");
+            _shadowMinSlider = AddCameraSlider(this, Margin, ShadowMinSliderY, PanelWidth - (Margin * 2f), "CAM_SHD_MIN", CameraUtils.MinMinShadowDistance, CameraUtils.MaxMinShadowDistance, 10f, CameraUtils.MinShadowDistance, "N0", "shadMin");
 
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UICheckBoxes.AddLabelledCheckBox(this, Check1X, Check1Y, Translations.Translate("CAM_COL_BLD"));
@@ -271,7 +279,13 @@ namespace ACME
                         _controller.m_maxTiltDistance = 90f;
                         break;
                     case "fov":
-                        _mainCamera.fieldOfView = Mathf.Clamp(MinFOV, slider.value, MaxFOV);
+                        _mainCamera.fieldOfView = Mathf.Clamp(slider.value, MinFOV, MaxFOV);
+                        break;
+                    case "shadMax":
+                        CameraUtils.MaxShadowDistance = slider.value;
+                        break;
+                    case "shadMin":
+                        CameraUtils.MinShadowDistance = slider.value;
                         break;
                 }
             }
@@ -306,6 +320,8 @@ namespace ACME
             _zoomSlider.value = controller.m_targetSize;
             _tiltSlider.value = controller.m_targetAngle.y;
             _fovSlider.value = _mainCamera.fieldOfView;
+            _shadowMaxSlider.value = controller.m_maxShadowDistance;
+            _shadowMinSlider.value = controller.m_minShadowDistance;
         }
 
         /// <summary>
