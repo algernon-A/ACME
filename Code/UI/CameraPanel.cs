@@ -43,7 +43,7 @@ namespace ACME
         private const float PanelHeight = Check3Y + CheckHeight + Margin;
 
         // Camera constants.
-        private const float MinFOV = 24f;
+        private const float MinFOV = 5f;
         private const float MaxFOV = 84f;
 
         // Instance references.
