@@ -22,30 +22,6 @@ namespace ACME
         private const float LeftMargin = 24f;
         private const float GroupMargin = 40f;
 
-
-        /// <summary>
-        /// Keybinding index enum.
-        /// </summary>
-        private enum KeyBindingIndex : int
-        {
-            CameraMoveForward = 0,
-            CameraMoveBackward,
-            CameraMoveLeft,
-            CameraMoveRight,
-            AbsForward,
-            AbsBack,
-            AbsLeft,
-            AbsRight,
-            AbsUp,
-            AbsDown,
-            CameraRotateUp,
-            CameraRotateDown,
-            CameraRotateLeft,
-            CameraRotateRight,
-            CameraMouseRotate,
-            NumKeys,
-        }
-
         // FPS keybindings.
         private readonly KeyOnlyBinding[] keyBindings = new KeyOnlyBinding[(int)KeyBindingIndex.NumKeys]
         {
@@ -170,6 +146,29 @@ namespace ACME
                 keyMappingControls[(int)KeyBindingIndex.AbsForward].KeySetting = new KeyOnlyBinding(KeyCode.UpArrow).Encode();
                 keyMappingControls[(int)KeyBindingIndex.AbsBack].KeySetting = new KeyOnlyBinding(KeyCode.DownArrow).Encode();
             };
+        }
+
+        /// <summary>
+        /// Keybinding index enum.
+        /// </summary>
+        private enum KeyBindingIndex : int
+        {
+            CameraMoveForward = 0,
+            CameraMoveBackward,
+            CameraMoveLeft,
+            CameraMoveRight,
+            AbsForward,
+            AbsBack,
+            AbsLeft,
+            AbsRight,
+            AbsUp,
+            AbsDown,
+            CameraRotateUp,
+            CameraRotateDown,
+            CameraRotateLeft,
+            CameraRotateRight,
+            CameraMouseRotate,
+            NumKeys,
         }
     }
 }

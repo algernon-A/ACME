@@ -19,7 +19,7 @@ namespace ACME
         internal OptionsPanel()
         {
             // Add tabstrip.
-            UITabstrip tabStrip = UITabstrips.AddTabStrip(this, 0f, 0f, OptionsPanelManager<OptionsPanel>.PanelWidth, OptionsPanelManager<OptionsPanel>.PanelHeight, out _);
+            AutoTabstrip tabStrip = AutoTabstrip.AddTabstrip(this, 0f, 0f, OptionsPanelManager<OptionsPanel>.PanelWidth, OptionsPanelManager<OptionsPanel>.PanelHeight, out _, tabHeight: 50f);
 
             // Add tabs and panels.
             new GeneralOptions(tabStrip, 0);
