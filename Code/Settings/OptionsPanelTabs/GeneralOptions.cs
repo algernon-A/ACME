@@ -48,13 +48,6 @@ namespace ACME
             uuiKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += uuiKeyMapping.Panel.height + Margin;
 
-            // MoveIt key control.
-            OptionsKeymapping miKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
-            miKeyMapping.Label = Translations.Translate("KEY_GMI");
-            miKeyMapping.Binding = UIThreading.MoveItKey;
-            miKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += miKeyMapping.Panel.height + Margin;
-
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
             buildingCollisionCheck.isChecked = HeightOffset.BuildingCollision;

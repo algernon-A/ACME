@@ -1,7 +1,7 @@
-﻿- Add patch to restore vanilla shadow calculation values when custom mod values are applied
-- Add customizable shadow calculation parameters
-- Update FPS options panel layout
+﻿- Add customizable shadow calculation parametersAdd patch to restore vanilla shadow calculation values when custom mod values are applied
+- Add configurable hotkey to reset camera rotation
 - Add option to reset FPS key settings to game values
+- Overhaul options panel layout
 
 
 Version 0.5.3 -

@@ -215,5 +215,15 @@ namespace ACME
                 }
             }
         }
+
+        /// <summary>
+        /// Resets the camera rotation.
+        /// </summary>
+        internal static void ResetRotation()
+        {
+            // Local reference.
+            CameraController controller = Controller;
+            controller.m_targetAngle = new Vector2(90f, 90f);
+        }
     }
 }

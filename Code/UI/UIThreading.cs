@@ -20,6 +20,7 @@ namespace ACME
         // Hotkeys.
         private static Keybinding s_moveItKey = new Keybinding(KeyCode.Mouse2, false, false, true);
         private static Keybinding s_fpsKey = new Keybinding(KeyCode.Tab, true, false, false);
+        private static Keybinding s_resetKey = new Keybinding(KeyCode.R, false, false, true);
 
         // Saved position hotkeys.
         private readonly KeyCode[] positionKeys = new KeyCode[CameraPositions.NumSaves]
@@ -52,6 +53,7 @@ namespace ACME
         private bool operating = false;
         private bool moveItProcessed = false;
         private bool fpsProcessed = false;
+        private bool resetProcessed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UIThreading"/> class.
@@ -85,6 +87,11 @@ namespace ACME
         /// Gets or sets the zoom FPS activation hotkey.
         /// </summary>
         internal static Keybinding FPSModeKey { get => s_fpsKey; set => s_fpsKey = value; }
+
+        /// <summary>
+        /// Gets or sets the reset rotation hotkey.
+        /// </summary>
+        internal static Keybinding ResetKey { get => s_resetKey; set => s_resetKey = value; }
 
         /// <summary>
         /// Look for keypress to activate tool.
@@ -160,6 +167,25 @@ namespace ACME
                     // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
                     fpsProcessed = false;
                 }
+            }
+
+            // Check for rotation reset hotkey.
+            if (s_resetKey.IsPressed())
+            {
+                // Only process if we're not already doing so.
+                if (!resetProcessed)
+                {
+                    // Set processed flag.
+                    resetProcessed = true;
+
+                    // Toggle FPS mode.
+                    CameraUtils.ResetRotation();
+                }
+            }
+            else
+            {
+                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                resetProcessed = false;
             }
         }
     }

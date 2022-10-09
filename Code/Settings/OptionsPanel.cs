@@ -26,6 +26,7 @@ namespace ACME
             new FPSOptions(tabStrip, 1);
             new MapDragOptions(tabStrip, 2);
             new ShadowOptions(tabStrip, 3);
+            new HotkeyOptions(tabStrip, 4);
 
             // Select first tab.
             tabStrip.selectedIndex = -1;

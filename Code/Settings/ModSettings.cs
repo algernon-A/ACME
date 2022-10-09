@@ -196,6 +196,12 @@ namespace ACME
         public Keybinding MoveItZoomKey { get => UIThreading.MoveItKey; set => UIThreading.MoveItKey = value; }
 
         /// <summary>
+        /// Gets or sets the MoveIt zoom hotkey.
+        /// </summary>
+        [XmlElement("ResetRotationKey")]
+        public Keybinding ResetRotationKey { get => UIThreading.ResetKey; set => UIThreading.ResetKey = value; }
+
+        /// <summary>
         /// Gets or sets the FPS mode hotkey.
         /// </summary>
         [XmlElement("FPSModeKey")]
