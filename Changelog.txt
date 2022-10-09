@@ -1,4 +1,5 @@
 ﻿- Add customizable shadow calculation parametersAdd patch to restore vanilla shadow calculation values when custom mod values are applied
+- Add stepped rotation hotkeys (ctrl-X and ctrl-Y) with modifiers (shift/alt)
 - Add configurable hotkey to reset camera rotation
 - Add option to reset FPS key settings to game values
 - Overhaul options panel layout

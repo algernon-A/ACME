@@ -54,6 +54,7 @@ namespace ACME
         private bool moveItProcessed = false;
         private bool fpsProcessed = false;
         private bool resetProcessed = false;
+        private bool rotationProcessed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UIThreading"/> class.
@@ -186,6 +187,50 @@ namespace ACME
             {
                 // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
                 resetProcessed = false;
+            }
+
+            // Check for movement hotkeys (requires control down).
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                // Check modifiers.
+                bool isAltPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
+                bool isShiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+                // Movement hotkeys.
+                if (Input.GetKey(KeyCode.X))
+                {
+                    // Only process if we're not already doing so.
+                    if (!rotationProcessed)
+                    {
+                        // Set processed flag.
+                        rotationProcessed = true;
+
+                        // Rotate camera.
+                        CameraUtils.RotateX(isAltPressed ? 45f : 15f, isShiftPressed);
+                    }
+                }
+                else if (Input.GetKey(KeyCode.Y))
+                {
+                    // Only process if we're not already doing so.
+                    if (!rotationProcessed)
+                    {
+                        // Set processed flag.
+                        rotationProcessed = true;
+
+                        // Rotate camera.
+                        CameraUtils.RotateY(isAltPressed ? 45f : 15f, isShiftPressed);
+                    }
+                }
+                else
+                {
+                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                    rotationProcessed = false;
+                }
+            }
+            else
+            {
+                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                rotationProcessed = false;
             }
         }
     }

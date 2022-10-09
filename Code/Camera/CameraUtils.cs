@@ -217,6 +217,32 @@ namespace ACME
         }
 
         /// <summary>
+        /// Rotates the camera to the nearest multiple of the current X rotation to given increment plus one.
+        /// </summary>
+        /// <param name="increment">X-rotation increment.</param>
+        /// <param name="invert">Set to true to invert rotation direction.</param>
+        internal static void RotateX(float increment, bool invert)
+        {
+            float roundedX = Mathf.Round(Controller.m_targetAngle.x / increment) * increment;
+
+            // Invert is set up to rotate right by default, left inverted.
+            Controller.m_targetAngle.x = roundedX + (invert ? increment : -increment);
+        }
+
+        /// <summary>
+        /// Rotates the camera to the nearest multiple of 15 degrees plus the specified rotation.
+        /// </summary>
+        /// <param name="increment">Y-rotation increment.</param>
+        /// <param name="invert">Set to true to invert rotation direction.</param>
+        internal static void RotateY(float increment, bool invert)
+        {
+            float roundedY = Mathf.Round(Controller.m_targetAngle.y / increment) * increment;
+
+            // Invert is set up to rotate dwon by default, up inverted.
+            Controller.m_targetAngle.y = roundedY + (invert ? -increment : increment);
+        }
+
+        /// <summary>
         /// Resets the camera rotation.
         /// </summary>
         internal static void ResetRotation()
