@@ -7,6 +7,7 @@ namespace ACME
 {
     using System.IO;
     using AlgernonCommons;
+    using ColossalFramework;
     using UnityEngine;
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace ACME
         internal const int NumSaves = 22;
 
         // Array of saved positions.
-        private static SavedPosition[] savedPositions = new SavedPosition[NumSaves];
+        private static readonly SavedPosition[] SavedPositions = new SavedPosition[NumSaves];
 
         /// <summary>
         /// Saves a camera position.
@@ -29,7 +30,10 @@ namespace ACME
         internal static void SavePosition(int positionIndex)
         {
             // Save current camera attributes.
-            savedPositions[positionIndex] = CurrentPosition();
+            SavedPositions[positionIndex] = CurrentPosition();
+
+            // Play sound.
+            Singleton<AudioManager>.instance.PlaySound(SoundEffects.SaveSound, 1f);
         }
 
         /// <summary>
@@ -39,21 +43,21 @@ namespace ACME
         internal static void LoadPosition(int positionIndex)
         {
             // Don't do anything if position isn't valid.
-            if (savedPositions[positionIndex].IsValid)
+            if (SavedPositions[positionIndex].IsValid)
             {
                 // Local reference.
                 CameraController controller = CameraUtils.Controller;
 
                 // Restore saved attributes.
-                controller.m_targetPosition = savedPositions[positionIndex].Position;
-                controller.m_currentPosition = savedPositions[positionIndex].Position;
-                controller.m_targetAngle = savedPositions[positionIndex].Angle;
-                controller.m_currentAngle = savedPositions[positionIndex].Angle;
-                controller.m_targetHeight = savedPositions[positionIndex].Height;
-                controller.m_currentHeight = savedPositions[positionIndex].Height;
-                controller.m_targetSize = savedPositions[positionIndex].Size;
-                controller.m_currentSize = savedPositions[positionIndex].Size;
-                CameraUtils.MainCamera.fieldOfView = savedPositions[positionIndex].FOV;
+                controller.m_targetPosition = SavedPositions[positionIndex].Position;
+                controller.m_currentPosition = SavedPositions[positionIndex].Position;
+                controller.m_targetAngle = SavedPositions[positionIndex].Angle;
+                controller.m_currentAngle = SavedPositions[positionIndex].Angle;
+                controller.m_targetHeight = SavedPositions[positionIndex].Height;
+                controller.m_currentHeight = SavedPositions[positionIndex].Height;
+                controller.m_targetSize = SavedPositions[positionIndex].Size;
+                controller.m_currentSize = SavedPositions[positionIndex].Size;
+                CameraUtils.MainCamera.fieldOfView = SavedPositions[positionIndex].FOV;
             }
         }
 
@@ -72,7 +76,7 @@ namespace ACME
             for (int i = 0; i < NumSaves; ++i)
             {
                 // Serialize position.
-                WritePosition(savedPositions[i], writer);
+                WritePosition(SavedPositions[i], writer);
             }
 
             // Serialize current position.
@@ -94,7 +98,7 @@ namespace ACME
             for (int i = 0; i < NumSaves; ++i)
             {
                 // Deserialize position.
-                savedPositions[i] = ReadPosition(reader);
+                SavedPositions[i] = ReadPosition(reader);
             }
 
             // If version 1, read current camera position.

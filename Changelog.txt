@@ -5,6 +5,7 @@
 - Add configurable hotkey to reset camera rotation
 - Add option to reset FPS key settings to game values
 - Decreased minimum Field of View to 5
+- Add sound effect when a camera position is saved
 - Overhaul options panel layout
 
 

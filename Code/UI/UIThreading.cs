@@ -50,11 +50,12 @@ namespace ACME
         };
 
         // Flags.
-        private bool operating = false;
-        private bool moveItProcessed = false;
-        private bool fpsProcessed = false;
-        private bool resetProcessed = false;
-        private bool rotationProcessed = false;
+        private bool _operating = false;
+        private bool _positionKeyProcessed = false;
+        private bool _moveItProcessed = false;
+        private bool _fpsProcessed = false;
+        private bool _resetProcessed = false;
+        private bool _rotationProcessed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UIThreading"/> class.
@@ -74,7 +75,7 @@ namespace ACME
             {
                 if (s_instance != null)
                 {
-                    s_instance.operating = value;
+                    s_instance._operating = value;
                 }
             }
         }
@@ -102,7 +103,7 @@ namespace ACME
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             // Don't do anything if not active.
-            if (operating)
+            if (_operating)
             {
                 // Check modifier keys according to settings.
                 bool ctrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
@@ -111,34 +112,46 @@ namespace ACME
                 // Save/restore position - is control pressed?
                 if (ctrlPressed)
                 {
-                    // Is a saved position key also pressed?
-                    for (int i = 0; i < positionKeys.Length; ++i)
+                    // Don't do anything if we're already processing.
+                    if (!_positionKeyProcessed)
                     {
-                        if (Input.GetKey(positionKeys[i]))
+                        // Is a saved position key also pressed?
+                        for (int i = 0; i < positionKeys.Length; ++i)
                         {
-                            // Saved position key pressed - loading or saving (shift key)?
-                            if (shiftPressed)
+                            if (Input.GetKey(positionKeys[i]))
                             {
-                                // Shift is pressed - saving.
-                                CameraPositions.SavePosition(i);
-                            }
-                            else
-                            {
-                                // Shift is not pressed - loading.
-                                CameraPositions.LoadPosition(i);
+                                // Saved position key pressed.
+                                _positionKeyProcessed = true;
+
+                                // Loading or saving (shift key)?
+                                if (shiftPressed)
+                                {
+                                    // Shift is pressed - saving.
+                                    CameraPositions.SavePosition(i);
+                                }
+                                else
+                                {
+                                    // Shift is not pressed - loading.
+                                    CameraPositions.LoadPosition(i);
+                                }
                             }
                         }
                     }
+                }
+                else
+                {
+                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                    _positionKeyProcessed = false;
                 }
 
                 // Check for Movit zoom.
                 if (s_moveItKey.IsPressed() && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
                 {
                     // Only process if we're not already doing so.
-                    if (!moveItProcessed)
+                    if (!_moveItProcessed)
                     {
                         // Set processed flag.
-                        moveItProcessed = true;
+                        _moveItProcessed = true;
 
                         // Set camera to Move It selection position.
                         MoveItUtils.SetPosition();
@@ -147,17 +160,17 @@ namespace ACME
                 else
                 {
                     // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                    moveItProcessed = false;
+                    _moveItProcessed = false;
                 }
 
                 // Check for FPS hotkey.
                 if (s_fpsKey.IsPressed())
                 {
                     // Only process if we're not already doing so.
-                    if (!fpsProcessed)
+                    if (!_fpsProcessed)
                     {
                         // Set processed flag.
-                        fpsProcessed = true;
+                        _fpsProcessed = true;
 
                         // Toggle FPS mode.
                         FPSMode.ToggleMode();
@@ -166,71 +179,70 @@ namespace ACME
                 else
                 {
                     // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                    fpsProcessed = false;
+                    _fpsProcessed = false;
                 }
-            }
 
-            // Check for rotation reset hotkey.
-            if (s_resetKey.IsPressed())
-            {
-                // Only process if we're not already doing so.
-                if (!resetProcessed)
-                {
-                    // Set processed flag.
-                    resetProcessed = true;
-
-                    // Toggle FPS mode.
-                    CameraUtils.ResetRotation();
-                }
-            }
-            else
-            {
-                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                resetProcessed = false;
-            }
-
-            // Check for movement hotkeys (requires control down).
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-            {
-                // Check modifiers.
-                bool isAltPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
-                bool isShiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-
-                // Movement hotkeys.
-                if (Input.GetKey(KeyCode.X))
+                // Check for rotation reset hotkey.
+                if (s_resetKey.IsPressed())
                 {
                     // Only process if we're not already doing so.
-                    if (!rotationProcessed)
+                    if (!_resetProcessed)
                     {
                         // Set processed flag.
-                        rotationProcessed = true;
+                        _resetProcessed = true;
 
-                        // Rotate camera.
-                        CameraUtils.RotateX(isAltPressed ? 45f : 15f, isShiftPressed);
-                    }
-                }
-                else if (Input.GetKey(KeyCode.Y))
-                {
-                    // Only process if we're not already doing so.
-                    if (!rotationProcessed)
-                    {
-                        // Set processed flag.
-                        rotationProcessed = true;
-
-                        // Rotate camera.
-                        CameraUtils.RotateY(isAltPressed ? 45f : 15f, isShiftPressed);
+                        // Toggle FPS mode.
+                        CameraUtils.ResetRotation();
                     }
                 }
                 else
                 {
                     // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                    rotationProcessed = false;
+                    _resetProcessed = false;
                 }
-            }
-            else
-            {
-                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                rotationProcessed = false;
+
+                // Check for movement hotkeys (requires control down).
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+                {
+                    // Check modifiers.
+                    bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
+
+                    // Movement hotkeys.
+                    if (Input.GetKey(KeyCode.X))
+                    {
+                        // Only process if we're not already doing so.
+                        if (!_rotationProcessed)
+                        {
+                            // Set processed flag.
+                            _rotationProcessed = true;
+
+                            // Rotate camera.
+                            CameraUtils.RotateX(altPressed ? 45f : 15f, shiftPressed);
+                        }
+                    }
+                    else if (Input.GetKey(KeyCode.Y))
+                    {
+                        // Only process if we're not already doing so.
+                        if (!_rotationProcessed)
+                        {
+                            // Set processed flag.
+                            _rotationProcessed = true;
+
+                            // Rotate camera.
+                            CameraUtils.RotateY(altPressed ? 45f : 15f, shiftPressed);
+                        }
+                    }
+                    else
+                    {
+                        // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                        _rotationProcessed = false;
+                    }
+                }
+                else
+                {
+                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                    _rotationProcessed = false;
+                }
             }
         }
     }
