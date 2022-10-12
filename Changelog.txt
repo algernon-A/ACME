@@ -1,4 +1,9 @@
-﻿Version 0.6 -
+﻿Version 0.6.1 -
+
+- Add editor position saving
+
+
+Version 0.6 -
 
 - Add customizable shadow calculation parameters
 - Add patch to restore vanilla shadow calculation values when custom mod values are applied
