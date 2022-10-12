@@ -51,11 +51,11 @@ namespace ACME
 
         // Flags.
         private bool _operating = false;
-        private bool _positionKeyProcessed = false;
         private bool _moveItProcessed = false;
         private bool _fpsProcessed = false;
         private bool _resetProcessed = false;
         private bool _rotationProcessed = false;
+        private int _positionKeyProcessed = -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UIThreading"/> class.
@@ -112,30 +112,32 @@ namespace ACME
                 // Save/restore position - is control pressed?
                 if (ctrlPressed)
                 {
-                    // Don't do anything if we're already processing.
-                    if (!_positionKeyProcessed)
+                    // Is a saved position key also pressed?
+                    for (int i = 0; i < positionKeys.Length; ++i)
                     {
-                        // Is a saved position key also pressed?
-                        for (int i = 0; i < positionKeys.Length; ++i)
+                        // Don't do anything if we're already processing this key.
+                        if (_positionKeyProcessed == i)
                         {
-                            if (Input.GetKey(positionKeys[i]))
-                            {
-                                // Saved position key pressed.
-                                _positionKeyProcessed = true;
+                            continue;
+                        }
 
-                                // Loading or saving (shift key)?
-                                if (shiftPressed)
-                                {
-                                    // Shift is pressed - saving.
-                                    CameraPositions.SavePosition(i);
-                                    return;
-                                }
-                                else
-                                {
-                                    // Shift is not pressed - loading.
-                                    CameraPositions.LoadPosition(i);
-                                    return;
-                                }
+                        if (Input.GetKey(positionKeys[i]))
+                        {
+                            // Saved position key pressed.
+                            _positionKeyProcessed = i;
+
+                            // Loading or saving (shift key)?
+                            if (shiftPressed)
+                            {
+                                // Shift is pressed - saving.
+                                CameraPositions.SavePosition(i);
+                                return;
+                            }
+                            else
+                            {
+                                // Shift is not pressed - loading.
+                                CameraPositions.LoadPosition(i);
+                                return;
                             }
                         }
                     }
@@ -143,7 +145,7 @@ namespace ACME
                 else
                 {
                     // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                    _positionKeyProcessed = false;
+                    _positionKeyProcessed = -1;
                 }
 
                 // Check for Movit zoom.

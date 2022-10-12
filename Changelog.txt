@@ -1,6 +1,7 @@
 ﻿Version 0.6.1 -
 
 - Add editor position saving
+- Improve save/restore position key handling when control key is continually held down
 
 
 Version 0.6 -
