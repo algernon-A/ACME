@@ -114,7 +114,7 @@ namespace ACME
             _suppressEvents = true;
 
             // Multiply mouse wheel movement by current step multiplier.
-            value = value + (p.wheelDelta * WheelMultiplier);
+            value += p.wheelDelta * WheelMultiplier;
             _suppressEvents = false;
 
             // Use event and invoke any handlers.

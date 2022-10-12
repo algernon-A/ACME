@@ -215,7 +215,6 @@ namespace ACME
                 }
 
                 // Movement keys - relative.
-                bool altDown = Input.GetKey(KeyCode.LeftAlt) | Input.GetKey(KeyCode.RightAlt) | Input.GetKey(KeyCode.AltGr);
                 if (s_cameraMoveForward.IsPressed())
                 {
                     direction += Vector3.forward * s_keyMoveSpeed;
