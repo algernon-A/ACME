@@ -24,11 +24,6 @@ namespace ACME
             {
                 if (s_saveSound == null)
                 {
-                    foreach (AudioClip clip in Resources.FindObjectsOfTypeAll<AudioClip>())
-                    {
-                        AlgernonCommons.Logging.Message(clip.name);
-                    }
-
                     s_saveSound = Resources.FindObjectsOfTypeAll<AudioClip>().First(x => x.name.Equals("level_up_fanfare"));
                 }
 

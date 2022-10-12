@@ -5,9 +5,12 @@
 
 namespace ACME
 {
+    using System.Collections.Generic;
     using System.IO;
+    using System.Xml.Serialization;
     using AlgernonCommons;
     using ColossalFramework;
+    using ICities;
     using UnityEngine;
 
     /// <summary>
@@ -21,7 +24,8 @@ namespace ACME
         internal const int NumSaves = 22;
 
         // Array of saved positions.
-        private static readonly SavedPosition[] SavedPositions = new SavedPosition[NumSaves];
+        private static readonly SavedPosition[] GameSavedPositions = new SavedPosition[NumSaves];
+        private static readonly SavedPosition[] EditorSavedPositions = new SavedPosition[NumSaves];
 
         /// <summary>
         /// Saves a camera position.
@@ -30,7 +34,16 @@ namespace ACME
         internal static void SavePosition(int positionIndex)
         {
             // Save current camera attributes.
-            SavedPositions[positionIndex] = CurrentPosition();
+            if (Singleton<ToolManager>.instance.m_properties.m_mode == ItemClass.Availability.Game)
+            {
+                GameSavedPositions[positionIndex] = CurrentPosition();
+            }
+            else
+            {
+                // Editor positiosn are saved in the XML settings file.
+                EditorSavedPositions[positionIndex] = CurrentPosition();
+                ModSettings.Save();
+            }
 
             // Play sound.
             Singleton<AudioManager>.instance.PlaySound(SoundEffects.SaveSound, 1f);
@@ -42,22 +55,25 @@ namespace ACME
         /// <param name="positionIndex">Camera position index to load from.</param>
         internal static void LoadPosition(int positionIndex)
         {
+            // Get relevant position.
+            SavedPosition savedPosition = Singleton<ToolManager>.instance.m_properties.m_mode == ItemClass.Availability.Game ? GameSavedPositions[positionIndex] : EditorSavedPositions[positionIndex];
+
             // Don't do anything if position isn't valid.
-            if (SavedPositions[positionIndex].IsValid)
+            if (savedPosition.IsValid)
             {
                 // Local reference.
                 CameraController controller = CameraUtils.Controller;
 
                 // Restore saved attributes.
-                controller.m_targetPosition = SavedPositions[positionIndex].Position;
-                controller.m_currentPosition = SavedPositions[positionIndex].Position;
-                controller.m_targetAngle = SavedPositions[positionIndex].Angle;
-                controller.m_currentAngle = SavedPositions[positionIndex].Angle;
-                controller.m_targetHeight = SavedPositions[positionIndex].Height;
-                controller.m_currentHeight = SavedPositions[positionIndex].Height;
-                controller.m_targetSize = SavedPositions[positionIndex].Size;
-                controller.m_currentSize = SavedPositions[positionIndex].Size;
-                CameraUtils.MainCamera.fieldOfView = SavedPositions[positionIndex].FOV;
+                controller.m_targetPosition = savedPosition.Position;
+                controller.m_currentPosition = savedPosition.Position;
+                controller.m_targetAngle = savedPosition.Angle;
+                controller.m_currentAngle = savedPosition.Angle;
+                controller.m_targetHeight = savedPosition.Height;
+                controller.m_currentHeight = savedPosition.Height;
+                controller.m_targetSize = savedPosition.Size;
+                controller.m_currentSize = savedPosition.Size;
+                CameraUtils.MainCamera.fieldOfView = savedPosition.FOV;
             }
         }
 
@@ -76,7 +92,7 @@ namespace ACME
             for (int i = 0; i < NumSaves; ++i)
             {
                 // Serialize position.
-                WritePosition(SavedPositions[i], writer);
+                WritePosition(GameSavedPositions[i], writer);
             }
 
             // Serialize current position.
@@ -98,13 +114,61 @@ namespace ACME
             for (int i = 0; i < NumSaves; ++i)
             {
                 // Deserialize position.
-                SavedPositions[i] = ReadPosition(reader);
+                GameSavedPositions[i] = ReadPosition(reader);
             }
 
             // If version 1, read current camera position.
             if (version == 1)
             {
                 CameraUtils.InitialPosition = ReadPosition(reader);
+            }
+        }
+
+        /// <summary>
+        /// Serializes saved editor camera positions to XML.
+        /// </summary>
+        /// <returns>New array of XML-serialized camera positions.</returns>
+        internal static SerializedPosition[] XMLSerialize()
+        {
+            // Serialize positions.
+            List<SerializedPosition> postions = new List<SerializedPosition>(EditorSavedPositions.Length);
+            for (int i = 0; i < EditorSavedPositions.Length; ++i)
+            {
+                // Only add valid positions.
+                if (EditorSavedPositions[i].IsValid)
+                {
+                    postions.Add(new SerializedPosition
+                    {
+                        Index = i,
+                        PosX = EditorSavedPositions[i].Position.x,
+                        PosY = EditorSavedPositions[i].Position.y,
+                        PosZ = EditorSavedPositions[i].Position.z,
+                        AngleX = EditorSavedPositions[i].Angle.x,
+                        AngleY = EditorSavedPositions[i].Angle.y,
+                        Height = EditorSavedPositions[i].Height,
+                        Size = EditorSavedPositions[i].Size,
+                        FOV = EditorSavedPositions[i].FOV,
+                    });
+                }
+            }
+
+            return postions.ToArray();
+        }
+
+        /// <summary>
+        /// Deserializes saved editor camera positions from XML.
+        /// </summary>
+        /// <param name="positions">List of XML-serialized camera positions to deserialize.</param>
+        internal static void XMLDeserialize(SerializedPosition[] positions)
+        {
+            foreach (SerializedPosition position in positions)
+            {
+                EditorSavedPositions[position.Index].IsValid = true;
+                EditorSavedPositions[position.Index].Position = new Vector3(position.PosX, position.PosY, position.PosZ);
+                EditorSavedPositions[position.Index].Angle = new Vector2(position.AngleX, position.AngleY);
+                EditorSavedPositions[position.Index].Height = position.Height;
+                EditorSavedPositions[position.Index].Size = position.Size;
+                EditorSavedPositions[position.Index].FOV = position.FOV;
             }
         }
 
@@ -208,6 +272,68 @@ namespace ACME
             /// <summary>
             /// Camera Field Of View.
             /// </summary>
+            public float FOV;
+        }
+
+        /// <summary>
+        /// Structure to store saved camera positions in XML.
+        /// </summary>
+        /// 
+        [XmlRoot("SerializedPosition")]
+        public struct SerializedPosition
+        {
+            /// <summary>
+            /// Position index number.
+            /// </summary>
+            [XmlAttribute]
+            public int Index;
+
+            /// <summary>
+            /// Camera X-position.
+            /// </summary>
+            [XmlAttribute]
+            public float PosX;
+
+            /// <summary>
+            /// Camera Y-position.
+            /// </summary>
+            [XmlAttribute]
+            public float PosY;
+
+            /// <summary>
+            /// Camera Z-position.
+            /// </summary>
+            [XmlAttribute]
+            public float PosZ;
+
+            /// <summary>
+            /// Camera X-angle.
+            /// </summary>
+            [XmlAttribute]
+            public float AngleX;
+
+            /// <summary>
+            /// Camera Y-angle.
+            /// </summary>
+            [XmlAttribute]
+            public float AngleY;
+
+            /// <summary>
+            /// Camera height.
+            /// </summary>
+            [XmlAttribute]
+            public float Height;
+
+            /// <summary>
+            /// Camera size.
+            /// </summary>
+            [XmlAttribute]
+            public float Size;
+
+            /// <summary>
+            /// Camera Field Of View.
+            /// </summary>
+            [XmlAttribute]
             public float FOV;
         }
     }

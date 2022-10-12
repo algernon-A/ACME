@@ -128,11 +128,13 @@ namespace ACME
                                 {
                                     // Shift is pressed - saving.
                                     CameraPositions.SavePosition(i);
+                                    return;
                                 }
                                 else
                                 {
                                     // Shift is not pressed - loading.
                                     CameraPositions.LoadPosition(i);
+                                    return;
                                 }
                             }
                         }

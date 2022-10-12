@@ -7,8 +7,6 @@ namespace ACME
 {
     using AlgernonCommons.Patching;
     using AlgernonCommons.Translation;
-    using AlgernonCommons.UI;
-    using ColossalFramework.UI;
     using ICities;
 
     /// <summary>
@@ -30,27 +28,6 @@ namespace ACME
         /// Gets the mod's description for display in the content manager.
         /// </summary>
         public string Description => Translations.Translate("CAM_DESC");
-
-        /// <summary>
-        /// Called by the game when the mod is enabled.
-        /// </summary>
-        public override void OnEnabled()
-        {
-            base.OnEnabled();
-
-            // Add the options panel event handler for the start screen (to enable/disable options panel based on visibility).
-            // First, check to see if UIView is ready.
-            if (UIView.GetAView() != null)
-            {
-                // It's ready - attach the hook now.
-                OptionsPanelManager<OptionsPanel>.OptionsEventHook();
-            }
-            else
-            {
-                // Otherwise, queue the hook for when the intro's finished loading.
-                LoadingManager.instance.m_introLoaded += OptionsPanelManager<OptionsPanel>.OptionsEventHook;
-            }
-        }
 
         /// <summary>
         /// Saves settings file.

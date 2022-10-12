@@ -22,6 +22,11 @@ namespace ACME
         protected override string ConflictRemovedText => Translations.Translate("CAM_ERR_CON1");
 
         /// <summary>
+        /// Gets a list of permitted loading modes.
+        /// </summary>
+        protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor, AppMode.ThemeEditor, AppMode.ScenarioEditor };
+
+        /// <summary>
         /// Checks for any mod conflicts.
         /// Called as part of checking prior to executing any OnCreated actions.
         /// </summary>

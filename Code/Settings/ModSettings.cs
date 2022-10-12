@@ -250,6 +250,13 @@ namespace ACME
         public float XMLMapDragSpeed { get => MapDragging.DragSpeed; set => MapDragging.DragSpeed = value; }
 
         /// <summary>
+        /// Gets or sets editor saved positions.
+        /// </summary>
+        [XmlArray("EditorPositions")]
+        [XmlArrayItem("Position")]
+        public CameraPositions.SerializedPosition[] XMLEditorPositions { get => CameraPositions.XMLSerialize(); set => CameraPositions.XMLDeserialize(value); }
+
+        /// <summary>
         /// Gets or sets the map dragging hotkey.
         /// </summary>
         [XmlIgnore]
