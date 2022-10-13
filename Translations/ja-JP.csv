@@ -61,6 +61,11 @@ Ctrlでスライダーの移動が1/100倍に減少 (最高精度)"
 "KEY_RESET_TIP","カメラの回転を90度にリセットして、真下を向くようにします。","Options panel tooltip."
 "KEY_GOTO_MOVEIT","Move It! の選択キーに移動"
 "KEY_GOTO_MOVEIT_TIP","Move Itで選択したオブジェクトの中央(存在する場合) まで、カメラを移動させます。"
+"KEY_XROT","X軸の回転動作を固定"
+"KEY_YROT","Y軸の回転動作を固定"
+"KEY_ROT_TIP","これとCtrlキーを押すと、カメラが15度刻みで回転します。
+更にCtrlキー + Altキーを押せば、45度刻みで回転します。
+逆方向に回転させたい場合は、Shiftキーを組み合わせます。","Options panel tooltip"
 "PRESS_ANY_KEY","何かキーを押してください"
 "TRN_CHOICE","言語設定"
 "LANGUAGE_GAME","ゲームの言語を使用"

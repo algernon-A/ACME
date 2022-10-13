@@ -61,6 +61,11 @@ Ctrl pour réduire le mouvement du curseur de 100 (plus de précision)"
 "KEY_RESET_TIP","Réinitialise la rotation de la caméra à 90 degrés et orientée vers le bas","Options panel tooltip."
 "KEY_GOTO_MOVEIT","Aller à la touche de sélection MoveIt"
 "KEY_GOTO_MOVEIT_TIP","Déplace la caméra pour pointer au milieu de la sélection courante de Move It (le cas échéant)"
+"KEY_XROT","Fixed X-rotation movement"
+"KEY_YROT","Fixed Y-rotation movement"
+"KEY_ROT_TIP","Press this and Control to rotate the camera to the next 15 degree increment.
+Use Control+Alt to change the increment to 45 degrees.
+Use Shift as well to rotate in the opposite direction.","Options panel tooltip"
 "PRESS_ANY_KEY","Appuyez sur une touche"
 "TRN_CHOICE","Définir la langue"
 "LANGUAGE_GAME","Utiliser la langue du jeu"

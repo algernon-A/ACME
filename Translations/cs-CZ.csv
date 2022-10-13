@@ -61,6 +61,11 @@ Ctrl to reduce slider movement by 100 (greatest precision)"
 "KEY_RESET_TIP","Resets the camera rotation to 90 degrees and facing straight down","Options panel tooltip."
 "KEY_GOTO_MOVEIT","Go to MoveIt selection key"
 "KEY_GOTO_MOVEIT_TIP","Moves the camera to point at the middle of the current Move It selection (if any)"
+"KEY_XROT","Fixed X-rotation movement"
+"KEY_YROT","Fixed Y-rotation movement"
+"KEY_ROT_TIP","Press this and Control to rotate the camera to the next 15 degree increment.
+Use Control+Alt to change the increment to 45 degrees.
+Use Shift as well to rotate in the opposite direction.","Options panel tooltip"
 "PRESS_ANY_KEY","Stiskněte libovolnou klávesu"
 "TRN_CHOICE","Nastavit jazyk"
 "LANGUAGE_GAME","Použít jazyk hry"

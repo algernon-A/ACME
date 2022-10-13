@@ -61,6 +61,11 @@ Usa Ctrl para reducir el movimiento de la barra en 100 (máxima precisión)"
 "KEY_RESET_TIP","Resets the camera rotation to 90 degrees and facing straight down","Options panel tooltip."
 "KEY_GOTO_MOVEIT","Ir a la tecla de selección de Move It"
 "KEY_GOTO_MOVEIT_TIP","Moves the camera to point at the middle of the current Move It selection (if any)"
+"KEY_XROT","Fixed X-rotation movement"
+"KEY_YROT","Fixed Y-rotation movement"
+"KEY_ROT_TIP","Press this and Control to rotate the camera to the next 15 degree increment.
+Use Control+Alt to change the increment to 45 degrees.
+Use Shift as well to rotate in the opposite direction.","Options panel tooltip"
 "PRESS_ANY_KEY","Presiona cualquier tecla"
 "TRN_CHOICE","Elegir idioma"
 "LANGUAGE_GAME","Utilizar idioma del juego"

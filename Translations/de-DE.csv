@@ -61,6 +61,11 @@ Strg, um die Schiebereglerbewegung durch 100 zu teilen (höchste Präzision)"
 "KEY_RESET_TIP","Setzt die Kameradrehung auf 90 Grad und gerade nach unten zurück","Options panel tooltip."
 "KEY_GOTO_MOVEIT","Zur MoveIt Auswahl gehen"
 "KEY_GOTO_MOVEIT_TIP","Bewegt die Kamera auf die Mitte der aktuellen Move It Auswahl (falls vorhanden)"
+"KEY_XROT","Fixed X-rotation movement"
+"KEY_YROT","Fixed Y-rotation movement"
+"KEY_ROT_TIP","Press this and Control to rotate the camera to the next 15 degree increment.
+Use Control+Alt to change the increment to 45 degrees.
+Use Shift as well to rotate in the opposite direction.","Options panel tooltip"
 "PRESS_ANY_KEY","Drücke eine Taste"
 "TRN_CHOICE","Sprache auswählen"
 "LANGUAGE_GAME","Spielsprache verwenden"
