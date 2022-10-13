@@ -249,7 +249,7 @@ namespace ACME
         {
             // Local reference.
             CameraController controller = Controller;
-            controller.m_targetAngle = new Vector2(90f, 90f);
+            controller.m_targetAngle = new Vector2(0f, 90f);
         }
     }
 }
