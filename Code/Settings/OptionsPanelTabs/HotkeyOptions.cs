@@ -47,6 +47,24 @@ namespace ACME
             miKeyMapping.Panel.tooltip = Translations.Translate("KEY_GOTO_MOVEIT_TIP");
             miKeyMapping.Binding = UIThreading.MoveItKey;
             miKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += miKeyMapping.Panel.height + GroupMargin;
+
+            // Fixed X-rotation key.
+            OptionsKeymapping xKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            xKeyMapping.Label = Translations.Translate("KEY_XROT");
+            xKeyMapping.Panel.tooltip = Translations.Translate("KEY_ROT_TIP");
+            xKeyMapping.Panel.tooltipBox = UIToolTips.WordWrapToolTip;
+            xKeyMapping.Binding = UIThreading.XKey;
+            xKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += xKeyMapping.Panel.height + GroupMargin;
+
+            // Fixed Y-rotation key.
+            OptionsKeymapping yKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            yKeyMapping.Label = Translations.Translate("KEY_YROT");
+            yKeyMapping.Panel.tooltip = Translations.Translate("KEY_ROT_TIP");
+            yKeyMapping.Panel.tooltipBox = UIToolTips.WordWrapToolTip;
+            yKeyMapping.Binding = UIThreading.YKey;
+            yKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
         }
     }
 }

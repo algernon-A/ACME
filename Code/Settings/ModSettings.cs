@@ -202,6 +202,18 @@ namespace ACME
         public Keybinding ResetRotationKey { get => UIThreading.ResetKey; set => UIThreading.ResetKey = value; }
 
         /// <summary>
+        /// Gets or sets the fixed X-rotation hotkey.
+        /// </summary>
+        [XmlElement("XRotationKey")]
+        public KeyOnlyBinding XRotationKey { get => UIThreading.XKey; set => UIThreading.XKey = value; }
+
+        /// <summary>
+        /// Gets or sets the fixed Y-rotation hotkey.
+        /// </summary>
+        [XmlElement("YRotationKey")]
+        public KeyOnlyBinding YRotationKey { get => UIThreading.YKey; set => UIThreading.YKey = value; }
+
+        /// <summary>
         /// Gets or sets the FPS mode hotkey.
         /// </summary>
         [XmlElement("FPSModeKey")]

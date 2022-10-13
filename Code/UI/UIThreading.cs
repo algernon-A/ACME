@@ -22,6 +22,10 @@ namespace ACME
         private static Keybinding s_fpsKey = new Keybinding(KeyCode.Tab, true, false, false);
         private static Keybinding s_resetKey = new Keybinding(KeyCode.R, false, false, true);
 
+        // Fixed rotation keys.
+        private static KeyOnlyBinding s_xKey = new KeyOnlyBinding(KeyCode.X);
+        private static KeyOnlyBinding s_yKey = new KeyOnlyBinding(KeyCode.Y);
+
         // Saved position hotkeys.
         private readonly KeyCode[] positionKeys = new KeyCode[CameraPositions.NumSaves]
         {
@@ -94,6 +98,16 @@ namespace ACME
         /// Gets or sets the reset rotation hotkey.
         /// </summary>
         internal static Keybinding ResetKey { get => s_resetKey; set => s_resetKey = value; }
+
+        /// <summary>
+        /// Gets or sets the x-rotation hotkey.
+        /// </summary>
+        internal static KeyOnlyBinding XKey { get => s_xKey; set => s_xKey = value; }
+
+        /// <summary>
+        /// Gets or sets the y-rotation hotkey.
+        /// </summary>
+        internal static KeyOnlyBinding YKey { get => s_yKey; set => s_yKey = value; }
 
         /// <summary>
         /// Look for keypress to activate tool.
@@ -212,7 +226,7 @@ namespace ACME
                     bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
 
                     // Movement hotkeys.
-                    if (Input.GetKey(KeyCode.X))
+                    if (s_xKey.IsPressed())
                     {
                         // Only process if we're not already doing so.
                         if (!_rotationProcessed)
@@ -224,7 +238,7 @@ namespace ACME
                             CameraUtils.RotateX(altPressed ? 45f : 15f, shiftPressed);
                         }
                     }
-                    else if (Input.GetKey(KeyCode.Y))
+                    else if (s_yKey.IsPressed())
                     {
                         // Only process if we're not already doing so.
                         if (!_rotationProcessed)
