@@ -61,11 +61,11 @@ Ctrl om de schuifbeweging door 100 te delen (hoogste precisie)"
 "KEY_RESET_TIP","Zet de camerarotatie terug naar 90 graden en recht naar beneden","Options panel tooltip."
 "KEY_GOTO_MOVEIT","Ga naar de MoveIt selectie"
 "KEY_GOTO_MOVEIT_TIP","Verplaatst de camera naar het midden van de huidige Move It-selectie (indien beschikbaar)"
-"KEY_XROT","Fixed X-rotation movement"
-"KEY_YROT","Fixed Y-rotation movement"
-"KEY_ROT_TIP","Press this and Control to rotate the camera to the next 15 degree increment.
-Use Control+Alt to change the increment to 45 degrees.
-Use Shift as well to rotate in the opposite direction.","Options panel tooltip"
+"KEY_XROT","Vaste X-rotatiebeweging"
+"KEY_YROT","Vaste Y-rotatiebeweging"
+"KEY_ROT_TIP","Druk op deze toets en Control om de camera in stappen van 15 graden te draaien.
+Gebruik Control+Alt om de toename te veranderen in 45 graden.
+Gebruik bovendien Shift om in de tegenovergestelde richting te draaien.","Options panel tooltip"
 "PRESS_ANY_KEY","Druk op een toets"
 "TRN_CHOICE","Taal instellen"
 "LANGUAGE_GAME","Gebruik taal van het spel"
