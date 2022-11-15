@@ -278,7 +278,6 @@ namespace ACME
         /// <summary>
         /// Structure to store saved camera positions in XML.
         /// </summary>
-        /// 
         [XmlRoot("SerializedPosition")]
         public struct SerializedPosition
         {
