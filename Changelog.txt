@@ -1,4 +1,9 @@
-﻿Version 0.6.1 -
+﻿Version 0.6.2 -
+
+- Update AlgernonCommons
+
+
+Version 0.6.1 -
 
 - Stepped rotation keys (default ctrl-X and ctrl-Y) are now configurable
 - Add editor position saving
