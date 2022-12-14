@@ -51,6 +51,10 @@ namespace ACME
             // Perform MoveIt reflection.
             MoveItUtils.MoveItReflection();
 
+            // Activate patches if required.
+            PatcherManager<Patcher>.Instance.PatchFollowRotation(ModSettings.DisableFollowRotation);
+            PatcherManager<Patcher>.Instance.PatchZoomToCursor(ModSettings.ZoomToCursor);
+
             // Activate keys.
             UIThreading.Operating = true;
         }

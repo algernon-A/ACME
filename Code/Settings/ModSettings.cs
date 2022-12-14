@@ -287,7 +287,10 @@ namespace ACME
                 _zoomToCursor = value;
 
                 // Apply/unapply Harmony patch on value change.
-                PatcherManager<Patcher>.Instance.PatchZoomToCursor(value);
+                if (PatcherManager<Patcher>.IsReady)
+                {
+                    PatcherManager<Patcher>.Instance.PatchZoomToCursor(value);
+                }
             }
         }
 
@@ -304,7 +307,10 @@ namespace ACME
                 _disableFollowRotation = value;
 
                 // Apply/unapply Harmony patch on value change.
-                PatcherManager<Patcher>.Instance.PatchFollowRotation(value);
+                if (PatcherManager<Patcher>.IsReady)
+                {
+                    PatcherManager<Patcher>.Instance.PatchFollowRotation(value);
+                }
             }
         }
 
