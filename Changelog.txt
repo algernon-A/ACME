@@ -1,4 +1,6 @@
-﻿- Add detailed debugging logging option
+﻿Version 0.6.3 -
+
+- Add detailed debugging logging option
 - Implement common translations
 - Update AlgernonCommons
 
