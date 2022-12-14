@@ -66,17 +66,4 @@ Ctrl для уменьшения движения ползунка на 100 (м�
 "KEY_ROT_TIP","Нажмите эту кнопку и Ctrl, чтобы повернуть камеру на 15 градусов.
 Используйте Ctrl+Alt, чтобы повернуть камеру на 45 градусов.
 Используйте Shift, чтобы повернуть камеру на противоположную сторону.","Options panel tooltip"
-"PRESS_ANY_KEY","Нажмите любую клавишу"
-"TRN_CHOICE","Выбрать язык"
-"LANGUAGE_GAME","Язык игры"
-"NOTE_CLOSE","Закрыть"
-"MES_PAGE","Пожалуйста, перейдите на страницу мода в Steam Workshop для получения дополнительной информации."
-"UNABLE_TO_OPERATE","Это означает, что мод не может работать и отключился","Warning message letting the user know that the mod can't work."
-"HARMONY_ERROR","Ошибка при исправлении Harmony","Warning message that a patching problem was detected, and the mod can't operate."
-"HARMONY_PROBLEM_CAUSES","Возможные причины этой проблемы включают:","Header for list of possible causes of Harmony errors."
-"HARMONY_NOT_INSTALLED","Требуемый мод, Harmony 2 – не установлен","Possible cause of Harmony error - Harmony not installed."
-"HARMONY_MOD_ERROR","Старый и/или сломанный мод мешает правильной работе Harmony 2","Possible cause of Harmony error - a broken mod (not this one) can cause things to stop working."
-"HARMONY_MOD_CONFLICT","Другой мод, возможно, пытается применить конфликтующее исправление Harmony","Possible cause of Harmony error - two mods trying to patch the same thing at once."
-"CONFLICT_DETECTED","Обнаружен конфликт модов!","Warning message that a mod conflict was detected."
-"CONFLICTING_MODS","Конфликтующие моды:","Part of the mod conflict warning notification - header for the list of conflicting mods."
 "CAM_ERR_CON1","Эти моды должны быть удалены до того, как ACME будет работать."
