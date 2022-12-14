@@ -1,4 +1,8 @@
-﻿Version 0.6.2 -
+﻿- Implement common translations
+- Update AlgernonCommons
+
+
+Version 0.6.2 -
 
 - Update AlgernonCommons
 

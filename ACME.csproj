@@ -29,6 +29,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<_Translations Include="$(ProjectDir)/Translations/*.csv" />
+		<_TranslationsCore Include="../AlgernonCommons/Translations/*.csv" />
 		<_Resources Include="$(ProjectDir)/Resources/*.*" />
 	</ItemGroup>
 	<Target Name="DeployToModDirectory" AfterTargets="Build">
@@ -39,6 +40,7 @@
 		<Copy SourceFiles="$(TargetDir)/CitiesHarmony.API.dll" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="$(TargetDir)/UnifiedUILib.dll" DestinationFolder="$(DeployDir)" />
 		<Copy SourceFiles="@(_Translations)" DestinationFolder="$(DeployDir)/Translations" />
+		<Copy SourceFiles="@(_TranslationsCore)" DestinationFolder="$(DeployDir)/Translations/Core" />
 		<Copy SourceFiles="@(_Resources)" DestinationFolder="$(DeployDir)/Resources" />
 	</Target>
 	<Import Project="..\AlgernonCommons\AlgernonCommonsPatchingShared.projitems" Label="Shared" />
