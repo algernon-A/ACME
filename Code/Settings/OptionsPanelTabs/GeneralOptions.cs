@@ -5,6 +5,7 @@
 
 namespace ACME
 {
+    using AlgernonCommons;
     using AlgernonCommons.Keybinding;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
@@ -51,56 +52,56 @@ namespace ACME
             // Building collision checkbox.
             UICheckBox buildingCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_BLD"));
             buildingCollisionCheck.isChecked = HeightOffset.BuildingCollision;
-            buildingCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.BuildingCollision = value; };
+            buildingCollisionCheck.eventCheckChanged += (c, value) => { HeightOffset.BuildingCollision = value; };
             currentY += buildingCollisionCheck.height + Margin;
 
             // Network collision checkbox.
             UICheckBox netCollisionCHeck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_NET"));
             netCollisionCHeck.isChecked = HeightOffset.NetworkCollision;
-            netCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.NetworkCollision = value; };
+            netCollisionCHeck.eventCheckChanged += (c, value) => { HeightOffset.NetworkCollision = value; };
             currentY += netCollisionCHeck.height + Margin;
 
             // Prop collision checkbox.
             UICheckBox propCollisionCHeck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_PRO"));
             propCollisionCHeck.isChecked = HeightOffset.PropCollision;
-            propCollisionCHeck.eventCheckChanged += (control, value) => { HeightOffset.PropCollision = value; };
+            propCollisionCHeck.eventCheckChanged += (c, value) => { HeightOffset.PropCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Tree collision checkbox.
             UICheckBox treeCollisionCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_TRE"));
             treeCollisionCheck.isChecked = HeightOffset.TreeCollision;
-            treeCollisionCheck.eventCheckChanged += (control, value) => { HeightOffset.TreeCollision = value; };
+            treeCollisionCheck.eventCheckChanged += (c, value) => { HeightOffset.TreeCollision = value; };
             currentY += propCollisionCHeck.height + Margin;
 
             // Water bobbing checkbox.
             UICheckBox waterBobbingCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_COL_WAT"));
             waterBobbingCheck.isChecked = UpdateTargetPosition.WaterBobbing;
-            waterBobbingCheck.eventCheckChanged += (control, value) => { UpdateTargetPosition.WaterBobbing = value; };
+            waterBobbingCheck.eventCheckChanged += (c, value) => { UpdateTargetPosition.WaterBobbing = value; };
             currentY += propCollisionCHeck.height + GroupMargin;
 
             // Ground proximity slider .
             UISlider groundProximitySlider = AddDistanceSlider(panel, ref currentY, "CAM_COL_GND", HeightOffset.MinTerrainClearance, HeightOffset.MaxTerrainClearance, HeightOffset.TerrainClearance);
-            groundProximitySlider.eventValueChanged += (control, value) => { HeightOffset.TerrainClearance = value; };
+            groundProximitySlider.eventValueChanged += (c, value) => { HeightOffset.TerrainClearance = value; };
 
             // Near clipping slider.
             UISlider nearClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_NEA", CameraUtils.MinNearClip, CameraUtils.MaxNearClip, CameraUtils.NearClipPlane);
-            nearClipSlider.eventValueChanged += (control, value) => { CameraUtils.NearClipPlane = value; };
+            nearClipSlider.eventValueChanged += (c, value) => { CameraUtils.NearClipPlane = value; };
 
             // Speed multiplier.
             UISlider speedSlider = AddSlider(panel, ref currentY, "CAM_SPD_MIN", UpdateTargetPosition.MinCameraSpeed, UpdateTargetPosition.MaxCameraSpeed, UpdateTargetPosition.CameraSpeed);
-            speedSlider.eventValueChanged += (control, value) => { UpdateTargetPosition.CameraSpeed = value; };
+            speedSlider.eventValueChanged += (c, value) => { UpdateTargetPosition.CameraSpeed = value; };
             currentY += Margin;
 
             // Follow disasters checkbox.
             UICheckBox disableDisasterGoto = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DIS"));
             disableDisasterGoto.isChecked = FollowDisasterPatch.FollowDisasters;
-            disableDisasterGoto.eventCheckChanged += (control, value) => { FollowDisasterPatch.FollowDisasters = value; };
+            disableDisasterGoto.eventCheckChanged += (c, value) => { FollowDisasterPatch.FollowDisasters = value; };
             currentY += disableDisasterGoto.height + Margin;
 
             // Zoom to cursor.
             UICheckBox zoomToCursorCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_ZTC"));
             zoomToCursorCheck.isChecked = ModSettings.ZoomToCursor;
-            zoomToCursorCheck.eventCheckChanged += (control, value) => { ModSettings.ZoomToCursor = value; };
+            zoomToCursorCheck.eventCheckChanged += (c, value) => { ModSettings.ZoomToCursor = value; };
             zoomToCursorCheck.tooltipBox = UIToolTips.WordWrapToolTip;
             zoomToCursorCheck.tooltip = Translations.Translate("CAM_OPT_ZTC_TIP");
             currentY += zoomToCursorCheck.height + Margin;
@@ -108,7 +109,13 @@ namespace ACME
             // Follow disasters checkbox.
             UICheckBox disableFollowRotationCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DFR"));
             disableFollowRotationCheck.isChecked = ModSettings.DisableFollowRotation;
-            disableFollowRotationCheck.eventCheckChanged += (control, value) => { ModSettings.DisableFollowRotation = value; };
+            disableFollowRotationCheck.eventCheckChanged += (c, value) => { ModSettings.DisableFollowRotation = value; };
+            currentY += disableFollowRotationCheck.height + 30f;
+
+            // Logging checkbox.
+            UICheckBox loggingCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("DETAIL_LOGGING"));
+            loggingCheck.isChecked = Logging.DetailLogging;
+            loggingCheck.eventCheckChanged += (c, isChecked) => { Logging.DetailLogging = isChecked; };
         }
 
         /// <summary>

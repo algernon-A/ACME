@@ -1,4 +1,5 @@
-﻿- Implement common translations
+﻿- Add detailed debugging logging option
+- Implement common translations
 - Update AlgernonCommons
 
 
