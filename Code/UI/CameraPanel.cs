@@ -356,6 +356,7 @@ namespace ACME
 
             // Tooltip.
             newSlider.tooltip = Translations.Translate("CAM_SLI_TIP");
+            newSlider.tooltipBox.pivot = UIPivotPoint.TopLeft;
 
             // Value field - added to parent, not to slider, otherwise slider catches all input attempts.  Integer textfields (stepsize == 1) have shorter widths.
             float textFieldWidth = FloatTextFieldWidth;

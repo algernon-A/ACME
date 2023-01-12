@@ -1,4 +1,7 @@
-﻿Version 0.6.3 -
+﻿- Move slider tooltips to below slider (to avoid covering value textfield)
+
+
+Version 0.6.3 -
 
 - Add detailed debugging logging option
 - Implement common translations
