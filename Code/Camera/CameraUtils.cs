@@ -25,6 +25,16 @@ namespace ACME
         internal const float MaxNearClip = 10f;
 
         /// <summary>
+        /// Minimum far clip distance.
+        /// </summary>
+        internal const float MinFarClip = 1000f;
+
+        /// <summary>
+        /// Maximum far clip distance.
+        /// </summary>
+        internal const float MaxFarClip = 100000f;
+
+        /// <summary>
         /// Minimum camera distance from target.
         /// </summary>
         internal const float MinDistance = 2;
@@ -54,11 +64,17 @@ namespace ACME
         /// </summary>
         internal const float MaxMaxShadowDistance = 14000f;
 
+        // CameraManager m_originalFarPlane. // #04 adding far clipping parameter and setter.-DX-
+        private static readonly FieldInfo OriginalFarPlane = typeof(CameraController).GetField("m_originalFarPlane", BindingFlags.NonPublic | BindingFlags.Instance);
+
         // CameraManager m_originalNearPlane.
         private static readonly FieldInfo OriginalNearPlane = typeof(CameraController).GetField("m_originalNearPlane", BindingFlags.NonPublic | BindingFlags.Instance);
 
+        // Current far clip plane distance (game default is 20000).
+        private static float s_farClipPlane = 20000f;
+
         // Current near clip plane distance (game default is 5).
-        private static float s_nearClipPlane = 1f;
+        private static float s_nearClipPlane = 1.8f; // 1=>1.8m near clipping default prevents flickering shadows.-DX-
 
         // CameraController reference.
         private static CameraController s_cameraController;
@@ -106,6 +122,28 @@ namespace ACME
                 }
 
                 return s_mainCamera;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the camera controllers base far clip plane base distance, in metres.
+        /// Applied to the game's camera controller (not directly to the main camera), as that clobbers the camera's farClipPlane every LateUpdate.
+        /// </summary>
+        internal static float FarClipPlane
+        {
+            get => s_farClipPlane;
+
+            set
+            {
+                // Clamp value to min and max permitted.
+                s_farClipPlane = Mathf.Clamp(value, MinFarClip, MaxFarClip);
+
+                // Set field with updated value (only if game has loaded, e.g. Controller isn't null).
+                CameraController controller = Controller;
+                if (controller != null)
+                {
+                    OriginalFarPlane.SetValue(controller, s_farClipPlane);
+                }
             }
         }
 
@@ -192,6 +230,9 @@ namespace ACME
             // Set shadow parameters.
             controller.m_minShadowDistance = MinShadowDistance;
             controller.m_maxShadowDistance = MaxShadowDistance;
+
+            // Apply far clip plane.
+            FarClipPlane = s_farClipPlane;
 
             // Apply near clip plane.
             NearClipPlane = s_nearClipPlane;

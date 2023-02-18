@@ -83,9 +83,15 @@ namespace ACME
             UISlider groundProximitySlider = AddDistanceSlider(panel, ref currentY, "CAM_COL_GND", HeightOffset.MinTerrainClearance, HeightOffset.MaxTerrainClearance, HeightOffset.TerrainClearance);
             groundProximitySlider.eventValueChanged += (c, value) => { HeightOffset.TerrainClearance = value; };
 
+            // Far clipping slider.
+            UISlider farClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_FAR", CameraUtils.MinFarClip, CameraUtils.MaxFarClip, CameraUtils.FarClipPlane);
+            farClipSlider.eventValueChanged += (c, value) => { CameraUtils.FarClipPlane = value; };
+            UILabel farClipSliderWarning = UILabels.AddLabel(farClipSlider, farClipSlider.width, -22f, Translations.Translate("CAM_CLP_FARR"), -1f, 0.75f, UIHorizontalAlignment.Right);
+
             // Near clipping slider.
             UISlider nearClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_NEA", CameraUtils.MinNearClip, CameraUtils.MaxNearClip, CameraUtils.NearClipPlane);
             nearClipSlider.eventValueChanged += (c, value) => { CameraUtils.NearClipPlane = value; };
+            UILabel nearClipSliderWarning = UILabels.AddLabel(nearClipSlider, farClipSlider.width, -22f, Translations.Translate("CAM_CLP_NEA_L"), -1f, 0.75f, UIHorizontalAlignment.Right);
 
             // Speed multiplier.
             UISlider speedSlider = AddSlider(panel, ref currentY, "CAM_SPD_MIN", UpdateTargetPosition.MinCameraSpeed, UpdateTargetPosition.MaxCameraSpeed, UpdateTargetPosition.CameraSpeed);

@@ -7,14 +7,14 @@
 		<Authors>algernon</Authors>
 		<Copyright>Copyright © 2021-22 algernon</Copyright>
 		<Product>$(Title)</Product>
-		<Version>0.6.3</Version>
+		<Version>0.6.4.1</Version>
 		<ManagedDLLPath>$(MSBuildProgramFiles32)/Steam/steamapps/common/Cities_Skylines/Cities_Data/Managed</ManagedDLLPath>
 		<AssemblySearchPaths>
 			$(AssemblySearchPaths);
 			$(ManagedDLLPath)
 		</AssemblySearchPaths>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-	</PropertyGroup>
+</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="CitiesHarmony.API" Version="2.1.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
