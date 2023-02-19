@@ -73,6 +73,12 @@ namespace ACME
         public bool XMLFollowDisasters { get => FollowDisasterPatch.FollowDisasters; set => FollowDisasterPatch.FollowDisasters = value; }
 
         /// <summary>
+        /// Gets or sets the camera controllers base far clip plane base distance, in metres.
+        /// </summary>
+        [XmlElement("FarClip")]
+        public float XMLFarClip { get => CameraUtils.FarClipPlane; set => CameraUtils.FarClipPlane = value; }
+
+        /// <summary>
         /// Gets or sets the camera controllers base near clip plane base distance, in metres.
         /// </summary>
         [XmlElement("NearClip")]
