@@ -86,7 +86,7 @@ namespace ACME
             // Far clipping slider.
             UISlider farClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_FAR", CameraUtils.MinFarClip, CameraUtils.MaxFarClip, CameraUtils.FarClipPlane);
             farClipSlider.eventValueChanged += (c, value) => { CameraUtils.FarClipPlane = value; };
-            UILabel farClipSliderWarning = UILabels.AddLabel(farClipSlider, farClipSlider.width, -22f, Translations.Translate("CAM_CLP_FARR"), -1f, 0.75f, UIHorizontalAlignment.Right);
+            UILabel farClipSliderWarning = UILabels.AddLabel(farClipSlider, farClipSlider.width, -22f, Translations.Translate("CAM_CLP_FAR_L"), -1f, 0.75f, UIHorizontalAlignment.Right);
 
             // Near clipping slider.
             UISlider nearClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_NEA", CameraUtils.MinNearClip, CameraUtils.MaxNearClip, CameraUtils.NearClipPlane);
