@@ -130,7 +130,7 @@ namespace ACME
             }
 
             // End modified game code.
-            // Adust result with our custom terrain clearance modifier.
+            // Adjust result with our custom terrain clearance modifier.
             __result = offset - worldPos.y + terrainClearanceModifier;
 
             // Never execute original method.
