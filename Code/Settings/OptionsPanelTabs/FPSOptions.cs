@@ -78,13 +78,6 @@ namespace ACME
             // Y position indicator.
             float currentY = GroupMargin;
 
-            // FPS mode key control.
-            OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
-            fpsKeyMapping.Label = Translations.Translate("KEY_FPS");
-            fpsKeyMapping.Binding = UIThreading.FPSModeKey;
-            fpsKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += fpsKeyMapping.Panel.height + Margin;
-
             // Key turning speed slider.
             UISlider keyTurnSlider = UISliders.AddPlainSliderWithValue(panel, Margin, currentY, Translations.Translate("CAM_FPS_KTS"), FPSPatch.MinFPSKeySpeed, FPSPatch.MaxFPSKeySpeed, 0.1f, FPSPatch.KeyTurnSpeed);
             keyTurnSlider.eventValueChanged += (c, value) => { FPSPatch.KeyTurnSpeed = value; };

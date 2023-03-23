@@ -23,10 +23,11 @@ namespace ACME
 
             // Add tabs and panels.
             new GeneralOptions(tabStrip, 0);
-            new FPSOptions(tabStrip, 1);
-            new MapDragOptions(tabStrip, 2);
+            new HotkeyOptions(tabStrip, 1);
+            new CameraOptions(tabStrip, 2);
             new ShadowOptions(tabStrip, 3);
-            new HotkeyOptions(tabStrip, 4);
+            new MapDragOptions(tabStrip, 4);
+            new FPSOptions(tabStrip, 5);
 
             // Select first tab.
             tabStrip.selectedIndex = -1;

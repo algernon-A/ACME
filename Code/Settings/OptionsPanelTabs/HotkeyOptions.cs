@@ -33,6 +33,18 @@ namespace ACME
             // Y position indicator.
             float currentY = GroupMargin;
 
+            // Panel hotkey control.
+            OptionsKeymapping uuiKeyMapping = panel.gameObject.AddComponent<UUIKeymapping>();
+            uuiKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += uuiKeyMapping.Panel.height + GroupMargin;
+
+            // FPS mode key control.
+            OptionsKeymapping fpsKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            fpsKeyMapping.Label = Translations.Translate("KEY_FPS");
+            fpsKeyMapping.Binding = UIThreading.FPSModeKey;
+            fpsKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += fpsKeyMapping.Panel.height + GroupMargin;
+
             // Reset position key control.
             OptionsKeymapping resetKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             resetKeyMapping.Label = Translations.Translate("KEY_RESET");
