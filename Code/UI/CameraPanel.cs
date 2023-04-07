@@ -5,7 +5,6 @@
 
 namespace ACME
 {
-    using System;
     using AlgernonCommons;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
@@ -15,13 +14,10 @@ namespace ACME
     /// <summary>
     /// Static class to manage the ACME camera panel.
     /// </summary>
-    internal class CameraPanel : UIPanel
+    internal class CameraPanel : StandalonePanel
     {
-        // Layout constants - general.
-        private const float Margin = 5f;
-
         // Layout constants - X.
-        private const float PanelWidth = 400f;
+        private const float CalculatedPanelWidth = 400f;
 
         // Layout constants - Y.
         private const float TitleBarHeight = 50f;
@@ -39,78 +35,54 @@ namespace ACME
         private const float Check2Y = Check1Y + CheckHeight;
         private const float Check3Y = Check2Y + CheckHeight;
         private const float Check1X = Margin;
-        private const float Check2X = (PanelWidth - (Margin * 2f)) / 2f;
-        private const float PanelHeight = Check3Y + CheckHeight + Margin;
+        private const float Check2X = (CalculatedPanelWidth - (Margin * 2f)) / 2f;
+        private const float CalculatedPanelHeight = Check3Y + CheckHeight + Margin;
 
         // Camera constants.
         private const float MinFOV = 5f;
         private const float MaxFOV = 84f;
 
-        // Instance references.
-        private static GameObject s_gameObject;
-        private static CameraPanel s_panel;
-
         // Camera references.
-        private readonly Camera _mainCamera;
-        private readonly CameraController _controller;
+        private Camera _mainCamera;
+        private CameraController _controller;
 
         // Panel components.
-        private readonly CameraSlider _xPosSlider;
-        private readonly CameraSlider _zPosSlider;
-        private readonly CameraSlider _rotSlider;
-        private readonly CameraSlider _zoomSlider;
-        private readonly CameraSlider _tiltSlider;
-        private readonly CameraSlider _fovSlider;
-        private readonly CameraSlider _shadowMaxSlider;
-        private readonly CameraSlider _shadowMinSlider;
+        private CameraSlider _xPosSlider;
+        private CameraSlider _zPosSlider;
+        private CameraSlider _rotSlider;
+        private CameraSlider _zoomSlider;
+        private CameraSlider _tiltSlider;
+        private CameraSlider _fovSlider;
+        private CameraSlider _shadowMaxSlider;
+        private CameraSlider _shadowMinSlider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CameraPanel"/> class.
+        /// Gets the panel width.
         /// </summary>
-        internal CameraPanel()
+        public override float PanelWidth => CalculatedPanelWidth;
+
+        /// <summary>
+        /// Gets the panel height.
+        /// </summary>
+        public override float PanelHeight => CalculatedPanelHeight;
+
+        /// <summary>
+        /// Gets the panel's title.
+        /// </summary>
+        protected override string PanelTitle => Translations.Translate("CAM_NAM");
+
+        /// <summary>
+        /// Called by Unity before the first frame is displayed.
+        /// Used to perform setup.
+        /// </summary>
+        public override void Start()
         {
-            // Basic behaviour.
-            autoLayout = false;
-            canFocus = true;
-            isInteractive = true;
+            base.Start();
 
-            // Appearance.
-            backgroundSprite = "MenuPanel2";
-            opacity = 1f;
+            // Press UUI button.
+            UUI.UUIButton.IsPressed = true;
 
-            // Size.
-            size = new Vector2(PanelWidth, PanelHeight);
-
-            // Default position - centre in screen.
-            relativePosition = new Vector2(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
-
-            // Drag bar.
-            UIDragHandle dragHandle = AddUIComponent<UIDragHandle>();
-            dragHandle.width = this.width - 50f;
-            dragHandle.height = this.height;
-            dragHandle.relativePosition = Vector3.zero;
-            dragHandle.target = this;
-
-            // Title label.
-            UILabel titleLabel = AddUIComponent<UILabel>();
-            titleLabel.relativePosition = new Vector2(50f, 13f);
-            titleLabel.text = Translations.Translate("CAM_NAM");
-
-            // Close button.
-            UIButton closeButton = AddUIComponent<UIButton>();
-            closeButton.relativePosition = new Vector2(width - 35, 2);
-            closeButton.normalBgSprite = "buttonclose";
-            closeButton.hoveredBgSprite = "buttonclosehover";
-            closeButton.pressedBgSprite = "buttonclosepressed";
-            closeButton.eventClick += (component, clickEvent) => Close();
-
-            // Decorative icon (top-left).
-            UISprite iconSprite = AddUIComponent<UISprite>();
-            iconSprite.relativePosition = new Vector2(5, 5);
-            iconSprite.height = 32f;
-            iconSprite.width = 32f;
-            iconSprite.atlas = UITextures.LoadSingleSpriteAtlas("ACME-UUI");
-            iconSprite.spriteName = "normal";
+            SetIcon(UITextures.LoadSingleSpriteAtlas("ACME-UUI"), "normal");
 
             // Set camera references.
             _controller = CameraUtils.Controller;
@@ -167,11 +139,6 @@ namespace ACME
         }
 
         /// <summary>
-        /// Gets the active panel instance.
-        /// </summary>
-        internal static CameraPanel Panel => s_panel;
-
-        /// <summary>
         /// Called by the game every update.
         /// Used to update slider values.
         /// </summary>
@@ -184,56 +151,6 @@ namespace ACME
         }
 
         /// <summary>
-        /// Creates the panel object in-game and displays it.
-        /// </summary>
-        internal static void Create()
-        {
-            try
-            {
-                // If no GameObject instance already set, create one.
-                if (s_gameObject == null)
-                {
-                    // Give it a unique name for easy finding with ModTools.
-                    s_gameObject = new GameObject("ACMECameraPanel");
-                    s_gameObject.transform.parent = UIView.GetAView().transform;
-
-                    // Create new panel instance and add it to GameObject.
-                    s_panel = s_gameObject.AddComponent<CameraPanel>();
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.LogException(e, "exception creating search panel");
-            }
-
-            // Press UUI button.
-            UUI.UUIButton.IsPressed = true;
-        }
-
-        /// <summary>
-        /// Closes the panel by destroying the object (removing any ongoing UI overhead).
-        /// </summary>
-        internal static void Close()
-        {
-            // Don't do anything if no panel.
-            if (s_panel == null)
-            {
-                return;
-            }
-
-            // Destroy game objects.
-            Destroy(s_panel);
-            Destroy(s_gameObject);
-
-            // Let the garbage collector do its work (and also let us know that we've closed the object).
-            s_panel = null;
-            s_gameObject = null;
-
-            // Unpress UUI button.
-            UUI.UUIButton.IsPressed = false;
-        }
-
-        /// <summary>
         /// Set panel visibility to the specified state.
         /// </summary>
         /// <param name="visible">True to show panel, false to hide.</param>
@@ -241,12 +158,25 @@ namespace ACME
         {
             if (visible)
             {
-                Create();
+                StandalonePanelManager<CameraPanel>.Create();
             }
             else
             {
-                Close();
+                StandalonePanelManager<CameraPanel>.Panel?.Close();
             }
+        }
+
+        /// <summary>
+        /// Performs any actions required before closing the panel and checks that it's safe to do so.
+        /// </summary>
+        /// <returns>True if the panel can close now, false otherwise.</returns>
+        protected override bool PreClose()
+        {
+            // Deselect UUI button.
+            UUI.UUIButton.IsPressed = false;
+
+            // Always okay to close.
+            return true;
         }
 
         /// <summary>
