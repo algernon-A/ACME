@@ -34,10 +34,10 @@ namespace ACME
                 if (HarmonyHelper.IsHarmonyInstalled)
                 {
                     // Target method: try for FPS Booster LateUpdate first, if that fails, then try vanilla game.
-                    MethodBase targetMethod = typeof(CameraController).GetMethod("FpsBoosterLateUpdate", BindingFlags.Public | BindingFlags.Instance);
+                    MethodInfo targetMethod = AccessTools.Method(typeof(CameraController), "FpsBoosterLateUpdate");
                     if (targetMethod == null)
                     {
-                        targetMethod = typeof(CameraController).GetMethod("LateUpdate", BindingFlags.NonPublic | BindingFlags.Instance);
+                        targetMethod = AccessTools.Method(typeof(CameraController), "LateUpdate");
                     }
 
                     if (targetMethod == null)
@@ -47,7 +47,7 @@ namespace ACME
                     }
 
                     // Patch method.
-                    MethodInfo patchMethod = typeof(FPSPatch).GetMethod(nameof(FPSPatch.LateUpdate));
+                    MethodInfo patchMethod = AccessTools.Method(typeof(FPSPatch), nameof(FPSPatch.LateUpdate));
                     if (patchMethod == null)
                     {
                         Logging.Error("unable to find FPS patch method");
@@ -59,11 +59,11 @@ namespace ACME
                     // Apply or remove patches according to flag.
                     if (active)
                     {
-                        harmonyInstance.Patch(targetMethod, prefix: new HarmonyMethod(patchMethod));
+                        PrefixMethod(targetMethod, patchMethod);
                     }
                     else
                     {
-                        harmonyInstance.Unpatch(targetMethod, patchMethod);
+                        UnpatchMethod(targetMethod, patchMethod);
                     }
 
                     // Update status flag.
@@ -89,8 +89,8 @@ namespace ACME
                 if (HarmonyHelper.IsHarmonyInstalled)
                 {
                     // Target methods.
-                    MethodBase updateTargetMethod = typeof(CameraController).GetMethod("UpdateTargetPosition", BindingFlags.NonPublic | BindingFlags.Instance);
-                    MethodBase updateTransformMethod = typeof(CameraController).GetMethod("UpdateTransform", BindingFlags.NonPublic | BindingFlags.Instance);
+                    MethodInfo updateTargetMethod = AccessTools.Method(typeof(CameraController), "UpdateTargetPosition");
+                    MethodInfo updateTransformMethod = AccessTools.Method(typeof(CameraController), "UpdateTransform");
 
                     if (updateTargetMethod == null || updateTransformMethod == null)
                     {
@@ -99,8 +99,8 @@ namespace ACME
                     }
 
                     // Patch method.
-                    MethodInfo patchTargetMethod = typeof(ZoomToCursorPatches).GetMethod(nameof(ZoomToCursorPatches.UpdateTargetPrefix));
-                    MethodInfo patchTransformMethod = typeof(ZoomToCursorPatches).GetMethod(nameof(ZoomToCursorPatches.UpdateTransformPrefix));
+                    MethodInfo patchTargetMethod = AccessTools.Method(typeof(ZoomToCursorPatches), nameof(ZoomToCursorPatches.UpdateTargetPrefix));
+                    MethodInfo patchTransformMethod = AccessTools.Method(typeof(ZoomToCursorPatches), nameof(ZoomToCursorPatches.UpdateTransformPrefix));
 
                     if (patchTargetMethod == null || patchTransformMethod == null)
                     {
@@ -113,13 +113,13 @@ namespace ACME
                     // Apply or remove patches according to flag.
                     if (active)
                     {
-                        harmonyInstance.Patch(updateTargetMethod, prefix: new HarmonyMethod(patchTargetMethod));
-                        harmonyInstance.Patch(updateTransformMethod, prefix: new HarmonyMethod(patchTransformMethod));
+                        PrefixMethod(updateTargetMethod, patchTargetMethod);
+                        PrefixMethod(updateTransformMethod, patchTransformMethod);
                     }
                     else
                     {
-                        harmonyInstance.Unpatch(updateTargetMethod, patchTargetMethod);
-                        harmonyInstance.Unpatch(updateTransformMethod, patchTransformMethod);
+                        UnpatchMethod(updateTargetMethod, patchTargetMethod);
+                        UnpatchMethod(updateTransformMethod, patchTransformMethod);
                     }
 
                     // Update status flag.
@@ -145,7 +145,7 @@ namespace ACME
                 if (HarmonyHelper.IsHarmonyInstalled)
                 {
                     // Target method.
-                    MethodBase targetMethod = typeof(CameraController).GetMethod("FollowTarget", BindingFlags.NonPublic | BindingFlags.Instance);
+                    MethodInfo targetMethod = AccessTools.Method(typeof(CameraController), "FollowTarget");
                     if (targetMethod == null)
                     {
                         Logging.Error("unable to find FollowTarget patch target method");
@@ -153,7 +153,7 @@ namespace ACME
                     }
 
                     // Patch method.
-                    MethodInfo patchMethod = typeof(FollowTargetPatch).GetMethod(nameof(FollowTargetPatch.Transpiler));
+                    MethodInfo patchMethod = AccessTools.Method(typeof(FollowTargetPatch), nameof(FollowTargetPatch.Transpiler));
                     if (patchMethod == null)
                     {
                         Logging.Error("unable to find FollowTarget transpiler");
@@ -165,11 +165,11 @@ namespace ACME
                     // Apply or remove patches according to flag.
                     if (active)
                     {
-                        harmonyInstance.Patch(targetMethod, transpiler: new HarmonyMethod(patchMethod));
+                        PrefixMethod(targetMethod, patchMethod);
                     }
                     else
                     {
-                        harmonyInstance.Unpatch(targetMethod, patchMethod);
+                        UnpatchMethod(targetMethod, patchMethod);
                     }
 
                     // Update status flag.
