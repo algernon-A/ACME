@@ -76,7 +76,7 @@ namespace ACME
             groundProximitySlider.eventValueChanged += (c, value) => { HeightOffset.TerrainClearance = value; };
 
             // Far clipping slider.
-            UISlider farClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_FAR", CameraUtils.MinFarClip, CameraUtils.MaxFarClip, CameraUtils.FarClipPlane);
+            UISlider farClipSlider = AddDistanceSlider(panel, ref currentY, "CAM_CLP_FAR", CameraUtils.MinFarClip, CameraUtils.MaxFarClip, CameraUtils.FarClipPlane, 100f);
             farClipSlider.eventValueChanged += (c, value) => { CameraUtils.FarClipPlane = value; };
             UILabel farClipSliderWarning = UILabels.AddLabel(farClipSlider, farClipSlider.width, -22f, Translations.Translate("CAM_CLP_FAR_L"), -1f, 0.75f, UIHorizontalAlignment.Right);
 
@@ -143,8 +143,9 @@ namespace ACME
         /// <param name="minValue">Slider minimum value.</param>
         /// <param name="maxValue">Slider maximum value.</param>
         /// <param name="initialValue">Initial slider value.</param>
+        /// <param name="step">Slider step (default 0.1f).</param>
         /// <returns>New delay slider with attached game-time label.</returns>
-        private UISlider AddDistanceSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue)
+        private UISlider AddDistanceSlider(UIComponent parent, ref float yPos, string labelKey, float minValue, float maxValue, float initialValue, float step = 0.1f)
         {
             // Create new slider.
             UISlider newSlider = UISliders.AddPlainSlider(parent, Margin, yPos, Translations.Translate(labelKey), minValue, maxValue, 0.1f, initialValue);
@@ -154,8 +155,18 @@ namespace ACME
             newSlider.objectUserData = distanceLabel;
 
             // Force set slider value to populate initial time label and add event handler.
-            SetDistanceLabel(newSlider, initialValue);
-            newSlider.eventValueChanged += SetDistanceLabel;
+            if (step < 100f)
+            {
+                // 0.1m increments for steps lower than 100m.
+                SetDistanceLabel(newSlider, initialValue);
+                newSlider.eventValueChanged += SetDistanceLabel;
+            }
+            else
+            {
+                // 100m increments for steps 100m or greater.
+                SetHundredDistanceLabel(newSlider, initialValue);
+                newSlider.eventValueChanged += SetHundredDistanceLabel;
+            }
 
             // Increment y position indicator.
             yPos += newSlider.parent.height + distanceLabel.height + Margin;
@@ -166,26 +177,40 @@ namespace ACME
         /// <summary>
         /// Sets the distance value label text for a distance slider.
         /// </summary>
-        /// <param name="control">Calling component.</param>
+        /// <param name="c">Calling component.</param>
         /// <param name="value">New value.</param>
-        private void SetDistanceLabel(UIComponent control, float value)
+        private void SetDistanceLabel(UIComponent c, float value)
         {
             // Ensure that there's a valid label attached to the slider.
-            if (control.objectUserData is UILabel label)
+            if (c.objectUserData is UILabel label)
             {
                 label.text = value.RoundToNearest(0.1f).ToString("N1") + "m";
             }
         }
 
         /// <summary>
-        /// Sets the value label text for a generic slider.
+        /// Sets the distance value label text for a distance slider.
         /// </summary>
-        /// <param name="control">Calling component.</param>
+        /// <param name="c">Calling component.</param>
         /// <param name="value">New value.</param>
-        private void SetSliderLabel(UIComponent control, float value)
+        private void SetHundredDistanceLabel(UIComponent c, float value)
         {
             // Ensure that there's a valid label attached to the slider.
-            if (control.objectUserData is UILabel label)
+            if (c.objectUserData is UILabel label)
+            {
+                label.text = value.RoundToNearest(100f).ToString("N0") + "m";
+            }
+        }
+
+        /// <summary>
+        /// Sets the value label text for a generic slider.
+        /// </summary>
+        /// <param name="c">Calling component.</param>
+        /// <param name="value">New value.</param>
+        private void SetSliderLabel(UIComponent c, float value)
+        {
+            // Ensure that there's a valid label attached to the slider.
+            if (c.objectUserData is UILabel label)
             {
                 label.text = value.RoundToNearest(1f).ToString("N0");
             }
