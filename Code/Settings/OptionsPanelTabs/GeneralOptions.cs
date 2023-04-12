@@ -5,12 +5,9 @@
 
 namespace ACME
 {
-    using AlgernonCommons;
-    using AlgernonCommons.Keybinding;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
-    using UnityEngine;
 
     /// <summary>
     /// Options panel for setting basic mod options.
@@ -21,7 +18,6 @@ namespace ACME
         private const float Margin = 5f;
         private const float LeftMargin = 24f;
         private const float GroupMargin = 40f;
-        private const float TitleMargin = 50f;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneralOptions"/> class.
