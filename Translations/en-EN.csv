@@ -7,9 +7,9 @@
 "CAM_SIZE","Distance from target"
 "CAM_TILT","Tilt"
 "CAM_FOV","Field of view"
-"CAM_SLI_TIP","Shift: x 10
-Alt: / 10
-Ctrl: / 100"
+"CAM_SLI_TIP","Shift: increase speed (x10)
+Alt: decrease speed (/ 10)
+Ctrl: decrease speed significantly (/ 100)"
 "CAM_COL_BLD","Building collision"
 "CAM_COL_NET","Network collision"
 "CAM_COL_PRO","Prop collision"
@@ -19,7 +19,7 @@ Ctrl: / 100"
 "CAM_CLP_FAR","Far clipping plane"
 "CAM_CLP_FAR_L","Default: 20 km"
 "CAM_CLP_NEA","Near clipping plane"
-"CAM_CLP_NEA_L","Caution: May introduce shadow flickering < 1m"
+"CAM_CLP_NEA_L","Caution: May introduce shadow flickering < 2m"
 "CAM_SPD_MIN","Minimum camera movement speed"
 "CAM_OPT_GEN","General"
 "CAM_OPT_CAM","Camera"
