@@ -165,7 +165,7 @@ namespace ACME
                     // Apply or remove patches according to flag.
                     if (active)
                     {
-                        PrefixMethod(targetMethod, patchMethod);
+                        TranspileMethod(targetMethod, patchMethod);
                     }
                     else
                     {
