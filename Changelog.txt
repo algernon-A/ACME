@@ -1,4 +1,7 @@
-﻿Version 0.6.4 -
+﻿- Update AlgernonCommons
+
+
+Version 0.6.4 -
 
 - Add far clipping option (thanks, Deeheks!)
 - Rearrange options panel
