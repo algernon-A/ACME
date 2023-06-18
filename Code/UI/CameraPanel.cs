@@ -12,7 +12,7 @@ namespace ACME
     using UnityEngine;
 
     /// <summary>
-    /// Static class to manage the ACME camera panel.
+    /// The ACME camera panel.
     /// </summary>
     internal class CameraPanel : StandalonePanel
     {
@@ -95,7 +95,7 @@ namespace ACME
             _zPosSlider = AddCameraSlider(this, Margin, ZSliderY, PanelWidth - (Margin * 2f), "CAM_ZPOS", -8500f, 8500f, 0.01f, _controller.m_targetPosition.z, "N1", "zPos");
 
             // Rotation around target slider.
-            _rotSlider = AddCameraSlider(this, Margin, RotSliderY, PanelWidth - (Margin * 2f), "CAM_ROT", -180f, 180f, 0.01f, _controller.m_targetAngle.x, "N2", "rot");
+            _rotSlider = AddCameraSlider(this, Margin, RotSliderY, PanelWidth - (Margin * 2f), "CAM_ROT", -180f, 180f, 0.0001f, _controller.m_targetAngle.x, "N4", "rot");
 
             // Zoom slider.
             _zoomSlider = AddCameraSlider(this, Margin, ZoomSliderY, PanelWidth - (Margin * 2f), "CAM_SIZE", _controller.m_minDistance, _controller.m_maxDistance, 1f, _controller.m_targetSize, "N1", "size");
