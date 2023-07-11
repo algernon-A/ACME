@@ -38,7 +38,7 @@ namespace ACME
                 s_uuiButton = UUIHelpers.RegisterCustomButton(
                     name: Mod.Instance.BaseName,
                     groupName: null, // default group
-                    tooltip: Translations.Translate("CAM_NAM"),
+                    tooltip: Translations.Translate("MOD_NAME"),
                     icon: UUIHelpers.LoadTexture(UUIHelpers.GetFullPath<Mod>("Resources", "ACME-UUI.png")),
                     onToggle: (value) => CameraPanel.SetState(value),
                     hotkeys: new UUIHotKeys { ActivationKey = UUIKey });

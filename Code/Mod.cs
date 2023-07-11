@@ -27,7 +27,7 @@ namespace ACME
         /// <summary>
         /// Gets the mod's description for display in the content manager.
         /// </summary>
-        public string Description => Translations.Translate("CAM_DESC");
+        public string Description => Translations.Translate("MOD_DESCRIPTION");
 
         /// <summary>
         /// Saves settings file.

@@ -69,7 +69,7 @@ namespace ACME
         /// <summary>
         /// Gets the panel's title.
         /// </summary>
-        protected override string PanelTitle => Translations.Translate("CAM_NAM");
+        protected override string PanelTitle => Translations.Translate("MOD_NAME");
 
         /// <summary>
         /// Called by Unity before the first frame is displayed.

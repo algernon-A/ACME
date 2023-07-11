@@ -73,7 +73,7 @@ namespace ACME
         internal FPSOptions(UITabstrip tabStrip, int tabIndex)
         {
             // Add tab.
-            UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("CAM_OPT_FPS"), tabIndex, out UIButton _, autoLayout: false);
+            UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("FPS_CONTROLS"), tabIndex, out UIButton _, autoLayout: false);
 
             // Y position indicator.
             float currentY = GroupMargin;
