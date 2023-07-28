@@ -1,6 +1,6 @@
 ﻿Version 0.6.5 -
 
-- Adjust translations strings
+- Adjust translation strings
 - Update AlgernonCommons
 
 
