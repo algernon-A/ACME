@@ -275,6 +275,30 @@ namespace ACME
         public CameraPositions.SerializedPosition[] XMLEditorPositions { get => CameraPositions.XMLSerialize(); set => CameraPositions.XMLDeserialize(value); }
 
         /// <summary>
+        /// Gets or sets the key binding for loading saved camera positions.
+        /// </summary>
+        [XmlArray("LoadKeyBindings")]
+        [XmlArrayItem("KeyBinding")]
+        public Keybinding[] LoadKeyBindings
+        {
+            get => UIThreading.LoadKeyBindings;
+
+            set => value.CopyTo(UIThreading.LoadKeyBindings, 0);
+        }
+
+        /// <summary>
+        /// Gets or sets the key binding for loading saved camera positions.
+        /// </summary>
+        [XmlArray("SaveKeyBindings")]
+        [XmlArrayItem("KeyBinding")]
+        public Keybinding[] SaveKeyBindings
+        {
+            get => UIThreading.SaveKeyBindings;
+
+            set => value.CopyTo(UIThreading.SaveKeyBindings, 0);
+        }
+
+        /// <summary>
         /// Gets or sets the map dragging hotkey.
         /// </summary>
         [XmlIgnore]

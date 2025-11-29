@@ -1,4 +1,7 @@
-﻿Version 0.6.5 -
+﻿- Implement save/restore position key customisation.
+
+
+Version 0.6.5 -
 
 - Adjust translation strings
 - Update AlgernonCommons

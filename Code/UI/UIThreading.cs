@@ -14,6 +14,11 @@ namespace ACME
     /// </summary>
     public class UIThreading : ThreadingExtensionBase
     {
+        /// <summary>
+        /// Number of camera position slots.
+        /// </summary>
+        internal const int NumSlots = 22;
+
         // Instance reference.
         private static UIThreading s_instance;
 
@@ -110,6 +115,64 @@ namespace ACME
         internal static KeyOnlyBinding YKey { get => s_yKey; set => s_yKey = value; }
 
         /// <summary>
+        /// Gets the key binding for loading saved camera positions.
+        /// </summary>
+        internal static Keybinding[] LoadKeyBindings { get; } = new Keybinding[NumSlots]
+        {
+             new Keybinding(KeyCode.Alpha0, true, false, false),
+             new Keybinding(KeyCode.Alpha1, true, false, false),
+             new Keybinding(KeyCode.Alpha2, true, false, false),
+             new Keybinding(KeyCode.Alpha3, true, false, false),
+             new Keybinding(KeyCode.Alpha4, true, false, false),
+             new Keybinding(KeyCode.Alpha5, true, false, false),
+             new Keybinding(KeyCode.Alpha6, true, false, false),
+             new Keybinding(KeyCode.Alpha7, true, false, false),
+             new Keybinding(KeyCode.Alpha8, true, false, false),
+             new Keybinding(KeyCode.Alpha9, true, false, false),
+             new Keybinding(KeyCode.F1, true, false, false),
+             new Keybinding(KeyCode.F2, true, false, false),
+             new Keybinding(KeyCode.F3, true, false, false),
+             new Keybinding(KeyCode.F4, true, false, false),
+             new Keybinding(KeyCode.F5, true, false, false),
+             new Keybinding(KeyCode.F6, true, false, false),
+             new Keybinding(KeyCode.F7, true, false, false),
+             new Keybinding(KeyCode.F8, true, false, false),
+             new Keybinding(KeyCode.F9, true, false, false),
+             new Keybinding(KeyCode.F10, true, false, false),
+             new Keybinding(KeyCode.F11, true, false, false),
+             new Keybinding(KeyCode.F12, true, false, false),
+        };
+
+        /// <summary>
+        /// Gets the key binding for saving camera positions.
+        /// </summary>
+        internal static Keybinding[] SaveKeyBindings { get; } = new Keybinding[NumSlots]
+        {
+             new Keybinding(KeyCode.Alpha0, true, true, false),
+             new Keybinding(KeyCode.Alpha1, true, true, false),
+             new Keybinding(KeyCode.Alpha2, true, true, false),
+             new Keybinding(KeyCode.Alpha3, true, true, false),
+             new Keybinding(KeyCode.Alpha4, true, true, false),
+             new Keybinding(KeyCode.Alpha5, true, true, false),
+             new Keybinding(KeyCode.Alpha6, true, true, false),
+             new Keybinding(KeyCode.Alpha7, true, true, false),
+             new Keybinding(KeyCode.Alpha8, true, true, false),
+             new Keybinding(KeyCode.Alpha9, true, true, false),
+             new Keybinding(KeyCode.F1, true, true, false),
+             new Keybinding(KeyCode.F2, true, true, false),
+             new Keybinding(KeyCode.F3, true, true, false),
+             new Keybinding(KeyCode.F4, true, true, false),
+             new Keybinding(KeyCode.F5, true, true, false),
+             new Keybinding(KeyCode.F6, true, true, false),
+             new Keybinding(KeyCode.F7, true, true, false),
+             new Keybinding(KeyCode.F8, true, true, false),
+             new Keybinding(KeyCode.F9, true, true, false),
+             new Keybinding(KeyCode.F10, true, true, false),
+             new Keybinding(KeyCode.F11, true, true, false),
+             new Keybinding(KeyCode.F12, true, true, false),
+        };
+
+        /// <summary>
         /// Look for keypress to activate tool.
         /// </summary>
         /// <param name="realTimeDelta">Real-time delta since last update.</param>
@@ -119,48 +182,42 @@ namespace ACME
             // Don't do anything if not active.
             if (_operating)
             {
-                // Check modifier keys according to settings.
-                bool ctrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-                bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-
-                // Save/restore position - is control pressed?
-                if (ctrlPressed)
+                for (int i = 0; i < NumSlots; ++i)
                 {
-                    // Is a saved position key also pressed?
-                    for (int i = 0; i < positionKeys.Length; ++i)
+                    // Don't do anything if we're already processing this key.
+                    if (_positionKeyProcessed == i)
                     {
-                        // Don't do anything if we're already processing this key.
-                        if (_positionKeyProcessed == i)
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
-                        if (Input.GetKey(positionKeys[i]))
-                        {
-                            // Saved position key pressed.
-                            _positionKeyProcessed = i;
+                    // Check for saved position load key.
+                    if (LoadKeyBindings[i].IsPressed())
+                    {
+                        // Process keystroke.
+                        _positionKeyProcessed = i;
+                        AlgernonCommons.Logging.Message($"UIThreading: loading position {i}");
 
-                            // Loading or saving (shift key)?
-                            if (shiftPressed)
-                            {
-                                // Shift is pressed - saving.
-                                CameraPositions.SavePosition(i);
-                                return;
-                            }
-                            else
-                            {
-                                // Shift is not pressed - loading.
-                                CameraPositions.LoadPosition(i);
-                                return;
-                            }
-                        }
+                        // Load saved position.
+                        CameraPositions.LoadPosition(i);
+                        return;
+                    }
+
+                    // Check for position save key.
+                    if (SaveKeyBindings[i].IsPressed())
+                    {
+                        // Process keystroke.
+                        _positionKeyProcessed = i;
+
+                        AlgernonCommons.Logging.Message($"UIThreading: saving position {i}");
+
+                        // Load saved position.
+                        CameraPositions.SavePosition(i);
+                        return;
                     }
                 }
-                else
-                {
-                    // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                    _positionKeyProcessed = -1;
-                }
+
+                // If we got here, position keys aren't pressed.
+                _positionKeyProcessed = -1;
 
                 // Check for Movit zoom.
                 if (s_moveItKey.IsPressed() && ToolsModifierControl.toolController.CurrentTool.GetType().ToString().Equals("MoveIt.MoveItTool"))
@@ -223,6 +280,7 @@ namespace ACME
                 if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
                 {
                     // Check modifiers.
+                    bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
                     bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr);
 
                     // Movement hotkeys.
