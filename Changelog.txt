@@ -1,4 +1,6 @@
-﻿- Implement save/restore position key customisation.
+﻿Version 0.7 -
+
+- Implement save/restore position key customisation.
 
 
 Version 0.6.5 -
