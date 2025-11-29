@@ -46,7 +46,7 @@ namespace ACME
             maxShadowDistanceSlider.eventValueChanged += (c, value) => { CameraUtils.MaxShadowDistance = value; };
             currentY += maxShadowDistanceSlider.parent.height;
 
-            // Shadow distance slider .
+            // Shadow sharpness tradeoff slider .
             UISlider minShadowDistanceSlider = UISliders.AddPlainSliderWithValue(panel, LeftMargin, currentY, Translations.Translate("CAM_SHD_MIN"), CameraUtils.MinMinShadowDistance, CameraUtils.MaxMinShadowDistance, 10f, CameraUtils.MinShadowDistance);
             minShadowDistanceSlider.eventValueChanged += (c, value) => { CameraUtils.MinShadowDistance = value; };
             UILabels.AddLabel(minShadowDistanceSlider, 0f, minShadowDistanceSlider.height + Margin, Translations.Translate("SHARP"), textScale: 0.7f);

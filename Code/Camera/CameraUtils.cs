@@ -216,7 +216,7 @@ namespace ACME
         }
 
         /// <summary>
-        /// Applies the current cammera settings to the game camera.
+        /// Applies the current camera settings to the game camera.
         /// Should only be called once level has loaded.
         /// </summary>
         internal static void ApplySettings()
@@ -224,7 +224,7 @@ namespace ACME
             // Local reference.
             CameraController controller = Controller;
 
-            // Remove border limts.
+            // Remove border limits.
             controller.m_unlimitedCamera = true;
 
             // Set camera minimum and maximum distance from target.
