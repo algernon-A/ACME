@@ -98,7 +98,6 @@ namespace ACME
             UICheckBox disableFollowRotationCheck = UICheckBoxes.AddPlainCheckBox(panel, Margin, currentY, Translations.Translate("CAM_OPT_DFR"));
             disableFollowRotationCheck.isChecked = ModSettings.DisableFollowRotation;
             disableFollowRotationCheck.eventCheckChanged += (c, value) => { ModSettings.DisableFollowRotation = value; };
-            currentY += disableFollowRotationCheck.height + 30f;
         }
 
         /// <summary>
