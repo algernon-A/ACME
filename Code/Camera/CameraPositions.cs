@@ -78,6 +78,18 @@ namespace ACME
         }
 
         /// <summary>
+        /// Erases all saved camera positions.
+        /// </summary>
+        internal static void ErasePositions()
+        {
+            for (int i = 0; i < NumSaves; ++i)
+            {
+                // Serialize position.
+                GameSavedPositions[i].IsValid = false;
+            }
+        }
+
+        /// <summary>
         /// Serializes savegame data.
         /// </summary>
         /// <param name="writer">BinaryWriter instance to serialize to.</param>

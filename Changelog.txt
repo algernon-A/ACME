@@ -1,6 +1,7 @@
 ﻿Version 0.7 -
 
-- Implement save/restore position key customisation.
+- Implement save/restore position key customisation
+- Add button to erase all saved camera positions from current save
 
 
 Version 0.6.5 -

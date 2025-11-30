@@ -96,6 +96,13 @@ namespace ACME
             loggingCheck.isChecked = Logging.DetailLogging;
             loggingCheck.eventCheckChanged += (c, isChecked) => { Logging.DetailLogging = isChecked; };
             currentY += TitleMargin;
+
+            // Erase positions button - only valid when a game is loaded.
+            if (Loading.IsLoaded)
+            {
+                UIButton erasePositionsButton = UIButtons.AddButton(panel, LeftMargin, currentY, Translations.Translate("CAM_ERS_POS"), width: 300f, tooltip: Translations.Translate("CAM_ERS_POS_TIP"));
+                erasePositionsButton.eventClick += (c, p) => { CameraPositions.ErasePositions(); };
+            }
         }
     }
 }
