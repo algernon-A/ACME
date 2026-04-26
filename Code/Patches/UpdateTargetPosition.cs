@@ -46,6 +46,20 @@ namespace ACME
         internal static bool WaterBobbing { get => s_waterBobbing; set => s_waterBobbing = value; }
 
         /// <summary>
+        /// Harmony Postfix to adjust camera height when following a target in a vehicle to maintain camera vertical position.
+        /// </summary>
+        /// <param name="__instance">CameraController instance.</param>
+        /// <param name="___m_targetInstance">CameraControlla target instance.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony")]
+        public static void Postfix(CameraController __instance, ref InstanceID ___m_targetInstance)
+        {
+            if (InstanceManager.IsValid(___m_targetInstance) && ___m_targetInstance.Vehicle != 0)
+            {
+                __instance.m_targetPosition.y = __instance.m_targetHeight;
+            }
+        }
+
+        /// <summary>
         /// Harmony transpiler to replace hardcoded camera angle limits and implement variable movement speed multipliers.
         /// Finds a bound check for 'if less than 0 then = 0' and replaces 0 with -90 (for camera angle) and inserts calls to custom movement multiplier methods.
         /// </summary>

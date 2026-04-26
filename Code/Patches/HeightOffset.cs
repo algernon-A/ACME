@@ -59,13 +59,11 @@ namespace ACME
         /// </summary>
         internal static float TerrainClearance
         {
-            // Internal terrain clearance factor starts at -5f.
-            get => terrainClearanceModifier + 5f;
+            get => terrainClearanceModifier;
 
             set
             {
-                // Internal terrain clearance factor starts at -5f.
-                terrainClearanceModifier = -5f + Mathf.Clamp(value, MinTerrainClearance, MaxTerrainClearance);
+                terrainClearanceModifier = Mathf.Clamp(value, MinTerrainClearance, MaxTerrainClearance);
             }
         }
 
@@ -81,7 +79,7 @@ namespace ACME
         public static bool Prefix(ref float __result, Vector3 worldPos, float distance)
         {
             // Calculate base offset, based on water bobbing setting.
-            float offset = UpdateTargetPosition.SampleHeight(Singleton<TerrainManager>.instance, worldPos, timeLerp: true, TerrainClearance);
+            float offset = UpdateTargetPosition.SampleHeight(Singleton<TerrainManager>.instance, worldPos, timeLerp: true, 0f);
 
             // Boilerplate game code start.
             float a = offset - worldPos.y;
