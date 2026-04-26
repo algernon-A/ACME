@@ -17,7 +17,7 @@ namespace ACME
     public static class FollowTargetPatch
     {
         /// <summary>
-        /// Transpiler for CameraCotnroller.FollowTarget to disable automatic camera rotation changes when following a target.
+        /// Transpiler for CameraController.FollowTarget to disable automatic camera rotation changes when following a target.
         /// Manually applied.
         /// </summary>
         /// <param name="instructions">Original ILCode.</param>
