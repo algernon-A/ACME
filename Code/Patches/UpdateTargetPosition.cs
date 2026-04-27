@@ -214,6 +214,6 @@ namespace ACME
         /// <param name="waterOffset">Water offset distance (ignored).</param>
         /// <returns>Applicable terrain height.</returns>
         public static float SampleHeight(TerrainManager terrainManager, Vector3 worldPos, bool timeLerp, float waterOffset) =>
-            s_waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleRawHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
+            s_waterBobbing ? terrainManager.SampleRawHeightSmoothWithWater(worldPos, timeLerp, HeightOffset.TerrainClearance) : terrainManager.SampleDetailHeightSmooth(worldPos) + HeightOffset.TerrainClearance;
     }
 }

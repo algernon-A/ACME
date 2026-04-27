@@ -129,7 +129,14 @@ namespace ACME
 
             // End modified game code.
             // Adjust result with our custom terrain clearance modifier.
-            __result = offset - worldPos.y + terrainClearanceModifier;
+            if (Singleton<CameraController>.instance.GetTarget().Vehicle != 0)
+            {
+                __result = offset - worldPos.y;
+            }
+            else
+            {
+                __result = offset - worldPos.y + terrainClearanceModifier;
+            }
 
             // Never execute original method.
             return false;
