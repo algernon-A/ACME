@@ -1,7 +1,7 @@
 ﻿Version 1.0.1 -
 
 - Adjust vehicle camera following height offset calculations.
-- Use detail instead of raw heigh for terrain collision checks.
+- Use detail instead of raw height for terrain collision checks.
 
 
 Version 1.0 -
