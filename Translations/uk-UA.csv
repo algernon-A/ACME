@@ -47,7 +47,6 @@ Ctrl: значне зменшення швидкості (/ 100)","Slider toolti
 "CAM_OPT_MIS","Різне","Options panel header."
 "CAM_SHD_MAX","Максимальний коефіцієнт відстані","Slider title."
 "CAM_SHD_MIN","Компроміс між різкістю/відстанню","Slider title."
-"CAM_OPT_OTH","Other","Options panel tab."
 "SHARP","Різкі тіні, коротші відстані","Slider additional label."
 "FUZZY","Нечіткі тіні, довші відстані","Slider additional label."
 "KEY_KEY","Панель гарячих клавіш","Key setting title."
