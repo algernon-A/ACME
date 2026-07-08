@@ -195,10 +195,16 @@ namespace ACME
         /// <param name="baseMult">Base speed multiplier (calculated by game).</param>
         /// <param name="instance">CameraController instance reference.</param>
         /// <returns>Speed multiplier for calculating target position update.</returns>
-        public static float KeyMultiplier(float baseMult, CameraController instance) => (instance.m_currentSize > 43f) ? baseMult : (baseMult * s_cameraSpeed / instance.m_currentSize);
+        public static float KeyMultiplier(float baseMult, CameraController instance)
+        {
+            // Scale down speed when close in (currentSize < 45).
+            float closeZoomFactor = Mathf.Min(1f, instance.m_currentSize / 45f);
+
+            return Mathf.Max(baseMult * closeZoomFactor, s_cameraSpeed);
+        }
 
         /// <summary>
-        /// Calculates the multiplier of scroll whell-based camera movement where appropriate.
+        /// Calculates the multiplier of scroll wheel-based camera movement where appropriate.
         /// </summary>
         /// <param name="baseMult">Base speed multiplier (calculated by game).</param>
         /// <param name="instance">CameraController instance reference.</param>
