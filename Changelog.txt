@@ -1,4 +1,9 @@
-﻿Version 1.0.1.1 - 
+﻿Version 1.0.2 -
+
+- Rework movement speed calculation at close-in zoom levels.
+
+
+Version 1.0.1.1 - 
 
 - Remove duplicate translation key
 
